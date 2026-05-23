@@ -500,7 +500,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.3 • Hotfix</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.4 • Click Fix</div>
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:11px; padding:5px 10px;">🎲 Random</button>
@@ -553,7 +553,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.8.3 • Hotfix: Modal click fixed + Random moved
+            Offline Pokédex • v1.8.4 • Robust click handling (event delegation)
         </div>
     </div>
 
@@ -873,13 +873,6 @@
                     </div>
                 `;
                 
-                // Click handler - fixed
-                item.addEventListener('click', (e) => {
-                    e.stopImmediatePropagation();
-                    updateViewer(pokemon);
-                    showDetail(pokemon);
-                });
-                
                 container.appendChild(item);
             });
             
@@ -1069,8 +1062,21 @@
             
             renderTypeFilters();
             
+            // ROBUST CLICK HANDLING using event delegation
             const listContainer = document.getElementById('pokemon-list');
             if (listContainer) {
+                listContainer.addEventListener('click', function(e) {
+                    const item = e.target.closest('.pokemon-list-item');
+                    if (!item) return;
+                    
+                    const dex = parseInt(item.dataset.dex);
+                    const pokemon = allPokemon.find(p => p.national_dex === dex);
+                    if (pokemon) {
+                        updateViewer(pokemon);
+                        showDetail(pokemon);
+                    }
+                });
+                
                 listContainer.addEventListener('scroll', handleScroll, { passive: true });
                 listContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
                 listContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
@@ -1086,7 +1092,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.8.3] Hotfix: Fixed modal click handler + moved Random button to header right side.', 'color:#22C55E');
+            console.log('%c[v1.8.4] Robust event delegation for clicks. This should finally fix the modal opening issue on iOS.', 'color:#22C55E');
         }
 
         window.onload = init;
