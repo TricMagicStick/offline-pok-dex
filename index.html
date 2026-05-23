@@ -442,7 +442,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.6.1 • Split View</div>
+                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.6.1.1 • Split View (Patch)</div>
             </div>
         </div>
 
@@ -483,7 +483,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.6.1 • Split View • Gen 1 Complete
+            Offline Pokédex • v1.6.1.1 • Split View (Patch) • Gen 1 Complete
         </div>
     </div>
 
@@ -774,9 +774,13 @@
 
         function renderList(pokemonList) {
             const container = document.getElementById('pokemon-list');
+            if (!container) {
+                console.error('pokemon-list container not found');
+                return;
+            }
             container.innerHTML = '';
             
-            if (pokemonList.length === 0) {
+            if (!pokemonList || pokemonList.length === 0) {
                 container.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748B;">No Pokémon found.</div>';
                 return;
             }
@@ -901,41 +905,19 @@
 
         function init() {
             renderTypeFilters();
-            filterAndRender(); // Render the list immediately
             
-            // Set initial Pokémon (Charmander as example)
+            // Render list immediately
             setTimeout(() => {
+                filterAndRender();
+                
+                // Set initial Pokémon
                 const charmander = allPokemon.find(p => p.national_dex === 4);
                 if (charmander) {
                     updateViewer(charmander);
                 }
-            }, 100);
+            }, 50);
             
-            // Search input (if it exists in future compact bar)
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.addEventListener('input', e => {
-                    currentFilters.search = e.target.value;
-                    filterAndRender();
-                });
-            }
-            
-            const sortSelect = document.getElementById('sort-select');
-            if (sortSelect) {
-                sortSelect.addEventListener('change', e => {
-                    currentFilters.sort = e.target.value;
-                    filterAndRender();
-                });
-            }
-            
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape') {
-                    const modal = document.getElementById('detail-modal');
-                    if (modal.classList.contains('active')) modal.classList.remove('active');
-                }
-            });
-            
-            console.log('%c[v1.6.1] Split View mode active.', 'color:#64748B');
+            console.log('%c[v1.6.1.1] Split View patch loaded. List should now render.', 'color:#22C55E');
         }
 
         window.onload = init;
