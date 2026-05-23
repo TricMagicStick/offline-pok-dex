@@ -10,10 +10,6 @@
         :root {
             --pokedex-red: #C8102E;
             --pokedex-dark-red: #8B0000;
-            --screen-bg: #0F172A;
-            --card-bg: #1E2937;
-            --text-light: #F1F5F9;
-            --text-muted: #94A3B8;
         }
         
         * {
@@ -25,14 +21,13 @@
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(#8B0000, #5C0000);
-            color: var(--text-light);
+            color: #F1F5F9;
             min-height: 100vh;
             padding: 20px;
-            line-height: 1.5;
         }
         
         .pokedex-container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             background: #111827;
             border: 8px solid #C8102E;
@@ -52,21 +47,15 @@
         
         .pokedex-header h1 {
             font-family: "Press Start 2P", system-ui;
-            font-size: 28px;
+            font-size: 26px;
             letter-spacing: 2px;
             color: white;
             text-shadow: 3px 3px 0 #5C0000;
         }
         
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
         .search-container {
             position: relative;
-            width: 280px;
+            width: 300px;
         }
         
         .search-input {
@@ -78,11 +67,6 @@
             color: white;
             font-size: 15px;
             outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .search-input::placeholder {
-            color: #64748B;
         }
         
         .search-icon {
@@ -101,9 +85,9 @@
         .controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 24px;
+            gap: 16px;
+            align-items: flex-end;
+            margin-bottom: 20px;
             padding-bottom: 16px;
             border-bottom: 1px solid #334155;
         }
@@ -137,82 +121,73 @@
             padding: 8px 14px;
             border-radius: 8px;
             font-size: 14px;
-            cursor: pointer;
         }
         
-        .pokemon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
+        .pokemon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         
-        .pokemon-card {
+        .pokemon-list-item {
+            display: flex;
+            align-items: center;
             background: #1E2937;
-            border-radius: 12px;
-            overflow: hidden;
+            border-radius: 10px;
+            padding: 10px 16px;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 3px solid #334155;
+            transition: background 0.2s ease, transform 0.1s ease;
+            border: 2px solid #334155;
         }
         
-        .pokemon-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        .pokemon-list-item:hover {
+            background: #273549;
+            transform: translateX(4px);
             border-color: #C8102E;
         }
         
-        .card-header {
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #0F172A;
-        }
-        
-        .dex-number {
-            font-family: "Press Start 2P", system-ui;
-            font-size: 13px;
-            color: #64748B;
-        }
-        
-        .card-body {
-            padding: 12px 16px 16px;
-            text-align: center;
-        }
-        
-        .card-sprite {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 8px;
+        .list-sprite {
+            width: 56px;
+            height: 56px;
+            margin-right: 16px;
+            flex-shrink: 0;
             image-rendering: crisp-edges;
         }
         
-        .pokemon-name {
+        .list-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .list-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2px;
+        }
+        
+        .list-dex {
+            font-family: "Press Start 2P", system-ui;
+            font-size: 12px;
+            color: #64748B;
+            min-width: 42px;
+        }
+        
+        .list-name {
             font-size: 17px;
             font-weight: 700;
-            margin-bottom: 6px;
             color: white;
         }
         
-        .type-container {
+        .list-types {
             display: flex;
-            justify-content: center;
             gap: 6px;
-            margin-bottom: 12px;
         }
         
-        .type-badge {
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 9999px;
-            font-weight: 700;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .ability-text {
-            font-size: 12px;
+        .list-ability {
+            font-size: 13px;
             color: #94A3B8;
+            margin-top: 2px;
         }
         
         .modal {
@@ -221,7 +196,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             display: none;
             align-items: center;
             justify-content: center;
@@ -241,7 +216,6 @@
             max-height: 90vh;
             overflow-y: auto;
             border: 6px solid #C8102E;
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
         }
         
         .modal-header {
@@ -250,11 +224,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .modal-header h2 {
-            font-size: 24px;
-            font-weight: 700;
         }
         
         .close-btn {
@@ -270,24 +239,18 @@
             padding: 24px;
         }
         
-        .detail-sprite-placeholder {
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 20px;
-            background: #0F172A;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #64748B;
-            border: 4px solid #334155;
+        .detail-sprite {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 16px;
+            display: block;
+            image-rendering: crisp-edges;
         }
         
         .stats-grid {
             display: grid;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 16px 0;
         }
         
         .stat-row {
@@ -297,7 +260,7 @@
         }
         
         .stat-label {
-            width: 90px;
+            width: 80px;
             font-size: 13px;
             font-weight: 600;
             color: #CBD5E1;
@@ -306,7 +269,7 @@
         .stat-bar-container {
             flex: 1;
             background: #334155;
-            height: 14px;
+            height: 12px;
             border-radius: 9999px;
             overflow: hidden;
         }
@@ -314,21 +277,20 @@
         .stat-bar {
             height: 100%;
             background: linear-gradient(to right, #C8102E, #EF4444);
-            transition: width 0.4s ease;
         }
         
         .stat-value {
-            width: 40px;
+            width: 36px;
             text-align: right;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .section-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #C8102E;
-            margin: 24px 0 8px;
+            margin: 20px 0 8px;
             letter-spacing: 0.5px;
         }
         
@@ -336,19 +298,25 @@
             background: #0F172A;
             border: 2px dashed #475569;
             border-radius: 8px;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
             color: #64748B;
             font-size: 13px;
         }
         
         .footer {
-            padding: 16px 24px;
+            padding: 14px 24px;
             background: #111827;
             font-size: 12px;
             color: #64748B;
             text-align: center;
             border-top: 1px solid #334155;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748B;
         }
     </style>
 </head>
@@ -358,13 +326,11 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1</div>
+                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.1 • Gen 1</div>
             </div>
-            <div class="header-right">
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="search-input" class="search-input" placeholder="Search name or #...">
-                </div>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search name or #...">
             </div>
         </div>
 
@@ -372,94 +338,72 @@
             <!-- Controls -->
             <div class="controls">
                 <div>
-                    <div style="font-size: 12px; color: #64748B; margin-bottom: 6px; font-weight: 600;">FILTER BY TYPE</div>
-                    <div class="filter-group" id="type-filters">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">FILTER BY TYPE</div>
+                    <div class="filter-group" id="type-filters"></div>
                 </div>
                 
                 <div style="margin-left: auto;">
-                    <div style="font-size: 12px; color: #64748B; margin-bottom: 6px; font-weight: 600;">SORT</div>
+                    <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">SORT</div>
                     <select id="sort-select" class="sort-select">
                         <option value="dex-asc">National Dex ↑</option>
                         <option value="dex-desc">National Dex ↓</option>
                         <option value="name-asc">Name A-Z</option>
                         <option value="name-desc">Name Z-A</option>
-                        <option value="hp-desc">HP Highest</option>
-                        <option value="attack-desc">Attack Highest</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Pokemon Grid -->
-            <div id="pokemon-grid" class="pokemon-grid">
-                <!-- Populated by JS -->
-            </div>
+            <!-- List -->
+            <div id="pokemon-list" class="pokemon-list"></div>
             
             <div id="no-results" class="no-results" style="display: none;">
-                <p>No Pokémon found matching your filters.</p>
-                <button onclick="resetFilters()" style="margin-top: 12px; background: #C8102E; color: white; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer;">Clear Filters</button>
+                <p>No Pokémon found.</p>
+                <button onclick="resetFilters()" style="margin-top: 12px; background: #C8102E; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Clear Filters</button>
             </div>
         </div>
 
         <div class="footer">
-            Offline Pokédex • Data sourced from Serebii • Anime-inspired red theme • Works completely offline after first load
+            Offline Pokédex • Gen 1 (First 151) • Data from Serebii + PokeAPI • Anime red theme
         </div>
     </div>
 
     <!-- Detail Modal -->
     <div id="detail-modal" class="modal" onclick="if (event.target.id === 'detail-modal') closeModal()">
-        <div class="modal-content" onclick="event.stopImmediatePropagation()">
+        <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <span id="modal-dex" style="font-family: 'Press Start 2P', system-ui; font-size: 14px; opacity: 0.9;"></span>
-                    <h2 id="modal-name" style="margin-top: 4px;"></h2>
+                    <span id="modal-dex" style="font-family: 'Press Start 2P', system-ui; font-size: 13px; opacity: 0.9;"></span>
+                    <h2 id="modal-name" style="margin-top: 2px; font-size: 22px;"></h2>
                 </div>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             
             <div class="modal-body">
-                <!-- Sprite Placeholder -->
-                <div class="detail-sprite-placeholder" id="modal-sprite">
-                    <!-- JS will insert image or placeholder -->
-                </div>
+                <img id="modal-sprite" class="detail-sprite" alt="">
                 
-                <!-- Types -->
-                <div id="modal-types" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 20px;"></div>
+                <div id="modal-types" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 16px;"></div>
                 
-                <!-- Abilities -->
                 <div>
                     <div class="section-title">ABILITIES</div>
-                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
                 </div>
                 
-                <!-- Base Stats -->
                 <div>
                     <div class="section-title">BASE STATS</div>
-                    <div class="stats-grid" id="modal-stats">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="stats-grid" id="modal-stats"></div>
                 </div>
                 
-                <!-- Placeholders for future rich data -->
                 <div>
                     <div class="section-title">POKÉDEX ENTRY</div>
-                    <div class="placeholder-box">
-                        More detailed Pokédex entries coming in the next update.
+                    <div class="placeholder-box" id="modal-entry">
+                        Rich Pokédex entries coming with the Gen 1 data update.
                     </div>
                 </div>
                 
                 <div>
                     <div class="section-title">MOVES</div>
-                    <div class="placeholder-box">
-                        Level-up moves and TM/TR data will be added soon.
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="section-title">EVOLUTION</div>
-                    <div class="placeholder-box">
-                        Evolution chain visualization coming soon.
+                    <div class="placeholder-box" id="modal-moves">
+                        Level-up, TM, and Egg moves will be added in the next update.
                     </div>
                 </div>
             </div>
@@ -467,59 +411,39 @@
     </div>
 
     <script>
-        // Embedded data from Serebii (first 15 Pokémon)
+        // Current data (will be replaced with full Gen 1 richer data)
         const pokemonData = [
-            {"national_dex":1,"name":"Bulbasaur","slug":"bulbasaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45}},
-            {"national_dex":2,"name":"Ivysaur","slug":"ivysaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":60,"attack":62,"defense":63,"special_attack":80,"special_defense":80,"speed":60}},
-            {"national_dex":3,"name":"Venusaur","slug":"venusaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":80,"attack":82,"defense":83,"special_attack":100,"special_defense":100,"speed":80}},
-            {"national_dex":4,"name":"Charmander","slug":"charmander","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":39,"attack":52,"defense":43,"special_attack":60,"special_defense":50,"speed":65}},
-            {"national_dex":5,"name":"Charmeleon","slug":"charmeleon","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":58,"attack":64,"defense":58,"special_attack":80,"special_defense":65,"speed":80}},
-            {"national_dex":6,"name":"Charizard","slug":"charizard","types":["Fire","Flying"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":78,"attack":84,"defense":78,"special_attack":109,"special_defense":85,"speed":100}},
-            {"national_dex":7,"name":"Squirtle","slug":"squirtle","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":44,"attack":48,"defense":65,"special_attack":50,"special_defense":64,"speed":43}},
-            {"national_dex":8,"name":"Wartortle","slug":"wartortle","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":59,"attack":63,"defense":80,"special_attack":65,"special_defense":80,"speed":58}},
-            {"national_dex":9,"name":"Blastoise","slug":"blastoise","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":79,"attack":83,"defense":100,"special_attack":85,"special_defense":105,"speed":78}},
-            {"national_dex":10,"name":"Caterpie","slug":"caterpie","types":["Bug"],"abilities":["Shield Dust","Run Away"],"base_stats":{"hp":45,"attack":30,"defense":35,"special_attack":20,"special_defense":20,"speed":45}},
-            {"national_dex":11,"name":"Metapod","slug":"metapod","types":["Bug"],"abilities":["Shed Skin"],"base_stats":{"hp":50,"attack":20,"defense":55,"special_attack":25,"special_defense":25,"speed":30}},
-            {"national_dex":12,"name":"Butterfree","slug":"butterfree","types":["Bug","Flying"],"abilities":["Compoundeyes","Tinted Lens"],"base_stats":{"hp":60,"attack":45,"defense":50,"special_attack":90,"special_defense":80,"speed":70}},
-            {"national_dex":13,"name":"Weedle","slug":"weedle","types":["Bug","Poison"],"abilities":["Shield Dust","Run Away"],"base_stats":{"hp":40,"attack":35,"defense":30,"special_attack":20,"special_defense":20,"speed":50}},
-            {"national_dex":14,"name":"Kakuna","slug":"kakuna","types":["Bug","Poison"],"abilities":["Shed Skin"],"base_stats":{"hp":45,"attack":25,"defense":50,"special_attack":25,"special_defense":25,"speed":35}},
-            {"national_dex":15,"name":"Beedrill","slug":"beedrill","types":["Bug","Poison"],"abilities":["Swarm","Sniper"],"base_stats":{"hp":65,"attack":90,"defense":40,"special_attack":45,"special_defense":80,"speed":75}}
+            {"national_dex":1,"name":"Bulbasaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45}},
+            {"national_dex":2,"name":"Ivysaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":60,"attack":62,"defense":63,"special_attack":80,"special_defense":80,"speed":60}},
+            {"national_dex":3,"name":"Venusaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":80,"attack":82,"defense":83,"special_attack":100,"special_defense":100,"speed":80}},
+            {"national_dex":4,"name":"Charmander","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":39,"attack":52,"defense":43,"special_attack":60,"special_defense":50,"speed":65}},
+            {"national_dex":5,"name":"Charmeleon","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":58,"attack":64,"defense":58,"special_attack":80,"special_defense":65,"speed":80}},
+            {"national_dex":6,"name":"Charizard","types":["Fire","Flying"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":78,"attack":84,"defense":78,"special_attack":109,"special_defense":85,"speed":100}},
+            {"national_dex":7,"name":"Squirtle","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":44,"attack":48,"defense":65,"special_attack":50,"special_defense":64,"speed":43}},
+            {"national_dex":8,"name":"Wartortle","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":59,"attack":63,"defense":80,"special_attack":65,"special_defense":80,"speed":58}},
+            {"national_dex":9,"name":"Blastoise","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":79,"attack":83,"defense":100,"special_attack":85,"special_defense":105,"speed":78}},
+            {"national_dex":10,"name":"Caterpie","types":["Bug"],"abilities":["Shield Dust","Run Away"],"base_stats":{"hp":45,"attack":30,"defense":35,"special_attack":20,"special_defense":20,"speed":45}},
+            {"national_dex":11,"name":"Metapod","types":["Bug"],"abilities":["Shed Skin"],"base_stats":{"hp":50,"attack":20,"defense":55,"special_attack":25,"special_defense":25,"speed":30}},
+            {"national_dex":12,"name":"Butterfree","types":["Bug","Flying"],"abilities":["Compoundeyes","Tinted Lens"],"base_stats":{"hp":60,"attack":45,"defense":50,"special_attack":90,"special_defense":80,"speed":70}},
+            {"national_dex":13,"name":"Weedle","types":["Bug","Poison"],"abilities":["Shield Dust","Run Away"],"base_stats":{"hp":40,"attack":35,"defense":30,"special_attack":20,"special_defense":20,"speed":50}},
+            {"national_dex":14,"name":"Kakuna","types":["Bug","Poison"],"abilities":["Shed Skin"],"base_stats":{"hp":45,"attack":25,"defense":50,"special_attack":25,"special_defense":25,"speed":35}},
+            {"national_dex":15,"name":"Beedrill","types":["Bug","Poison"],"abilities":["Swarm","Sniper"],"base_stats":{"hp":65,"attack":90,"defense":40,"special_attack":45,"special_defense":80,"speed":75}}
         ];
 
-        // Type colors (official-ish)
         const typeColors = {
-            'Grass': '#22C55E',
-            'Poison': '#A855F7',
-            'Fire': '#EF4444',
-            'Flying': '#3B82F6',
-            'Water': '#3B82F6',
-            'Bug': '#84CC16',
-            'Normal': '#A3A3A3',
-            'Electric': '#EAB308',
-            'Ground': '#CA8A04',
-            'Rock': '#78716C',
-            'Fighting': '#F97316',
-            'Psychic': '#EC4899',
-            'Ghost': '#6366F1',
-            'Ice': '#67E8F9',
-            'Dragon': '#8B5CF6',
-            'Dark': '#334155',
-            'Steel': '#71717A',
-            'Fairy': '#F472B6'
+            'Grass': '#22C55E', 'Poison': '#A855F7', 'Fire': '#EF4444', 'Flying': '#3B82F6',
+            'Water': '#3B82F6', 'Bug': '#84CC16', 'Normal': '#A3A3A3', 'Electric': '#EAB308',
+            'Ground': '#CA8A04', 'Rock': '#78716C', 'Fighting': '#F97316', 'Psychic': '#EC4899',
+            'Ghost': '#6366F1', 'Ice': '#67E8F9', 'Dragon': '#8B5CF6', 'Dark': '#334155',
+            'Steel': '#71717A', 'Fairy': '#F472B6'
         };
 
-        let currentFilters = {
-            types: [],
-            search: '',
-            sort: 'dex-asc'
-        };
-
+        let currentFilters = { types: [], search: '', sort: 'dex-asc' };
         let allPokemon = [...pokemonData];
 
         function renderTypeFilters() {
             const container = document.getElementById('type-filters');
             const allTypes = [...new Set(allPokemon.flatMap(p => p.types))].sort();
-            
             container.innerHTML = '';
             
             allTypes.forEach(type => {
@@ -540,7 +464,6 @@
                     }
                     filterAndRender();
                 });
-                
                 container.appendChild(pill);
             });
         }
@@ -548,7 +471,6 @@
         function filterAndRender() {
             let filtered = allPokemon;
             
-            // Search filter
             const searchTerm = currentFilters.search.toLowerCase().trim();
             if (searchTerm) {
                 filtered = filtered.filter(p => 
@@ -557,36 +479,23 @@
                 );
             }
             
-            // Type filter
             if (currentFilters.types.length > 0) {
-                filtered = filtered.filter(p => 
-                    currentFilters.types.every(t => p.types.includes(t))
-                );
+                filtered = filtered.filter(p => currentFilters.types.every(t => p.types.includes(t)));
             }
             
-            // Sort
             const sortMode = currentFilters.sort;
-            if (sortMode === 'dex-asc') {
-                filtered.sort((a, b) => a.national_dex - b.national_dex);
-            } else if (sortMode === 'dex-desc') {
-                filtered.sort((a, b) => b.national_dex - a.national_dex);
-            } else if (sortMode === 'name-asc') {
-                filtered.sort((a, b) => a.name.localeCompare(b.name));
-            } else if (sortMode === 'name-desc') {
-                filtered.sort((a, b) => b.name.localeCompare(a.name));
-            } else if (sortMode === 'hp-desc') {
-                filtered.sort((a, b) => b.base_stats.hp - a.base_stats.hp);
-            } else if (sortMode === 'attack-desc') {
-                filtered.sort((a, b) => b.base_stats.attack - a.base_stats.attack);
-            }
+            if (sortMode === 'dex-asc') filtered.sort((a, b) => a.national_dex - b.national_dex);
+            else if (sortMode === 'dex-desc') filtered.sort((a, b) => b.national_dex - a.national_dex);
+            else if (sortMode === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
+            else if (sortMode === 'name-desc') filtered.sort((a, b) => b.name.localeCompare(a.name));
             
-            renderGrid(filtered);
+            renderList(filtered);
         }
 
-        function renderGrid(pokemonList) {
-            const grid = document.getElementById('pokemon-grid');
+        function renderList(pokemonList) {
+            const container = document.getElementById('pokemon-list');
             const noResults = document.getElementById('no-results');
-            grid.innerHTML = '';
+            container.innerHTML = '';
             
             if (pokemonList.length === 0) {
                 noResults.style.display = 'block';
@@ -596,30 +505,30 @@
             }
             
             pokemonList.forEach(pokemon => {
-                const card = document.createElement('div');
-                card.className = 'pokemon-card';
+                const item = document.createElement('div');
+                item.className = 'pokemon-list-item';
                 
                 let typesHTML = pokemon.types.map(type => 
                     `<span class="type-badge" style="background-color: ${typeColors[type] || '#64748B'}">${type}</span>`
                 ).join('');
                 
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="dex-number">#${String(pokemon.national_dex).padStart(3, '0')}</div>
-                    </div>
-                    <div class="card-body">
-                        <img class="card-sprite" 
-                             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png" 
-                             alt="${pokemon.name}"
-                             onerror="this.style.display='none'">
-                        <div class="pokemon-name">${pokemon.name}</div>
-                        <div class="type-container">${typesHTML}</div>
-                        <div class="ability-text">${pokemon.abilities[0]}</div>
+                item.innerHTML = `
+                    <img class="list-sprite" 
+                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png" 
+                         alt="${pokemon.name}"
+                         onerror="this.style.display='none'">
+                    <div class="list-main">
+                        <div class="list-header">
+                            <div class="list-dex">#${String(pokemon.national_dex).padStart(3, '0')}</div>
+                            <div class="list-name">${pokemon.name}</div>
+                        </div>
+                        <div class="list-types">${typesHTML}</div>
+                        <div class="list-ability">${pokemon.abilities[0]}</div>
                     </div>
                 `;
                 
-                card.addEventListener('click', () => showDetail(pokemon));
-                grid.appendChild(card);
+                item.addEventListener('click', () => showDetail(pokemon));
+                container.appendChild(item);
             });
         }
 
@@ -629,22 +538,18 @@
             document.getElementById('modal-dex').textContent = `#${String(pokemon.national_dex).padStart(3, '0')}`;
             document.getElementById('modal-name').textContent = pokemon.name;
             
-            const spriteContainer = document.getElementById('modal-sprite');
-            spriteContainer.innerHTML = `
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png" 
-                     alt="${pokemon.name}" 
-                     style="width: 140px; height: 140px; image-rendering: crisp-edges;"
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'font-size:42px;opacity:0.6\'>${pokemon.name}</div>'">
-            `;
+            const sprite = document.getElementById('modal-sprite');
+            sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
+            sprite.alt = pokemon.name;
             
             const typesContainer = document.getElementById('modal-types');
             typesContainer.innerHTML = pokemon.types.map(type => 
-                `<span class="type-badge" style="background-color: ${typeColors[type] || '#64748B'}; padding: 4px 16px; font-size: 14px;">${type}</span>`
+                `<span class="type-badge" style="background-color: ${typeColors[type] || '#64748B'}; padding: 4px 14px; font-size: 13px;">${type}</span>`
             ).join('');
             
             const abilitiesContainer = document.getElementById('modal-abilities');
             abilitiesContainer.innerHTML = pokemon.abilities.map(ability => 
-                `<span style="background:#0F172A; padding:4px 12px; border-radius:6px; font-size:13px;">${ability}</span>`
+                `<span style="background:#0F172A; padding:4px 10px; border-radius:6px; font-size:13px;">${ability}</span>`
             ).join('');
             
             const statsContainer = document.getElementById('modal-stats');
@@ -679,21 +584,27 @@
             currentFilters.types = [];
             currentFilters.search = '';
             document.getElementById('search-input').value = '';
-            document.querySelectorAll('#type-filters .type-pill').forEach(pill => pill.classList.remove('active'));
+            document.querySelectorAll('#type-filters .type-pill').forEach(p => p.classList.remove('active'));
             filterAndRender();
         }
 
         function init() {
             renderTypeFilters();
-            renderGrid(allPokemon);
+            renderList(allPokemon);
             
             const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('input', (e) => { currentFilters.search = e.target.value; filterAndRender(); });
+            searchInput.addEventListener('input', e => {
+                currentFilters.search = e.target.value;
+                filterAndRender();
+            });
             
             const sortSelect = document.getElementById('sort-select');
-            sortSelect.addEventListener('change', (e) => { currentFilters.sort = e.target.value; filterAndRender(); });
+            sortSelect.addEventListener('change', e => {
+                currentFilters.sort = e.target.value;
+                filterAndRender();
+            });
             
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') {
                     const modal = document.getElementById('detail-modal');
                     if (modal.classList.contains('active')) modal.classList.remove('active');
