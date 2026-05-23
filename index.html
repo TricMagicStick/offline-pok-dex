@@ -326,7 +326,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.1 • Gen 1</div>
+                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.1.1 • Gen 1</div>
             </div>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
@@ -573,11 +573,15 @@
                 statsContainer.appendChild(row);
             });
             
+            // Prevent background scrolling on mobile when modal is open
+            document.body.style.overflow = 'hidden';
             modal.classList.add('active');
         }
 
         function closeModal() {
             document.getElementById('detail-modal').classList.remove('active');
+            // Restore scrolling
+            document.body.style.overflow = '';
         }
 
         function resetFilters() {
