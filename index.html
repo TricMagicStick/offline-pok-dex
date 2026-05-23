@@ -27,7 +27,7 @@
         }
         
         .pokedex-container {
-            max-width: 1060px;
+            max-width: 1080px;
             margin: 0 auto;
             background: #111827;
             border: 8px solid #C8102E;
@@ -85,34 +85,34 @@
             background: #1E2937;
             border-radius: 12px;
             border: 2px solid #334155;
-            padding: 16px 14px;
+            padding: 18px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 35%;
+            flex: 1 1 36%;
             min-width: 0;
             overflow-y: auto;
         }
 
         .viewer-sprite {
-            width: 140px;
-            height: 140px;
-            margin: 6px 0 2px;
+            width: 168px;
+            height: 168px;
+            margin: 8px 0 6px;
             image-rendering: crisp-edges;
             flex-shrink: 0;
         }
 
         .viewer-name {
-            font-size: 19px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .viewer-types {
             display: flex;
-            gap: 5px;
-            margin-bottom: 6px;
+            gap: 6px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -124,19 +124,19 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            flex: 1 1 65%;
+            flex: 1 1 64%;
             min-width: 0;
             position: relative;
         }
 
-        /* === STATIC SELECTOR WINDOW (centered, clean) === */
+        /* === STATIC SELECTOR WINDOW (centered) === */
         .selector-window {
             position: absolute;
             left: 8px;
             right: 8px;
             top: 42%;
             transform: translateY(-50%);
-            height: 54px;
+            height: 56px;
             background: rgba(200, 16, 46, 0.13);
             border: 2.5px solid #C8102E;
             border-radius: 9px;
@@ -146,14 +146,60 @@
         }
 
         .list-header {
-            padding: 9px 12px;
+            padding: 10px 14px;
             background: #111827;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             border-bottom: 1px solid #334155;
             flex-shrink: 0;
             position: relative;
             z-index: 20;
+        }
+
+        .filter-bar {
+            padding: 8px 12px;
+            background: #111827;
+            border-bottom: 1px solid #334155;
+            flex-shrink: 0;
+            z-index: 15;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #1E2937;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 7px 11px;
+            color: white;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #C8102E;
+        }
+
+        .type-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .type-pill {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            border: 1px solid #475569;
+            color: #CBD5E1;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .type-pill.active {
+            background: #C8102E;
+            border-color: #C8102E;
+            color: white;
         }
 
         .scrollable-list {
@@ -178,9 +224,9 @@
         .pokemon-list-item {
             display: flex;
             align-items: center;
-            padding: 6px 9px;
-            border-radius: 7px;
-            margin-bottom: 2px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 3px;
             cursor: pointer;
             transition: background 0.06s ease, border-color 0.06s ease;
             border: 2px solid transparent;
@@ -198,9 +244,9 @@
         }
 
         .list-sprite {
-            width: 40px;
-            height: 40px;
-            margin-right: 9px;
+            width: 48px;
+            height: 48px;
+            margin-right: 11px;
             flex-shrink: 0;
             image-rendering: crisp-edges;
         }
@@ -211,7 +257,7 @@
         }
 
         .list-name {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             color: white;
         }
@@ -219,7 +265,7 @@
         .list-types {
             display: flex;
             gap: 4px;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
         .footer {
@@ -281,8 +327,8 @@
         }
         
         .detail-sprite {
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 8px;
             display: block;
             image-rendering: crisp-edges;
@@ -352,14 +398,14 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.6.1.9 • Centered Static Selector</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.0 • Search + Bigger UI</div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="split-container">
                 
-                <!-- LEFT: VIEWER PANEL -->
+                <!-- LEFT: VIEWER PANEL (enlarged) -->
                 <div class="viewer-panel">
                     <div style="font-size: 9px; color: #64748B; margin-bottom: 2px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
                     
@@ -384,6 +430,15 @@
                         National Pokédex (151)
                     </div>
                     
+                    <!-- FILTER BAR -->
+                    <div class="filter-bar">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search name or #...">
+                        
+                        <div class="type-filters" id="type-filters">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    
                     <!-- STATIC SELECTOR WINDOW (centered) -->
                     <div class="selector-window"></div>
                     
@@ -396,7 +451,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.6.1.9 • Centered Static Selector • Gen 1 Complete
+            Offline Pokédex • v1.7.0 • Search + Bigger UI • Gen 1 Complete
         </div>
     </div>
 
@@ -455,7 +510,7 @@
             'Steel': '#71717A', 'Fairy': '#F472B6'
         };
 
-        let currentFilters = { types: [], search: '', sort: 'dex-asc' };
+        let currentFilters = { search: '', types: [] };
         let allPokemon = [...pokemonData];
         let currentSelectedPokemon = null;
         let scrollTimeout = null;
@@ -463,6 +518,7 @@
         function filterAndRender() {
             let filtered = allPokemon;
             
+            // Search filter
             const searchTerm = currentFilters.search.toLowerCase().trim();
             if (searchTerm) {
                 filtered = filtered.filter(p => 
@@ -471,11 +527,12 @@
                 );
             }
             
-            const sortMode = currentFilters.sort;
-            if (sortMode === 'dex-asc') filtered.sort((a, b) => a.national_dex - b.national_dex);
-            else if (sortMode === 'dex-desc') filtered.sort((a, b) => b.national_dex - a.national_dex);
-            else if (sortMode === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
-            else if (sortMode === 'name-desc') filtered.sort((a, b) => b.name.localeCompare(a.name));
+            // Type filter
+            if (currentFilters.types.length > 0) {
+                filtered = filtered.filter(p => 
+                    currentFilters.types.every(t => p.types.includes(t))
+                );
+            }
             
             renderList(filtered);
         }
@@ -492,7 +549,7 @@
             
             const typesContainer = document.getElementById('viewer-types');
             typesContainer.innerHTML = pokemon.types.map(type => 
-                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px;">${type}</span>`
+                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 9px; border-radius: 5px; font-size: 11px;">${type}</span>`
             ).join('');
             
             document.querySelectorAll('.pokemon-list-item').forEach(el => {
@@ -514,9 +571,9 @@
             if (items.length === 0) return null;
             
             const listRect = list.getBoundingClientRect();
-            const windowTop = listRect.top + (listRect.height * 0.42) - 27;
-            const windowBottom = windowTop + 54;
-            const windowCenter = windowTop + 27;
+            const windowTop = listRect.top + (listRect.height * 0.42) - 28;
+            const windowBottom = windowTop + 56;
+            const windowCenter = windowTop + 28;
             
             let best = null;
             let bestScore = -1;
@@ -568,6 +625,36 @@
             }, 70);
         }
 
+        function renderTypeFilters() {
+            const container = document.getElementById('type-filters');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            const allTypes = [...new Set(allPokemon.flatMap(p => p.types))].sort();
+            
+            allTypes.forEach(type => {
+                const pill = document.createElement('div');
+                pill.className = 'type-pill';
+                pill.textContent = type;
+                pill.style.backgroundColor = typeColors[type] || '#475569';
+                pill.style.color = 'white';
+                pill.style.borderColor = typeColors[type] || '#475569';
+                
+                pill.addEventListener('click', () => {
+                    if (currentFilters.types.includes(type)) {
+                        currentFilters.types = currentFilters.types.filter(t => t !== type);
+                        pill.classList.remove('active');
+                    } else {
+                        currentFilters.types.push(type);
+                        pill.classList.add('active');
+                    }
+                    filterAndRender();
+                });
+                
+                container.appendChild(pill);
+            });
+        }
+
         function renderList(pokemonList) {
             const container = document.getElementById('pokemon-list');
             if (!container) return;
@@ -584,7 +671,7 @@
                 item.dataset.dex = pokemon.national_dex;
                 
                 let typesHTML = pokemon.types.map(type => 
-                    `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 0 4px; border-radius: 3px; font-size: 9px;">${type}</span>`
+                    `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 0 5px; border-radius: 3px; font-size: 9px;">${type}</span>`
                 ).join('');
                 
                 item.innerHTML = `
@@ -593,11 +680,11 @@
                          alt="${pokemon.name}"
                          onerror="this.style.display='none'">
                     <div class="list-info">
-                        <div style="display: flex; align-items: center; gap: 4px;">
+                        <div style="display: flex; align-items: center; gap: 5px;">
                             <span style="font-family: 'Press Start 2P', system-ui; font-size: 9px; color: #64748B;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
                             <span class="list-name">${pokemon.name}</span>
                         </div>
-                        <div class="list-types" style="margin-top: 1px;">${typesHTML}</div>
+                        <div class="list-types" style="margin-top: 2px;">${typesHTML}</div>
                     </div>
                 `;
                 
@@ -626,12 +713,12 @@
             
             const typesContainer = document.getElementById('modal-types');
             typesContainer.innerHTML = pokemon.types.map(type => 
-                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 9px; border-radius: 4px; font-size: 10px;">${type}</span>`
+                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px;">${type}</span>`
             ).join('');
             
             const abilitiesContainer = document.getElementById('modal-abilities');
             abilitiesContainer.innerHTML = pokemon.abilities.map(ability => 
-                `<span style="background:#0F172A; padding:2px 7px; border-radius:4px; font-size:10px;">${ability}</span>`
+                `<span style="background:#0F172A; padding:2px 8px; border-radius:4px; font-size:11px;">${ability}</span>`
             ).join('');
             
             const statsContainer = document.getElementById('modal-stats');
@@ -658,10 +745,10 @@
             const movesContainer = document.getElementById('modal-moves');
             if (pokemon.moves && pokemon.moves.level_up && pokemon.moves.level_up.length > 0) {
                 movesContainer.innerHTML = pokemon.moves.level_up.map(m => 
-                    `<span style="display:inline-block; background:#1E2937; margin:1px 1px; padding:0 5px; border-radius:3px; font-size:9px;">Lv${m.level} ${m.name}</span>`
+                    `<span style="display:inline-block; background:#1E2937; margin:1px 2px; padding:1px 6px; border-radius:3px; font-size:10px;">Lv${m.level} ${m.name}</span>`
                 ).join('');
             } else {
-                movesContainer.innerHTML = '<span style="color:#64748B; font-size:9px;">No move data yet.</span>';
+                movesContainer.innerHTML = '<span style="color:#64748B; font-size:10px;">No move data yet.</span>';
             }
             
             const entryContainer = document.getElementById('modal-entry');
@@ -670,8 +757,8 @@
                 entryContainer.style.border = '1px solid #475569';
                 entryContainer.style.textAlign = 'left';
                 entryContainer.style.color = '#F1F5F9';
-                entryContainer.style.fontSize = '11px';
-                entryContainer.style.lineHeight = '1.35';
+                entryContainer.style.fontSize = '12px';
+                entryContainer.style.lineHeight = '1.4';
             } else {
                 entryContainer.innerHTML = 'Pokédex entry coming soon.';
             }
@@ -686,6 +773,19 @@
         }
 
         function init() {
+            // Search input
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    currentFilters.search = e.target.value;
+                    filterAndRender();
+                });
+            }
+            
+            // Render type filters
+            renderTypeFilters();
+            
+            // List scroll listener
             const listContainer = document.getElementById('pokemon-list');
             if (listContainer) {
                 listContainer.addEventListener('scroll', handleListScroll, { passive: true });
@@ -700,7 +800,7 @@
                 }
             }, 60);
             
-            console.log('%c[v1.6.1.9] Centered static selector window (clean, single instance).', 'color:#22C55E');
+            console.log('%c[v1.7.0] Search + type filters + enlarged UI elements added.', 'color:#22C55E');
         }
 
         window.onload = init;
