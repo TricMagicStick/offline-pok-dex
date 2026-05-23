@@ -129,7 +129,7 @@
             position: relative;
         }
 
-        /* === STATIC SELECTOR WINDOW (centered, single instance) === */
+        /* === STATIC SELECTOR WINDOW (single, more prominent) === */
         .selector-window {
             position: absolute;
             left: 8px;
@@ -142,7 +142,7 @@
             border-radius: 9px;
             z-index: 10;
             pointer-events: none;
-            box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.4);
+            box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.5);
         }
 
         .list-header {
@@ -422,22 +422,22 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.1 • Collapsed Search</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.01 • Live Selector</div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="split-container">
                 
-                <!-- LEFT: VIEWER PANEL (enlarged) -->
+                <!-- LEFT: VIEWER PANEL -->
                 <div class="viewer-panel">
                     <div style="font-size: 9px; color: #64748B; margin-bottom: 2px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
                     
                     <img id="viewer-sprite" class="viewer-sprite" 
-                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png" 
-                         alt="Beedrill">
+                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/34.png" 
+                         alt="Nidoking">
                     
-                    <div id="viewer-name" class="viewer-name">Beedrill</div>
+                    <div id="viewer-name" class="viewer-name">Nidoking</div>
                     
                     <div id="viewer-types" class="viewer-types">
                         <!-- Populated by JS -->
@@ -466,7 +466,7 @@
                         </div>
                     </div>
                     
-                    <!-- STATIC SELECTOR WINDOW (single, centered) -->
+                    <!-- STATIC SELECTOR WINDOW -->
                     <div class="selector-window"></div>
                     
                     <div id="pokemon-list" class="scrollable-list">
@@ -478,7 +478,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.7.1 • Collapsed Search + Single Selector • Gen 1 Complete
+            Offline Pokédex • v1.7.01 • Live Selector Patch • Gen 1 Complete
         </div>
     </div>
 
@@ -540,8 +540,8 @@
         let currentFilters = { search: '', types: [] };
         let allPokemon = [...pokemonData];
         let currentSelectedPokemon = null;
-        let scrollTimeout = null;
-        let filterOpen = false;
+        let rafId = null;
+        let isTouching = false;
 
         function filterAndRender() {
             let filtered = allPokemon;
@@ -640,15 +640,46 @@
             return null;
         }
 
-        function handleListScroll() {
-            if (scrollTimeout) clearTimeout(scrollTimeout);
+        function checkSelectorPosition() {
+            const pokemon = getPokemonUnderSelectorWindow();
+            if (pokemon && (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex)) {
+                updateViewer(pokemon, true);
+            }
+        }
+
+        function startLiveCheck() {
+            if (rafId) cancelAnimationFrame(rafId);
             
-            scrollTimeout = setTimeout(() => {
-                const pokemon = getPokemonUnderSelectorWindow();
-                if (pokemon && (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex)) {
-                    updateViewer(pokemon, true);
-                }
-            }, 70);
+            function loop() {
+                checkSelectorPosition();
+                rafId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        function stopLiveCheck() {
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+            // Final check after finger lifts
+            setTimeout(checkSelectorPosition, 50);
+        }
+
+        function handleScroll() {
+            checkSelectorPosition();
+        }
+
+        function handleTouchMove() {
+            if (!isTouching) {
+                isTouching = true;
+                startLiveCheck();
+            }
+        }
+
+        function handleTouchEnd() {
+            isTouching = false;
+            stopLiveCheck();
         }
 
         function renderTypeFilters() {
@@ -682,15 +713,14 @@
 
         function toggleFilterSection() {
             const section = document.getElementById('filter-section');
-            filterOpen = !filterOpen;
+            const isOpen = section.classList.contains('open');
             
-            if (filterOpen) {
+            if (!isOpen) {
                 section.classList.add('open');
                 document.getElementById('toggle-filter').innerHTML = '✕ Close';
             } else {
                 section.classList.remove('open');
                 document.getElementById('toggle-filter').innerHTML = '🔍 Search / Filter';
-                // Clear filters when closing for cleaner UX
                 currentFilters.search = '';
                 currentFilters.types = [];
                 document.getElementById('search-input').value = '';
@@ -817,13 +847,11 @@
         }
 
         function init() {
-            // Toggle filter button
             const toggleBtn = document.getElementById('toggle-filter');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', toggleFilterSection);
             }
             
-            // Search input
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
@@ -832,25 +860,27 @@
                 });
             }
             
-            // Render type filters
             renderTypeFilters();
             
-            // List scroll listener
             const listContainer = document.getElementById('pokemon-list');
             if (listContainer) {
-                listContainer.addEventListener('scroll', handleListScroll, { passive: true });
+                // Listen to both scroll and touch events for live selector updates on iOS
+                listContainer.addEventListener('scroll', handleScroll, { passive: true });
+                listContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+                listContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+                listContainer.addEventListener('touchcancel', handleTouchEnd, { passive: true });
             }
             
             setTimeout(() => {
                 filterAndRender();
                 
-                const beedrill = allPokemon.find(p => p.national_dex === 15);
-                if (beedrill) {
-                    updateViewer(beedrill);
+                const nidoking = allPokemon.find(p => p.national_dex === 34);
+                if (nidoking) {
+                    updateViewer(nidoking);
                 }
             }, 60);
             
-            console.log('%c[v1.7.1] Collapsed search/filter + single clean selector window. Duplicate cursor fixed.', 'color:#22C55E');
+            console.log('%c[v1.7.01] Live selector during finger drag (rAF + touchmove). Much more responsive on iPhone.', 'color:#22C55E');
         }
 
         window.onload = init;
