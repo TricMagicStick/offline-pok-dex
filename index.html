@@ -82,48 +82,49 @@
             }
         }
 
-        /* === VIEWER - STRONGER PRESENCE ON MOBILE === */
+        /* === VIEWER - FIXED CLIPPING ON PORTRAIT === */
         .viewer-panel {
             background: #1E2937;
             border-radius: 12px;
             border: 2px solid #334155;
-            padding: 18px 16px;
+            padding: 14px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 46%;
+            flex: 1 1 52%;
             min-width: 0;
             overflow-y: auto;
-            min-height: 260px;
+            min-height: 240px;
         }
 
         @media (max-width: 640px) {
             .viewer-panel {
-                flex: 1 1 55%;
-                padding: 16px 14px;
-                min-height: 280px;
+                flex: 1 1 52%;
+                padding: 12px 10px;
+                min-height: 235px;
             }
         }
 
         .viewer-sprite {
-            width: 190px;
-            height: 190px;
-            margin: 4px 0 6px;
+            width: 158px;
+            height: 158px;
+            margin: 2px 0 4px;
             image-rendering: crisp-edges;
             flex-shrink: 0;
         }
 
         .viewer-name {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            line-height: 1.1;
         }
 
         .viewer-types {
             display: flex;
-            gap: 6px;
-            margin-bottom: 6px;
+            gap: 5px;
+            margin-bottom: 4px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -135,14 +136,14 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            flex: 1 1 54%;
+            flex: 1 1 48%;
             min-width: 0;
             position: relative;
         }
 
         @media (max-width: 640px) {
             .list-panel {
-                flex: 1 1 45%;
+                flex: 1 1 48%;
             }
         }
 
@@ -429,33 +430,33 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.05 • Viewer Fixed</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.06 • Viewer Polish</div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="split-container">
                 
-                <!-- VIEWER (now stronger on mobile) -->
+                <!-- VIEWER -->
                 <div class="viewer-panel">
-                    <div style="font-size: 9px; color: #64748B; margin-bottom: 2px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
+                    <div style="font-size: 9px; color: #64748B; margin-bottom: 1px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
                     
                     <img id="viewer-sprite" class="viewer-sprite" 
-                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" 
-                         alt="Bulbasaur">
+                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png" 
+                         alt="Beedrill">
                     
-                    <div id="viewer-name" class="viewer-name">Bulbasaur</div>
+                    <div id="viewer-name" class="viewer-name">Beedrill</div>
                     
                     <div id="viewer-types" class="viewer-types">
                         <!-- Populated by JS -->
                     </div>
                     
-                    <div style="margin-top: auto; font-size: 10px; color: #64748B; padding-top: 4px; line-height: 1.25;">
+                    <div style="margin-top: auto; font-size: 9px; color: #64748B; padding-top: 2px; line-height: 1.2;">
                         Scroll list → viewer updates live
                     </div>
                 </div>
 
-                <!-- LIST (shorter on mobile) -->
+                <!-- LIST -->
                 <div class="list-panel">
                     <div class="list-header">
                         <span>National Pokédex (151)</span>
@@ -483,7 +484,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.7.05 • Viewer Fixed on Mobile • Gen 1 Complete
+            Offline Pokédex • v1.7.06 • Viewer Clipping Fixed • Gen 1 Complete
         </div>
     </div>
 
@@ -898,7 +899,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.7.05] Viewer strengthened on mobile with min-height + higher flex ratio. Should no longer collapse.', 'color:#22C55E');
+            console.log('%c[v1.7.06] Viewer content tightened for portrait. Sprite 158px, tighter padding, reduced min-height. Clipping should be gone.', 'color:#22C55E');
         }
 
         window.onload = init;
