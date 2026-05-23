@@ -401,9 +401,9 @@
                 </div>
                 
                 <div>
-                    <div class="section-title">MOVES</div>
-                    <div class="placeholder-box" id="modal-moves">
-                        Level-up, TM, and Egg moves will be added in the next update.
+                    <div class="section-title">MOVES (Level-up)</div>
+                    <div id="modal-moves" style="background:#0F172A; border-radius:8px; padding:12px; font-size:13px; line-height:1.5; max-height:180px; overflow-y:auto;">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
             </div>
@@ -413,10 +413,10 @@
     <script>
         // Current data (will be replaced with full Gen 1 richer data)
         const pokemonData = [
-            {"national_dex":1,"name":"Bulbasaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45}},
+            {"national_dex":1,"name":"Bulbasaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45}, "moves": {"level_up": [{"level":1,"name":"Tackle"}, {"level":1,"name":"Growl"}, {"level":3,"name":"Vine Whip"}, {"level":7,"name":"Growth"}, {"level":9,"name":"Leech Seed"}, {"level":13,"name":"Razor Leaf"}, {"level":15,"name":"Poison Powder"}, {"level":19,"name":"Sleep Powder"}, {"level":21,"name":"Seed Bomb"}, {"level":25,"name":"Take Down"}, {"level":27,"name":"Sweet Scent"}, {"level":31,"name":"Synthesis"}, {"level":33,"name":"Worry Seed"}, {"level":37,"name":"Power Whip"}, {"level":39,"name":"Solar Beam"}] }},
             {"national_dex":2,"name":"Ivysaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":60,"attack":62,"defense":63,"special_attack":80,"special_defense":80,"speed":60}},
             {"national_dex":3,"name":"Venusaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":80,"attack":82,"defense":83,"special_attack":100,"special_defense":100,"speed":80}},
-            {"national_dex":4,"name":"Charmander","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":39,"attack":52,"defense":43,"special_attack":60,"special_defense":50,"speed":65}},
+            {"national_dex":4,"name":"Charmander","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":39,"attack":52,"defense":43,"special_attack":60,"special_defense":50,"speed":65}, "moves": {"level_up": [{"level":1,"name":"Scratch"}, {"level":1,"name":"Growl"}, {"level":4,"name":"Ember"}, {"level":8,"name":"Smokescreen"}, {"level":12,"name":"Dragon Breath"}, {"level":17,"name":"Fire Fang"}, {"level":20,"name":"Slash"}, {"level":24,"name":"Flamethrower"}, {"level":28,"name":"Scary Face"}, {"level":32,"name":"Fire Spin"}, {"level":36,"name":"Inferno"}, {"level":40,"name":"Flare Blitz"}] }},
             {"national_dex":5,"name":"Charmeleon","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":58,"attack":64,"defense":58,"special_attack":80,"special_defense":65,"speed":80}},
             {"national_dex":6,"name":"Charizard","types":["Fire","Flying"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":78,"attack":84,"defense":78,"special_attack":109,"special_defense":85,"speed":100}},
             {"national_dex":7,"name":"Squirtle","types":["Water"],"abilities":["Torrent","Rain Dish"],"base_stats":{"hp":44,"attack":48,"defense":65,"special_attack":50,"special_defense":64,"speed":43}},
@@ -572,6 +572,16 @@
                 `;
                 statsContainer.appendChild(row);
             });
+            
+            // Moves (Level-up)
+            const movesContainer = document.getElementById('modal-moves');
+            if (pokemon.moves && pokemon.moves.level_up && pokemon.moves.level_up.length > 0) {
+                movesContainer.innerHTML = pokemon.moves.level_up.map(m => 
+                    `<span style="display:inline-block; background:#1E2937; margin:2px; padding:2px 8px; border-radius:4px;">Lv${m.level} ${m.name}</span>`
+                ).join('');
+            } else {
+                movesContainer.innerHTML = '<span style="color:#64748B;">No move data yet for this Pokémon.</span>';
+            }
             
             // Prevent background scrolling on mobile when modal is open
             document.body.style.overflow = 'hidden';
