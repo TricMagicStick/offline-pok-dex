@@ -317,6 +317,153 @@
             padding: 40px 20px;
             color: #64748B;
         }
+
+        /* === v1.6.0 Modern Database Styles === */
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+
+        .home-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .home-screen h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .home-screen p {
+            color: #94A3B8;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        .home-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .home-btn {
+            background: #1E2937;
+            color: white;
+            border: 2px solid #334155;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .home-btn:hover {
+            background: #273549;
+            border-color: #C8102E;
+            transform: translateY(-1px);
+        }
+
+        .home-btn.primary {
+            background: #C8102E;
+            border-color: #C8102E;
+            color: white;
+        }
+
+        .home-btn.primary:hover {
+            background: #9F0E24;
+            border-color: #9F0E24;
+        }
+
+        .dex-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .dex-header h2 {
+            font-size: 20px;
+            color: #F1F5F9;
+        }
+
+        .back-btn {
+            background: #1E2937;
+            color: #CBD5E1;
+            border: 1px solid #334155;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #273549;
+            border-color: #C8102E;
+        }
+
+        .list-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .list-container.open {
+            max-height: 520px;
+            opacity: 1;
+        }
+
+        .list-toggle {
+            background: #1E2937;
+            color: #CBD5E1;
+            border: 1px solid #334155;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .list-toggle:hover {
+            background: #273549;
+            border-color: #C8102E;
+        }
+
+        .scrollable-list {
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: #475569 #1E2937;
+        }
+
+        .scrollable-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-list::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -325,44 +472,85 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.5.8 • Full 151</div>
-            </div>
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="search-input" class="search-input" placeholder="Search name or #...">
+                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.6.0 • Modern Database</div>
             </div>
         </div>
 
         <div class="main-content">
-            <!-- Controls -->
-            <div class="controls">
-                <div>
-                    <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">FILTER BY TYPE</div>
-                    <div class="filter-group" id="type-filters"></div>
-                </div>
-                
-                <div style="margin-left: auto;">
-                    <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">SORT</div>
-                    <select id="sort-select" class="sort-select">
-                        <option value="dex-asc">National Dex ↑</option>
-                        <option value="dex-desc">National Dex ↓</option>
-                        <option value="name-asc">Name A-Z</option>
-                        <option value="name-desc">Name Z-A</option>
-                    </select>
+            
+            <!-- HOME SCREEN -->
+            <div id="home-screen" class="screen active">
+                <div class="home-screen">
+                    <h2>Welcome to your Pokédex</h2>
+                    <p>A clean, modern database for all 151 Gen 1 Pokémon</p>
+                    
+                    <div class="home-actions">
+                        <button class="home-btn primary" onclick="showDexScreen()">
+                            📖 Open National Dex
+                        </button>
+                        <button class="home-btn" onclick="showDexScreen(); setTimeout(() => document.getElementById('search-input').focus(), 400)">
+                            🔍 Quick Search
+                        </button>
+                        <button class="home-btn" onclick="alert('Stats view coming in a future update')">
+                            📊 View Collection Stats
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- List -->
-            <div id="pokemon-list" class="pokemon-list"></div>
-            
-            <div id="no-results" class="no-results" style="display: none;">
-                <p>No Pokémon found.</p>
-                <button onclick="resetFilters()" style="margin-top: 12px; background: #C8102E; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Clear Filters</button>
+            <!-- DEX SCREEN -->
+            <div id="dex-screen" class="screen">
+                <div class="dex-header">
+                    <button class="back-btn" onclick="showHomeScreen()">← Back to Home</button>
+                    <h2>National Pokédex</h2>
+                    <div style="width: 90px;"></div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <div style="flex: 1; min-width: 220px;">
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">SEARCH</div>
+                        <div class="search-container" style="width: 100%; max-width: 260px;">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="search-input" class="search-input" placeholder="Search name or #...">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">FILTER BY TYPE</div>
+                        <div class="filter-group" id="type-filters"></div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 6px; font-weight: 600;">SORT</div>
+                        <select id="sort-select" class="sort-select">
+                            <option value="dex-asc">National Dex ↑</option>
+                            <option value="dex-desc">National Dex ↓</option>
+                            <option value="name-asc">Name A-Z</option>
+                            <option value="name-desc">Name Z-A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Collapsible List (Closed by Default) -->
+                <button class="list-toggle" onclick="togglePokemonList()">
+                    <span id="toggle-text">▶ Open Pokédex List</span>
+                </button>
+
+                <div id="list-container" class="list-container">
+                    <div id="pokemon-list" class="pokemon-list scrollable-list"></div>
+                    
+                    <div id="no-results" class="no-results" style="display: none;">
+                        <p>No Pokémon found.</p>
+                        <button onclick="resetFilters()" style="margin-top: 12px; background: #C8102E; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Clear Filters</button>
+                    </div>
+                </div>
             </div>
+
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.5.8 • Full Gen 1 (151) • Entries + moves up to #151 Mew • Gen 1 Complete!
+            Offline Pokédex • v1.6.0 • Modern Database View • Gen 1 Complete
         </div>
     </div>
 
@@ -740,33 +928,90 @@
         function resetFilters() {
             currentFilters.types = [];
             currentFilters.search = '';
-            document.getElementById('search-input').value = '';
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.value = '';
             document.querySelectorAll('#type-filters .type-pill').forEach(p => p.classList.remove('active'));
             filterAndRender();
         }
 
+        // === v1.6.0 Screen Management ===
+        function showHomeScreen() {
+            document.getElementById('home-screen').classList.add('active');
+            document.getElementById('dex-screen').classList.remove('active');
+            
+            // Close list when leaving Dex
+            const listContainer = document.getElementById('list-container');
+            if (listContainer) listContainer.classList.remove('open');
+        }
+
+        function showDexScreen() {
+            document.getElementById('home-screen').classList.remove('active');
+            document.getElementById('dex-screen').classList.add('active');
+            
+            // Render list if not already rendered
+            const pokemonList = document.getElementById('pokemon-list');
+            if (pokemonList.children.length === 0) {
+                filterAndRender();
+            }
+        }
+
+        // Toggle the Pokémon list (closed by default)
+        let listIsOpen = false;
+        
+        function togglePokemonList() {
+            const container = document.getElementById('list-container');
+            const toggleText = document.getElementById('toggle-text');
+            
+            listIsOpen = !listIsOpen;
+            
+            if (listIsOpen) {
+                container.classList.add('open');
+                toggleText.textContent = '▼ Close Pokédex List';
+            } else {
+                container.classList.remove('open');
+                toggleText.textContent = '▶ Open Pokédex List';
+            }
+        }
+
         function init() {
             renderTypeFilters();
-            renderList(allPokemon);
+            
+            // Don't render list immediately - only when Dex screen is shown
+            // The list will render when user opens Dex or toggles the list
             
             const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('input', e => {
-                currentFilters.search = e.target.value;
-                filterAndRender();
-            });
+            if (searchInput) {
+                searchInput.addEventListener('input', e => {
+                    currentFilters.search = e.target.value;
+                    filterAndRender();
+                });
+            }
             
             const sortSelect = document.getElementById('sort-select');
-            sortSelect.addEventListener('change', e => {
-                currentFilters.sort = e.target.value;
-                filterAndRender();
-            });
+            if (sortSelect) {
+                sortSelect.addEventListener('change', e => {
+                    currentFilters.sort = e.target.value;
+                    filterAndRender();
+                });
+            }
             
             document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') {
                     const modal = document.getElementById('detail-modal');
-                    if (modal.classList.contains('active')) modal.classList.remove('active');
+                    if (modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                    } else {
+                        // If on Dex screen and list is open, close it
+                        const dexScreen = document.getElementById('dex-screen');
+                        if (dexScreen.classList.contains('active') && listIsOpen) {
+                            togglePokemonList();
+                        }
+                    }
                 }
             });
+            
+            // Start on Home screen (list is closed by default)
+            console.log('%c[v1.6.0] Modern Database mode active. List closed by default.', 'color:#64748B');
         }
 
         window.onload = init;
