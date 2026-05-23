@@ -129,19 +129,20 @@
             position: relative;
         }
 
-        /* === STATIC SELECTOR WINDOW === */
+        /* === STATIC SELECTOR WINDOW (centered, clean) === */
         .selector-window {
             position: absolute;
-            left: 6px;
-            right: 6px;
-            top: 42px;
-            height: 52px;
-            background: rgba(200, 16, 46, 0.12);
-            border: 2px solid #C8102E;
-            border-radius: 8px;
+            left: 8px;
+            right: 8px;
+            top: 42%;
+            transform: translateY(-50%);
+            height: 54px;
+            background: rgba(200, 16, 46, 0.13);
+            border: 2.5px solid #C8102E;
+            border-radius: 9px;
             z-index: 10;
             pointer-events: none;
-            box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.3);
+            box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.35);
         }
 
         .list-header {
@@ -158,7 +159,7 @@
         .scrollable-list {
             flex: 1;
             overflow-y: auto;
-            padding: 6px 6px 8px;
+            padding: 6px 8px 8px;
             scrollbar-width: thin;
             scrollbar-color: #475569 #1E2937;
             min-height: 0;
@@ -351,7 +352,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.6.1.8 • Static Selector Window</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.6.1.9 • Centered Static Selector</div>
             </div>
         </div>
 
@@ -383,7 +384,7 @@
                         National Pokédex (151)
                     </div>
                     
-                    <!-- STATIC SELECTOR WINDOW -->
+                    <!-- STATIC SELECTOR WINDOW (centered) -->
                     <div class="selector-window"></div>
                     
                     <div id="pokemon-list" class="scrollable-list">
@@ -395,7 +396,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.6.1.8 • Static Selector Window • Gen 1 Complete
+            Offline Pokédex • v1.6.1.9 • Centered Static Selector • Gen 1 Complete
         </div>
     </div>
 
@@ -513,11 +514,9 @@
             if (items.length === 0) return null;
             
             const listRect = list.getBoundingClientRect();
-            // The selector window is positioned at top: 42px with height 52px
-            // We want the item whose center is inside this window zone
-            const windowTop = listRect.top + 42;
-            const windowBottom = windowTop + 52;
-            const windowCenter = windowTop + 26;
+            const windowTop = listRect.top + (listRect.height * 0.42) - 27;
+            const windowBottom = windowTop + 54;
+            const windowCenter = windowTop + 27;
             
             let best = null;
             let bestScore = -1;
@@ -528,15 +527,13 @@
                 
                 const itemCenter = r.top + r.height / 2;
                 
-                // Check overlap with selector window
                 const overlapTop = Math.max(r.top, windowTop);
                 const overlapBottom = Math.min(r.bottom, windowBottom);
                 const overlap = Math.max(0, overlapBottom - overlapTop);
                 
                 if (overlap > 0) {
-                    // Prefer item whose center is closest to window center
                     const dist = Math.abs(itemCenter - windowCenter);
-                    const score = overlap - (dist * 0.5); // favor good overlap + center proximity
+                    const score = overlap - (dist * 0.5);
                     
                     if (score > bestScore) {
                         bestScore = score;
@@ -550,7 +547,6 @@
                 return allPokemon.find(p => p.national_dex === dex);
             }
             
-            // Fallback: first visible item
             for (let item of items) {
                 const r = item.getBoundingClientRect();
                 if (r.top >= listRect.top && r.top < listRect.bottom) {
@@ -704,7 +700,7 @@
                 }
             }, 60);
             
-            console.log('%c[v1.6.1.8] Static selector window + items passing under it now update viewer.', 'color:#22C55E');
+            console.log('%c[v1.6.1.9] Centered static selector window (clean, single instance).', 'color:#22C55E');
         }
 
         window.onload = init;
