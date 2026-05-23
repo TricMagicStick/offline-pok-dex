@@ -78,41 +78,50 @@
         @media (max-width: 640px) {
             .split-container {
                 flex-direction: column;
+                gap: 10px;
             }
         }
 
+        /* === VIEWER BIGGER ON MOBILE === */
         .viewer-panel {
             background: #1E2937;
             border-radius: 12px;
             border: 2px solid #334155;
-            padding: 18px 16px;
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 36%;
+            flex: 1 1 42%;
             min-width: 0;
             overflow-y: auto;
         }
 
+        @media (max-width: 640px) {
+            .viewer-panel {
+                flex: 1 1 48%;
+                padding: 14px 12px;
+            }
+        }
+
         .viewer-sprite {
-            width: 168px;
-            height: 168px;
-            margin: 8px 0 6px;
+            width: 180px;
+            height: 180px;
+            margin: 6px 0 4px;
             image-rendering: crisp-edges;
             flex-shrink: 0;
         }
 
         .viewer-name {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .viewer-types {
             display: flex;
             gap: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -124,12 +133,18 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            flex: 1 1 64%;
+            flex: 1 1 58%;
             min-width: 0;
             position: relative;
         }
 
-        /* === SELECTOR COMPLETELY HIDDEN FOR NOW === */
+        @media (max-width: 640px) {
+            .list-panel {
+                flex: 1 1 52%;
+            }
+        }
+
+        /* === SELECTOR HIDDEN === */
         .selector-window {
             display: none;
         }
@@ -234,7 +249,7 @@
             border-radius: 3px;
         }
 
-        /* === BIGGER LIST ITEMS (3-4 visible at a time) === */
+        /* === BIG LIST ITEMS === */
         .pokemon-list-item {
             display: flex;
             align-items: center;
@@ -412,14 +427,14 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.03 • Bigger Items</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.7.04 • Bigger Viewer</div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="split-container">
                 
-                <!-- LEFT: VIEWER PANEL -->
+                <!-- LEFT / TOP: BIGGER VIEWER -->
                 <div class="viewer-panel">
                     <div style="font-size: 9px; color: #64748B; margin-bottom: 2px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
                     
@@ -438,7 +453,7 @@
                     </div>
                 </div>
 
-                <!-- RIGHT: LIST PANEL -->
+                <!-- RIGHT / BOTTOM: SHORTER LIST -->
                 <div class="list-panel">
                     <div class="list-header">
                         <span>National Pokédex (151)</span>
@@ -456,11 +471,11 @@
                         </div>
                     </div>
                     
-                    <!-- SELECTOR (hidden for now) -->
+                    <!-- HIDDEN SELECTOR -->
                     <div class="selector-window"></div>
                     
                     <div id="pokemon-list" class="scrollable-list">
-                        <!-- Populated by JS (with spacers) -->
+                        <!-- Populated by JS -->
                     </div>
                 </div>
 
@@ -468,7 +483,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.7.03 • Bigger List Items • Gen 1 Complete
+            Offline Pokédex • v1.7.04 • Bigger Viewer + Shorter List • Gen 1 Complete
         </div>
     </div>
 
@@ -587,8 +602,6 @@
             if (items.length === 0) return null;
             
             const listRect = list.getBoundingClientRect();
-            
-            // Since selector is hidden, we use a virtual center band
             const windowTop = listRect.top + (listRect.height * 0.38) - 28;
             const windowBottom = windowTop + 56;
             const windowCenter = windowTop + 28;
@@ -882,7 +895,7 @@
                 }
             }, 60);
             
-            console.log('%c[v1.7.03] Selector hidden. List items enlarged (72px sprites). ~3-4 items visible while scrolling.', 'color:#22C55E');
+            console.log('%c[v1.7.04] Viewer enlarged (180px sprite) + better mobile flex ratio. List shorter in portrait.', 'color:#22C55E');
         }
 
         window.onload = init;
