@@ -326,7 +326,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.5.00 • Full 151</div>
+                <div style="font-size: 11px; opacity: 0.8; margin-top: -4px;">OFFLINE • v1.5.01 • Full 151</div>
             </div>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
@@ -363,7 +363,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.5.00 • Full Gen 1 (151) • Pokédex entries added (first 30) • More coming
+            Offline Pokédex • v1.5.01 • Full Gen 1 (151) • Pokédex entries #16–32 + contrast fix • More coming
         </div>
     </div>
 
@@ -427,7 +427,7 @@
             {"national_dex":13,"name":"Weedle","types":["Bug","Poison"],"abilities":["Shield Dust","Run Away"],"base_stats":{"hp":40,"attack":35,"defense":30,"special_attack":20,"special_defense":20,"speed":50}, "entry": "Often found in forests, eating leaves. It has a sharp venomous stinger on its head.", "moves": {"level_up": [{"level":1,"name":"Poison Sting"}, {"level":1,"name":"String Shot"}, {"level":15,"name":"Bug Bite"}]}},
             {"national_dex":14,"name":"Kakuna","types":["Bug","Poison"],"abilities":["Shed Skin"],"base_stats":{"hp":45,"attack":25,"defense":50,"special_attack":25,"special_defense":25,"speed":35}, "entry": "Almost incapable of moving, this Pokémon can only harden its shell to protect itself from predators.", "moves": {"level_up": [{"level":1,"name":"Harden"}, {"level":7,"name":"Harden"}]}},
             {"national_dex":15,"name":"Beedrill","types":["Bug","Poison"],"abilities":["Swarm","Sniper"],"base_stats":{"hp":65,"attack":90,"defense":40,"special_attack":45,"special_defense":80,"speed":75}, "entry": "It has three poisonous stingers on its forelegs and its tail. They are used to jab its enemy repeatedly.", "moves": {"level_up": [{"level":1,"name":"Poison Sting"}, {"level":1,"name":"String Shot"}, {"level":10,"name":"Fury Attack"}, {"level":13,"name":"Focus Energy"}, {"level":16,"name":"Twineedle"}, {"level":19,"name":"Rage"}, {"level":22,"name":"Pursuit"}, {"level":25,"name":"Toxic Spikes"}, {"level":28,"name":"Pin Missile"}, {"level":31,"name":"Agility"}, {"level":34,"name":"Endeavor"}, {"level":37,"name":"Fell Stinger"}, {"level":40,"name":"Poison Jab"}]}},
-            {"national_dex":16,"name":"Pidgey","types":["Normal","Flying"],"abilities":["Keen Eye","Tangled Feet"],"base_stats":{"hp":40,"attack":45,"defense":40,"special_attack":35,"special_defense":35,"speed":56}},
+            {"national_dex":16,"name":"Pidgey","types":["Normal","Flying"],"abilities":["Keen Eye","Tangled Feet"],"base_stats":{"hp":40,"attack":45,"defense":40,"special_attack":35,"special_defense":35,"speed":56}, "entry": "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.", "moves": {"level_up": [{"level":1,"name":"Tackle"}, {"level":5,"name":"Sand Attack"}, {"level":9,"name":"Gust"}, {"level":13,"name":"Quick Attack"}, {"level":17,"name":"Whirlwind"}, {"level":21,"name":"Twister"}, {"level":25,"name":"Feather Dance"}, {"level":29,"name":"Agility"}, {"level":33,"name":"Wing Attack"}, {"level":37,"name":"Roost"}, {"level":41,"name":"Tailwind"}, {"level":45,"name":"Mirror Move"}, {"level":49,"name":"Air Slash"}]}},
             {"national_dex":17,"name":"Pidgeotto","types":["Normal","Flying"],"abilities":["Keen Eye","Tangled Feet"],"base_stats":{"hp":63,"attack":60,"defense":55,"special_attack":50,"special_defense":50,"speed":71}},
             {"national_dex":18,"name":"Pidgeot","types":["Normal","Flying"],"abilities":["Keen Eye","Tangled Feet"],"base_stats":{"hp":83,"attack":80,"defense":75,"special_attack":70,"special_defense":70,"speed":101}},
             {"national_dex":19,"name":"Rattata","types":["Normal"],"abilities":["Run Away","Guts"],"base_stats":{"hp":30,"attack":56,"defense":35,"special_attack":25,"special_defense":35,"speed":72}},
@@ -722,6 +722,9 @@
                 entryContainer.innerHTML = pokemon.entry;
                 entryContainer.style.border = '1px solid #475569';
                 entryContainer.style.textAlign = 'left';
+                entryContainer.style.color = '#F1F5F9';
+                entryContainer.style.fontSize = '14px';
+                entryContainer.style.lineHeight = '1.5';
             } else {
                 entryContainer.innerHTML = 'Pokédex entry coming soon.';
             }
