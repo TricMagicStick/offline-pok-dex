@@ -23,11 +23,11 @@
             background: linear-gradient(#8B0000, #5C0000);
             color: #F1F5F9;
             min-height: 100vh;
-            padding: 16px;
+            padding: 12px;
         }
         
         .pokedex-container {
-            max-width: 1100px;
+            max-width: 1080px;
             margin: 0 auto;
             background: #111827;
             border: 8px solid #C8102E;
@@ -36,12 +36,12 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            max-height: 92vh;
+            max-height: 94vh;
         }
         
         .pokedex-header {
             background: linear-gradient(#C8102E, #8B0000);
-            padding: 14px 20px;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -51,14 +51,14 @@
         
         .pokedex-header h1 {
             font-family: "Press Start 2P", system-ui;
-            font-size: 24px;
+            font-size: 22px;
             letter-spacing: 2px;
             color: white;
             text-shadow: 3px 3px 0 #5C0000;
         }
         
         .main-content {
-            padding: 16px;
+            padding: 14px;
             background: #0F172A;
             flex: 1;
             overflow: hidden;
@@ -69,7 +69,7 @@
         .split-container {
             display: flex;
             flex-direction: row;
-            gap: 16px;
+            gap: 14px;
             flex: 1;
             min-height: 0;
             overflow: hidden;
@@ -85,34 +85,34 @@
             background: #1E2937;
             border-radius: 12px;
             border: 2px solid #334155;
-            padding: 20px;
+            padding: 18px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 38%;
+            flex: 1 1 36%;
             min-width: 0;
             overflow-y: auto;
         }
 
         .viewer-sprite {
-            width: 160px;
-            height: 160px;
-            margin: 12px 0;
+            width: 150px;
+            height: 150px;
+            margin: 8px 0 4px;
             image-rendering: crisp-edges;
             flex-shrink: 0;
         }
 
         .viewer-name {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .viewer-types {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -124,30 +124,49 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            flex: 1 1 62%;
+            flex: 1 1 64%;
             min-width: 0;
+            position: relative;
+        }
+
+        /* Static cursor line / window indicator */
+        .list-panel::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            top: 38px; /* just below the header */
+            height: 2px;
+            background: linear-gradient(to right, transparent, #C8102E, transparent);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .list-header {
-            padding: 12px 16px;
+            padding: 10px 14px;
             background: #111827;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border-bottom: 1px solid #334155;
             flex-shrink: 0;
+            position: relative;
+            z-index: 3;
         }
 
         .scrollable-list {
             flex: 1;
             overflow-y: auto;
-            padding: 6px 8px;
+            padding: 6px 8px 8px;
             scrollbar-width: thin;
             scrollbar-color: #475569 #1E2937;
             min-height: 0;
+            position: relative;
+            z-index: 1;
         }
 
         .scrollable-list::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .scrollable-list::-webkit-scrollbar-thumb {
             background-color: #475569;
@@ -157,11 +176,11 @@
         .pokemon-list-item {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-radius: 8px;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             cursor: pointer;
-            transition: background 0.1s ease, border-color 0.1s ease;
+            transition: background 0.08s ease, border-color 0.08s ease, transform 0.08s ease;
             border: 2px solid transparent;
             background: #1E2937;
         }
@@ -174,12 +193,13 @@
             background: #334155;
             border-color: #C8102E;
             box-shadow: 0 0 0 1px #C8102E;
+            transform: translateX(2px);
         }
 
         .list-sprite {
-            width: 44px;
-            height: 44px;
-            margin-right: 12px;
+            width: 42px;
+            height: 42px;
+            margin-right: 10px;
             flex-shrink: 0;
             image-rendering: crisp-edges;
         }
@@ -197,14 +217,14 @@
 
         .list-types {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             margin-top: 2px;
         }
 
         .footer {
-            padding: 10px 16px;
+            padding: 9px 14px;
             background: #111827;
-            font-size: 11px;
+            font-size: 10px;
             color: #64748B;
             text-align: center;
             border-top: 1px solid #334155;
@@ -217,12 +237,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.82);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 16px;
+            padding: 14px;
         }
         
         .modal.active {
@@ -232,15 +252,15 @@
             background: #1E2937;
             border-radius: 14px;
             width: 100%;
-            max-width: 480px;
-            max-height: 88vh;
+            max-width: 460px;
+            max-height: 86vh;
             overflow-y: auto;
             border: 5px solid #C8102E;
         }
         
         .modal-header {
             background: linear-gradient(#C8102E, #8B0000);
-            padding: 14px 18px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -250,38 +270,38 @@
             background: none;
             border: none;
             color: white;
-            font-size: 26px;
+            font-size: 24px;
             cursor: pointer;
             line-height: 1;
         }
         
         .modal-body {
-            padding: 18px;
+            padding: 16px;
         }
         
         .detail-sprite {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 12px;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
             display: block;
             image-rendering: crisp-edges;
         }
         
         .stats-grid {
             display: grid;
-            gap: 6px;
-            margin: 12px 0;
+            gap: 5px;
+            margin: 10px 0;
         }
         
         .stat-row {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .stat-label {
-            width: 72px;
-            font-size: 12px;
+            width: 68px;
+            font-size: 11px;
             font-weight: 600;
             color: #CBD5E1;
         }
@@ -289,7 +309,7 @@
         .stat-bar-container {
             flex: 1;
             background: #334155;
-            height: 10px;
+            height: 9px;
             border-radius: 9999px;
             overflow: hidden;
         }
@@ -300,28 +320,28 @@
         }
         
         .stat-value {
-            width: 32px;
+            width: 30px;
             text-align: right;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
         }
         
         .section-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #C8102E;
-            margin: 14px 0 6px;
+            margin: 12px 0 5px;
             letter-spacing: 0.5px;
         }
         
         .placeholder-box {
             background: #0F172A;
             border: 2px dashed #475569;
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 7px;
+            padding: 10px;
             text-align: center;
             color: #64748B;
-            font-size: 12px;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -331,7 +351,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 10px; opacity: 0.85; margin-top: -3px;">OFFLINE • v1.6.1.6 • Split View (Scroll + Cursor)</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.6.1.7 • Scroll Cursor Mode</div>
             </div>
         </div>
 
@@ -340,7 +360,7 @@
                 
                 <!-- LEFT: VIEWER PANEL -->
                 <div class="viewer-panel">
-                    <div style="font-size: 11px; color: #64748B; margin-bottom: 4px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
+                    <div style="font-size: 10px; color: #64748B; margin-bottom: 2px; letter-spacing: 0.5px;">CURRENTLY VIEWING</div>
                     
                     <img id="viewer-sprite" class="viewer-sprite" 
                          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" 
@@ -352,8 +372,9 @@
                         <!-- Populated by JS -->
                     </div>
                     
-                    <div style="margin-top: auto; font-size: 12px; color: #64748B; padding-top: 8px;">
-                        Tap any Pokémon on the right<br>to view it here
+                    <div style="margin-top: auto; font-size: 11px; color: #64748B; padding-top: 6px; line-height: 1.3;">
+                        Scroll the list →<br>
+                        Viewer follows the cursor line
                     </div>
                 </div>
 
@@ -372,7 +393,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.6.1.6 • Split View (Scroll + Cursor) • Gen 1 Complete
+            Offline Pokédex • v1.6.1.7 • Scroll Cursor Mode • Gen 1 Complete
         </div>
     </div>
 
@@ -381,8 +402,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <span id="modal-dex" style="font-family: 'Press Start 2P', system-ui; font-size: 12px; opacity: 0.9;"></span>
-                    <h2 id="modal-name" style="margin-top: 1px; font-size: 20px;"></h2>
+                    <span id="modal-dex" style="font-family: 'Press Start 2P', system-ui; font-size: 11px; opacity: 0.9;"></span>
+                    <h2 id="modal-name" style="margin-top: 0; font-size: 18px;"></h2>
                 </div>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
@@ -390,11 +411,11 @@
             <div class="modal-body">
                 <img id="modal-sprite" class="detail-sprite" alt="">
                 
-                <div id="modal-types" style="display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;"></div>
+                <div id="modal-types" style="display: flex; justify-content: center; gap: 5px; margin-bottom: 10px; flex-wrap: wrap;"></div>
                 
                 <div>
                     <div class="section-title">ABILITIES</div>
-                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 4px;"></div>
                 </div>
                 
                 <div>
@@ -411,7 +432,7 @@
                 
                 <div>
                     <div class="section-title">MOVES (Level-up)</div>
-                    <div id="modal-moves" style="background:#0F172A; border-radius:6px; padding:10px; font-size:12px; line-height:1.45; max-height:160px; overflow-y:auto;">
+                    <div id="modal-moves" style="background:#0F172A; border-radius:6px; padding:9px; font-size:11px; line-height:1.4; max-height:150px; overflow-y:auto;">
                         <!-- Populated by JS -->
                     </div>
                 </div>
@@ -433,6 +454,8 @@
 
         let currentFilters = { types: [], search: '', sort: 'dex-asc' };
         let allPokemon = [...pokemonData];
+        let currentSelectedPokemon = null;
+        let scrollTimeout = null;
 
         function filterAndRender() {
             let filtered = allPokemon;
@@ -454,9 +477,8 @@
             renderList(filtered);
         }
 
-        let currentSelectedPokemon = null;
-
-        function updateViewer(pokemon) {
+        function updateViewer(pokemon, fromScroll = false) {
+            if (!pokemon) return;
             currentSelectedPokemon = pokemon;
             
             document.getElementById('viewer-sprite').src = 
@@ -467,18 +489,63 @@
             
             const typesContainer = document.getElementById('viewer-types');
             typesContainer.innerHTML = pokemon.types.map(type => 
-                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 3px 10px; border-radius: 5px; font-size: 12px;">${type}</span>`
+                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 9px; border-radius: 5px; font-size: 11px;">${type}</span>`
             ).join('');
             
-            // Highlight selected row in list
+            // Highlight in list
             document.querySelectorAll('.pokemon-list-item').forEach(el => {
                 el.classList.remove('selected');
                 if (parseInt(el.dataset.dex) === pokemon.national_dex) {
                     el.classList.add('selected');
-                    // Scroll into view if needed
-                    el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    if (!fromScroll) {
+                        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    }
                 }
             });
+        }
+
+        function getPokemonAtCursor() {
+            const list = document.getElementById('pokemon-list');
+            if (!list) return null;
+            
+            const items = list.querySelectorAll('.pokemon-list-item');
+            if (items.length === 0) return null;
+            
+            const listRect = list.getBoundingClientRect();
+            const cursorY = listRect.top + 45; // ~45px below top (under header + small margin)
+            
+            let closest = null;
+            let closestDist = Infinity;
+            
+            items.forEach(item => {
+                const r = item.getBoundingClientRect();
+                if (r.bottom < listRect.top || r.top > listRect.bottom) return; // not visible
+                
+                const itemCenter = r.top + r.height / 2;
+                const dist = Math.abs(itemCenter - cursorY);
+                
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closest = item;
+                }
+            });
+            
+            if (closest) {
+                const dex = parseInt(closest.dataset.dex);
+                return allPokemon.find(p => p.national_dex === dex);
+            }
+            return null;
+        }
+
+        function handleListScroll() {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            
+            scrollTimeout = setTimeout(() => {
+                const pokemon = getPokemonAtCursor();
+                if (pokemon && (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex)) {
+                    updateViewer(pokemon, true);
+                }
+            }, 80); // small debounce for smoothness
         }
 
         function renderList(pokemonList) {
@@ -487,7 +554,7 @@
             container.innerHTML = '';
             
             if (!pokemonList || pokemonList.length === 0) {
-                container.innerHTML = '<div style="padding: 30px 16px; text-align: center; color: #64748B; font-size: 13px;">No Pokémon found.</div>';
+                container.innerHTML = '<div style="padding: 24px 12px; text-align: center; color: #64748B; font-size: 12px;">No Pokémon found.</div>';
                 return;
             }
             
@@ -497,7 +564,7 @@
                 item.dataset.dex = pokemon.national_dex;
                 
                 let typesHTML = pokemon.types.map(type => 
-                    `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 1px 6px; border-radius: 4px; font-size: 10px; line-height: 1.3;">${type}</span>`
+                    `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 0 5px; border-radius: 3px; font-size: 9px; line-height: 1.25;">${type}</span>`
                 ).join('');
                 
                 item.innerHTML = `
@@ -506,11 +573,11 @@
                          alt="${pokemon.name}"
                          onerror="this.style.display='none'">
                     <div class="list-info">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <span style="font-family: 'Press Start 2P', system-ui; font-size: 10px; color: #64748B;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span style="font-family: 'Press Start 2P', system-ui; font-size: 9px; color: #64748B;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
                             <span class="list-name">${pokemon.name}</span>
                         </div>
-                        <div class="list-types" style="margin-top: 3px;">${typesHTML}</div>
+                        <div class="list-types" style="margin-top: 2px;">${typesHTML}</div>
                     </div>
                 `;
                 
@@ -521,7 +588,6 @@
                 container.appendChild(item);
             });
             
-            // Re-apply selection highlight if we have a current selection
             if (currentSelectedPokemon) {
                 const selectedEl = container.querySelector(`[data-dex="${currentSelectedPokemon.national_dex}"]`);
                 if (selectedEl) selectedEl.classList.add('selected');
@@ -540,12 +606,12 @@
             
             const typesContainer = document.getElementById('modal-types');
             typesContainer.innerHTML = pokemon.types.map(type => 
-                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 3px 11px; border-radius: 5px; font-size: 12px;">${type}</span>`
+                `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px;">${type}</span>`
             ).join('');
             
             const abilitiesContainer = document.getElementById('modal-abilities');
             abilitiesContainer.innerHTML = pokemon.abilities.map(ability => 
-                `<span style="background:#0F172A; padding:3px 9px; border-radius:5px; font-size:12px;">${ability}</span>`
+                `<span style="background:#0F172A; padding:2px 8px; border-radius:4px; font-size:11px;">${ability}</span>`
             ).join('');
             
             const statsContainer = document.getElementById('modal-stats');
@@ -572,10 +638,10 @@
             const movesContainer = document.getElementById('modal-moves');
             if (pokemon.moves && pokemon.moves.level_up && pokemon.moves.level_up.length > 0) {
                 movesContainer.innerHTML = pokemon.moves.level_up.map(m => 
-                    `<span style="display:inline-block; background:#1E2937; margin:1px 2px; padding:1px 7px; border-radius:4px; font-size:11px;">Lv${m.level} ${m.name}</span>`
+                    `<span style="display:inline-block; background:#1E2937; margin:1px 2px; padding:1px 6px; border-radius:3px; font-size:10px;">Lv${m.level} ${m.name}</span>`
                 ).join('');
             } else {
-                movesContainer.innerHTML = '<span style="color:#64748B; font-size:11px;">No move data yet.</span>';
+                movesContainer.innerHTML = '<span style="color:#64748B; font-size:10px;">No move data yet.</span>';
             }
             
             const entryContainer = document.getElementById('modal-entry');
@@ -584,8 +650,8 @@
                 entryContainer.style.border = '1px solid #475569';
                 entryContainer.style.textAlign = 'left';
                 entryContainer.style.color = '#F1F5F9';
-                entryContainer.style.fontSize = '13px';
-                entryContainer.style.lineHeight = '1.45';
+                entryContainer.style.fontSize = '12px';
+                entryContainer.style.lineHeight = '1.4';
             } else {
                 entryContainer.innerHTML = 'Pokédex entry coming soon.';
             }
@@ -600,18 +666,21 @@
         }
 
         function init() {
-            // Initial render
+            const listContainer = document.getElementById('pokemon-list');
+            if (listContainer) {
+                listContainer.addEventListener('scroll', handleListScroll, { passive: true });
+            }
+            
             setTimeout(() => {
                 filterAndRender();
                 
-                // Set initial Pokémon (Charmander)
                 const charmander = allPokemon.find(p => p.national_dex === 4);
                 if (charmander) {
                     updateViewer(charmander);
                 }
-            }, 60);
+            }, 70);
             
-            console.log('%c[v1.6.1.6] Scroll + Cursor fix loaded.', 'color:#22C55E');
+            console.log('%c[v1.6.1.7] Static cursor + real-time scroll tracking enabled.', 'color:#22C55E');
         }
 
         window.onload = init;
