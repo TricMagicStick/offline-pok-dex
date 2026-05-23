@@ -500,9 +500,11 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.2 • Modal Navigation + Random</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.3 • Hotfix</div>
             </div>
-            <button id="random-btn" class="nav-btn" style="font-size:11px; padding:5px 10px;">🎲 Random</button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button id="random-btn" class="nav-btn" style="font-size:11px; padding:5px 10px;">🎲 Random</button>
+            </div>
         </div>
 
         <div class="main-content">
@@ -525,9 +527,11 @@
                 <div class="list-panel">
                     <div class="list-header">
                         <span>National Pokédex (151)</span>
-                        <button id="toggle-filter" class="filter-toggle">
-                            🔍 Search / Filter
-                        </button>
+                        <div style="display: flex; gap: 6px;">
+                            <button id="toggle-filter" class="filter-toggle">
+                                🔍 Search / Filter
+                            </button>
+                        </div>
                     </div>
                     
                     <div id="filter-section" class="filter-section">
@@ -549,7 +553,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.8.2 • Prev/Next + Random Button • Gen 1 Complete
+            Offline Pokédex • v1.8.3 • Hotfix: Modal click fixed + Random moved
         </div>
     </div>
 
@@ -869,7 +873,9 @@
                     </div>
                 `;
                 
-                item.addEventListener('click', () => {
+                // Click handler - fixed
+                item.addEventListener('click', (e) => {
+                    e.stopImmediatePropagation();
                     updateViewer(pokemon);
                     showDetail(pokemon);
                 });
@@ -1026,10 +1032,7 @@
             const randomIndex = Math.floor(Math.random() * allPokemon.length);
             const randomPokemon = allPokemon[randomIndex];
             
-            // Update viewer
             updateViewer(randomPokemon);
-            
-            // Open modal with the random one
             showDetail(randomPokemon);
         }
 
@@ -1083,7 +1086,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.8.2] Added Previous/Next navigation in modal + Random button in header. Bundled improvements.', 'color:#22C55E');
+            console.log('%c[v1.8.3] Hotfix: Fixed modal click handler + moved Random button to header right side.', 'color:#22C55E');
         }
 
         window.onload = init;
