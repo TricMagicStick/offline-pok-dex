@@ -513,7 +513,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.8 • Careful spacer increase</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.9 • More spacer added</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -564,7 +564,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.8 • Careful spacer increase
+            Offline Pokédex • v1.9.9 • More spacer added
         </div>
     </div>
 
@@ -762,9 +762,9 @@
                 return;
             }
             
-            // Moderate spacer increase - careful this time
+            // Increased spacers - more aggressive this time
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '55px';
+            topSpacer.style.height = '70px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -832,7 +832,7 @@
             });
             
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '75px';
+            bottomSpacer.style.height = '90px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -1045,7 +1045,8 @@
                         items.forEach(el => {
                             const r = el.getBoundingClientRect();
                             const dist = Math.abs((r.top + r.height / 2) - centerY);
-                            if (dist < closestDist) { closestDist = dist; closest = el; }
+                            if (dist < closestDist) { closestDist = dist; closest = el;
+                            }
                         });
                         if (closest) {
                             const dex = parseInt(closest.dataset.dex);
@@ -1059,8 +1060,8 @@
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.8 - Careful spacer increase (55px top / 75px bottom)');
-            console.log('%c[v1.9.8] Moderate spacer increase - should keep live selector stable.', 'color:#22C55E');
+            updateDebug('v1.9.9 - Increased spacers (70px top / 90px bottom)');
+            console.log('%c[v1.9.9] Increased spacers for better end-of-list selection.', 'color:#22C55E');
         }
 
         window.onload = init;
