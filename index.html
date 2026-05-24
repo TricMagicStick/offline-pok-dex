@@ -513,7 +513,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.9 • More spacer added</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.10 • Even more spacer</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -564,7 +564,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.9 • More spacer added
+            Offline Pokédex • v1.9.10 • Even more spacer
         </div>
     </div>
 
@@ -762,9 +762,9 @@
                 return;
             }
             
-            // Increased spacers - more aggressive this time
+            // Even more spacer added
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '70px';
+            topSpacer.style.height = '85px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -832,7 +832,7 @@
             });
             
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '90px';
+            bottomSpacer.style.height = '110px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -1060,8 +1060,8 @@
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.9 - Increased spacers (70px top / 90px bottom)');
-            console.log('%c[v1.9.9] Increased spacers for better end-of-list selection.', 'color:#22C55E');
+            updateDebug('v1.9.10 - Even more spacer (85px top / 110px bottom)');
+            console.log('%c[v1.9.10] Even more spacer added for end-of-list selection.', 'color:#22C55E');
         }
 
         window.onload = init;
