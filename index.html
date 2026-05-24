@@ -70,6 +70,9 @@
         .invisible-spacer { height: 68px; opacity: 0; pointer-events: none; flex-shrink: 0; }
         .move-section { margin-bottom: 12px; }
         .move-section:last-child { margin-bottom: 0; }
+        .gen-tab-bar { display: flex; gap: 4px; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+        .gen-tab { padding: 4px 12px; font-size: 11px; border-radius: 4px 4px 0 0; background: #1E2937; color: #94A3B8; cursor: default; border: 1px solid transparent; }
+        .gen-tab.active { background: #334155; color: white; border-color: #C8102E; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -77,7 +80,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v3.0 (Reverted) • Phase 1 Test</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v3.0.1 • Phase 1 Test</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -108,7 +111,7 @@
             </div>
         </div>
 
-        <div class="footer">Offline Pokédex • v3.0 (Reverted) • Phase 1 Test</div>
+        <div class="footer">Offline Pokédex • v3.0.1 • Phase 1 Test</div>
     </div>
 
     <div id="detail-modal" class="modal">
@@ -121,6 +124,11 @@
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
+                <!-- Placeholder Gen Tab Bar (only visible on test Pokémon) -->
+                <div id="gen-tab-bar" class="gen-tab-bar" style="display: none;">
+                    <div class="gen-tab active">Gen 1</div>
+                </div>
+                
                 <img id="modal-sprite" class="detail-sprite" alt="">
                 <div id="modal-types" style="display: flex; justify-content: center; gap: 4px; margin-bottom: 6px; flex-wrap: wrap;"></div>
                 <div><div class="section-title">ABILITIES</div><div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 3px; font-size: 11px;"></div></div>
@@ -365,10 +373,10 @@
             {"national_dex":135,"name":"Jolteon","types":["Electric"],"abilities":["Volt Absorb"],"base_stats":{"hp":65,"attack":65,"defense":60,"special_attack":110,"special_defense":95,"speed":130},"entry":"It accumulates negative ions in the atmosphere to blast out 10,000-volt lightning bolts.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":1,"name":"Thunder Shock"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Thunder Shock"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Double Kick"},{"level":36,"name":"Pin Missile"},{"level":42,"name":"Thunder Wave"},{"level":47,"name":"Agility"},{"level":52,"name":"Thunder"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Thunder Wave","Substitute"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
             {"national_dex":136,"name":"Flareon","types":["Fire"],"abilities":["Flash Fire"],"base_stats":{"hp":65,"attack":130,"defense":60,"special_attack":95,"special_defense":110,"speed":65},"entry":"When storing thermal energy in its body, its temperature can soar to over 1,600 degrees.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":1,"name":"Ember"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Ember"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Bite"},{"level":36,"name":"Fire Spin"},{"level":42,"name":"Smog"},{"level":47,"name":"Leer"},{"level":52,"name":"Flamethrower"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Rage","Dig","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
             {"national_dex":137,"name":"Porygon","types":["Normal"],"abilities":["Trace","Download"],"base_stats":{"hp":65,"attack":60,"defense":70,"special_attack":85,"special_defense":75,"speed":40},"entry":"A Pokémon that consists entirely of programming code. Capable of moving freely in cyberspace.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Sharpen"},{"level":1,"name":"Conversion"},{"level":1,"name":"Psybeam"},{"level":23,"name":"Recover"},{"level":28,"name":"Sharpen"},{"level":35,"name":"Tri Attack"},{"level":42,"name":"Agility"}],"tm":["Toxic","Take Down","Double-Edge","Ice Bean","Blizzard","Hyper Bean","Rage","Thunderbolt","Thunder","Psychic","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Thunder Wave","Psywave","Tri Attack","Substitute","Flash"],"egg":[]}},
-            {"national_dex":138,"name":"Omanyte","types":["Rock","Water"],"abilities":["Swift Swim","Shell Armor"],"base_stats":{"hp":35,"attack":40,"defense":100,"special_attack":90,"special_defense":55,"speed":35},"entry":"Although long extinct, in rare cases, it can be genetically resurrected from fossils.","moves":{"level_up":[{"level":1,"name":"Constrict"},{"level":1,"name":"Withdraw"},{"level":13,"name":"Bite"},{"level":19,"name":"Water Gun"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Leer"},{"level":37,"name":"Protect"},{"level":43,"name":"Ancient Power"},{"level":49,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Beam","Bubble Bean","Haze","Slam","Supersonic"]}},
-            {"national_dex":139,"name":"Omastar","types":["Rock","Water"],"abilities":["Swift Swim","Shell Armor"],"base_stats":{"hp":70,"attack":60,"defense":125,"special_attack":115,"special_defense":70,"speed":55},"entry":"Its tentacles are highly developed. They can be used to ensnare prey and to hold on to surfaces.","moves":{"level_up":[{"level":1,"name":"Constrict"},{"level":1,"name":"Withdraw"},{"level":1,"name":"Bite"},{"level":19,"name":"Water Gun"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Leer"},{"level":37,"name":"Protect"},{"level":40,"name":"Spike Cannon"},{"level":46,"name":"Ancient Power"},{"level":55,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Beam","Bubble Bean","Haze","Slam","Supersonic"]}},
-            {"national_dex":140,"name":"Kabuto","types":["Rock","Water"],"abilities":["Swift Swim","Battle Armor"],"base_stats":{"hp":30,"attack":80,"defense":90,"special_attack":55,"special_defense":45,"speed":55},"entry":"A Pokémon that was resurrected from a fossil. It uses its tentacles to capture its prey.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Harden"},{"level":13,"name":"Absorb"},{"level":19,"name":"Leer"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Sand Attack"},{"level":37,"name":"Endure"},{"level":43,"name":"Giga Drain"},{"level":49,"name":"Ancient Power"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Beam","Bubble Bean","Confuse Ray","Flail","Rapid Spin"]}},
-            {"national_dex":141,"name":"Kabutops","types":["Rock","Water"],"abilities":["Swift Swim","Battle Armor"],"base_stats":{"hp":60,"attack":115,"defense":105,"special_attack":65,"special_defense":70,"speed":80},"entry":"Its sleek shape is perfect for swimming. It slashes prey with its sharp sickles and drinks their fluids.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Harden"},{"level":1,"name":"Absorb"},{"level":19,"name":"Leer"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Sand Attack"},{"level":37,"name":"Endure"},{"level":40,"name":"Slash"},{"level":46,"name":"Giga Drain"},{"level":54,"name":"Ancient Power"}],"tm":["Mega Punch","Mega Kick","Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Submission","Seismic Toss","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Beam","Bubble Bean","Confuse Ray","Flail","Rapid Spin"]}},
+            {"national_dex":138,"name":"Omanyte","types":["Rock","Water"],"abilities":["Swift Swim","Shell Armor"],"base_stats":{"hp":35,"attack":40,"defense":100,"special_attack":90,"special_defense":55,"speed":35},"entry":"Although long extinct, in rare cases, it can be genetically resurrected from fossils.","moves":{"level_up":[{"level":1,"name":"Constrict"},{"level":1,"name":"Withdraw"},{"level":13,"name":"Bite"},{"level":19,"name":"Water Gun"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Leer"},{"level":37,"name":"Protect"},{"level":43,"name":"Ancient Power"},{"level":49,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Bean","Bubble Bean","Haze","Slam","Supersonic"]}},
+            {"national_dex":139,"name":"Omastar","types":["Rock","Water"],"abilities":["Swift Swim","Shell Armor"],"base_stats":{"hp":70,"attack":60,"defense":125,"special_attack":115,"special_defense":70,"speed":55},"entry":"Its tentacles are highly developed. They can be used to ensnare prey and to hold on to surfaces.","moves":{"level_up":[{"level":1,"name":"Constrict"},{"level":1,"name":"Withdraw"},{"level":1,"name":"Bite"},{"level":19,"name":"Water Gun"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Leer"},{"level":37,"name":"Protect"},{"level":40,"name":"Spike Cannon"},{"level":46,"name":"Ancient Power"},{"level":55,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Bean","Bubble Bean","Haze","Slam","Supersonic"]}},
+            {"national_dex":140,"name":"Kabuto","types":["Rock","Water"],"abilities":["Swift Swim","Battle Armor"],"base_stats":{"hp":30,"attack":80,"defense":90,"special_attack":55,"special_defense":45,"speed":55},"entry":"A Pokémon that was resurrected from a fossil. It uses its tentacles to capture its prey.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Harden"},{"level":13,"name":"Absorb"},{"level":19,"name":"Leer"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Sand Attack"},{"level":37,"name":"Endure"},{"level":43,"name":"Giga Drain"},{"level":49,"name":"Ancient Power"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Bean","Bubble Bean","Confuse Ray","Flail","Rapid Spin"]}},
+            {"national_dex":141,"name":"Kabutops","types":["Rock","Water"],"abilities":["Swift Swim","Battle Armor"],"base_stats":{"hp":60,"attack":115,"defense":105,"special_attack":65,"special_defense":70,"speed":80},"entry":"Its sleek shape is perfect for swimming. It slashes prey with its sharp sickles and drinks their fluids.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Harden"},{"level":1,"name":"Absorb"},{"level":19,"name":"Leer"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Sand Attack"},{"level":37,"name":"Endure"},{"level":40,"name":"Slash"},{"level":46,"name":"Giga Drain"},{"level":54,"name":"Ancient Power"}],"tm":["Mega Punch","Mega Kick","Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Submission","Seismic Toss","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Bean","Bubble Bean","Confuse Ray","Flail","Rapid Spin"]}},
             {"national_dex":142,"name":"Aerodactyl","types":["Rock","Flying"],"abilities":["Rock Head","Pressure"],"base_stats":{"hp":80,"attack":105,"defense":65,"special_attack":60,"special_defense":75,"speed":130},"entry":"A ferocious prehistoric Pokémon that goes for the enemy's throat with its serrated, saw-like fangs.","moves":{"level_up":[{"level":1,"name":"Wing Attack"},{"level":1,"name":"Supersonic"},{"level":8,"name":"Bite"},{"level":15,"name":"Scary Face"},{"level":22,"name":"Roar"},{"level":29,"name":"Agility"},{"level":36,"name":"Ancient Power"},{"level":43,"name":"Crunch"}],"tm":["Toxic","Take Down","Double-Edge","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute","Fly"],"egg":["Foresight","Pursuit","Steel Wing","Whirlwind"]}},
             {"national_dex":143,"name":"Snorlax","types":["Normal"],"abilities":["Immunity","Thick Fat"],"base_stats":{"hp":160,"attack":110,"defense":65,"special_attack":65,"special_defense":110,"speed":30},"entry":"Very lazy. Just eats and sleeps. As its bulk builds, it becomes steadily more slothful.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Amnesia"},{"level":1,"name":"Defense Curl"},{"level":8,"name":"Amnesia"},{"level":15,"name":"Defense Curl"},{"level":22,"name":"Belly Drum"},{"level":29,"name":"Headbutt"},{"level":36,"name":"Snore"},{"level":36,"name":"Rest"},{"level":43,"name":"Body Slam"},{"level":50,"name":"Heavy Slam"}],"tm":["Mega Punch","Mega Kick","Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Pay Day","Submission","Counter","Seismic Toss","Rage","Solar Bean","Thunderbolt","Thunder","Psychic","Mimic","Double Team","Reflect","Bide","Self-Destruct","Fire Blast","Skull Bash","Rest","Psywave","Substitute","Surf","Strength"],"egg":["Charm","Counter","Curse","Double-Edge","Lick"]}},
             {"national_dex":144,"name":"Articuno","types":["Ice","Flying"],"abilities":["Pressure"],"base_stats":{"hp":90,"attack":85,"defense":100,"special_attack":95,"special_defense":125,"speed":85},"entry":"A legendary bird Pokémon that is said to appear to doomed people who are lost in icy mountains.","moves":{"level_up":[{"level":1,"name":"Gust"},{"level":1,"name":"Powder Snow"},{"level":13,"name":"Mist"},{"level":25,"name":"Agility"},{"level":37,"name":"Mind Reader"},{"level":49,"name":"Ice Beam"},{"level":61,"name":"Reflect"},{"level":73,"name":"Blizzard"}],"tm":["Toxic","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Substitute","Fly"],"egg":[]}},
@@ -398,6 +406,10 @@
                     moves: pokemon.moves
                 };
             }
+        }
+
+        function isPhase1TestPokemon(nationalDex) {
+            return [1, 2, 3].includes(nationalDex);
         }
 
         const typeColors = { 'Grass': '#22C55E', 'Poison': '#A855F7', 'Fire': '#EF4444', 'Flying': '#3B82F6', 'Water': '#3B82F6', 'Bug': '#84CC16', 'Normal': '#A3A3A3', 'Electric': '#EAB308', 'Ground': '#CA8A04', 'Rock': '#78716C', 'Fighting': '#F97316', 'Psychic': '#EC4899', 'Ghost': '#6366F1', 'Ice': '#67E8F9', 'Dragon': '#8B5CF6', 'Dark': '#334155', 'Steel': '#71717A', 'Fairy': '#F472B6' };
@@ -542,6 +554,15 @@
             
             const data = getPokemonData(pokemon);
             
+            const genTabBar = document.getElementById('gen-tab-bar');
+            if (genTabBar) {
+                if (isPhase1TestPokemon(pokemon.national_dex)) {
+                    genTabBar.style.display = 'flex';
+                } else {
+                    genTabBar.style.display = 'none';
+                }
+            }
+            
             const sprite = document.getElementById('modal-sprite');
             if (sprite) { sprite.src = data.sprite; sprite.alt = pokemon.name; }
             
@@ -654,7 +675,7 @@
                 }, { passive: true });
             }
             
-            console.log('%c[v3.0 Reverted] Clean revert to last known good state. List should be working.', 'color:#22C55E');
+            console.log('%c[v3.0.1] Visual marker added carefully for Bulbasaur line only. List preserved.', 'color:#22C55E');
         }
 
         window.onload = init;
