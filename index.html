@@ -23,7 +23,7 @@
             background: linear-gradient(#8B0000, #5C0000);
             color: #F1F5F9;
             min-height: 100vh;
-            padding: 10px;
+            padding: 8px;
         }
         
         .pokedex-container {
@@ -36,12 +36,12 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            max-height: 95vh;
+            max-height: 96vh;
         }
         
         .pokedex-header {
             background: linear-gradient(#C8102E, #8B0000);
-            padding: 11px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -51,14 +51,14 @@
         
         .pokedex-header h1 {
             font-family: "Press Start 2P", system-ui;
-            font-size: 21px;
+            font-size: 20px;
             letter-spacing: 2px;
             color: white;
             text-shadow: 3px 3px 0 #5C0000;
         }
         
         .main-content {
-            padding: 12px;
+            padding: 10px;
             background: #0F172A;
             flex: 1;
             overflow: hidden;
@@ -69,7 +69,7 @@
         .split-container {
             display: flex;
             flex-direction: row;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
             min-height: 0;
             overflow: hidden;
@@ -78,7 +78,7 @@
         @media (max-width: 640px) {
             .split-container {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
             }
         }
 
@@ -91,46 +91,46 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 55%;
+            flex: 1 1 52%;
             min-width: 0;
             overflow-y: auto;
-            min-height: 200px;
+            min-height: 185px;
         }
 
         @media (max-width: 640px) {
             .viewer-panel {
-                flex: 1 1 55%;
-                padding: 7px 5px;
-                min-height: 195px;
+                flex: 0 0 auto;
+                padding: 6px 5px;
+                min-height: 175px;
             }
         }
 
         @media (min-width: 641px) and (orientation: landscape) {
             .viewer-panel {
-                flex: 0 0 380px;
-                max-width: 420px;
+                flex: 0 0 360px;
+                max-width: 400px;
             }
         }
 
         .viewer-sprite {
-            width: 156px;
-            height: 156px;
-            margin: 0 0 1px;
+            width: 148px;
+            height: 148px;
+            margin: 0 0 2px;
             image-rendering: crisp-edges;
             flex-shrink: 0;
         }
 
         .viewer-name {
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 700;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             line-height: 1.05;
         }
 
         .viewer-types {
             display: flex;
             gap: 5px;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -142,22 +142,23 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            flex: 1 1 45%;
+            flex: 1 1 48%;
             min-width: 0;
             position: relative;
         }
 
         @media (max-width: 640px) {
             .list-panel {
-                flex: 1 1 45%;
+                flex: 1 1 48%;
+                min-height: 0;
             }
         }
 
         .list-header {
-            padding: 10px 14px;
+            padding: 9px 12px;
             background: #111827;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             border-bottom: 1px solid #334155;
             flex-shrink: 0;
             position: relative;
@@ -171,13 +172,13 @@
             background: #1E2937;
             border: 1px solid #475569;
             color: #CBD5E1;
-            padding: 4px 10px;
+            padding: 4px 9px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .filter-toggle:hover {
@@ -185,7 +186,7 @@
         }
 
         .filter-section {
-            padding: 8px 12px;
+            padding: 7px 11px;
             background: #111827;
             border-bottom: 1px solid #334155;
             flex-shrink: 0;
@@ -202,10 +203,10 @@
             background: #1E2937;
             border: 1px solid #475569;
             border-radius: 6px;
-            padding: 7px 11px;
+            padding: 6px 10px;
             color: white;
-            font-size: 13px;
-            margin-bottom: 6px;
+            font-size: 12px;
+            margin-bottom: 5px;
         }
 
         .search-input:focus {
@@ -216,12 +217,12 @@
         .type-filters {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
         }
 
         .type-pill {
-            font-size: 10px;
-            padding: 2px 8px;
+            font-size: 9px;
+            padding: 1px 7px;
             border-radius: 9999px;
             border: 1px solid #475569;
             color: white;
@@ -237,7 +238,7 @@
         .scrollable-list {
             flex: 1;
             overflow-y: auto;
-            padding: 6px 8px 8px;
+            padding: 5px 7px 6px;
             scrollbar-width: thin;
             scrollbar-color: #475569 #1E2937;
             min-height: 0;
@@ -246,7 +247,7 @@
         }
 
         .scrollable-list::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         .scrollable-list::-webkit-scrollbar-thumb {
             background-color: #475569;
@@ -256,9 +257,9 @@
         .pokemon-list-item {
             display: flex;
             align-items: center;
-            padding: 14px 12px;
-            border-radius: 10px;
-            margin-bottom: 6px;
+            padding: 11px 10px;
+            border-radius: 9px;
+            margin-bottom: 5px;
             cursor: pointer;
             transition: background 0.06s ease, border-color 0.06s ease;
             border: 2px solid transparent;
@@ -277,9 +278,9 @@
         }
 
         .list-sprite {
-            width: 72px;
-            height: 72px;
-            margin-right: 14px;
+            width: 66px;
+            height: 66px;
+            margin-right: 11px;
             flex-shrink: 0;
             image-rendering: crisp-edges;
         }
@@ -290,21 +291,21 @@
         }
 
         .list-name {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             color: white;
         }
 
         .list-types {
             display: flex;
-            gap: 5px;
-            margin-top: 4px;
+            gap: 4px;
+            margin-top: 3px;
         }
 
         .footer {
-            padding: 8px 12px;
+            padding: 7px 11px;
             background: #111827;
-            font-size: 9px;
+            font-size: 8px;
             color: #64748B;
             text-align: center;
             border-top: 1px solid #334155;
@@ -322,7 +323,7 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 12px;
+            padding: 10px;
         }
         
         .modal.active {
@@ -332,8 +333,8 @@
             background: #1E2937;
             border-radius: 14px;
             width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
+            max-width: 460px;
+            max-height: 88vh;
             overflow-y: auto;
             border: 5px solid #C8102E;
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
@@ -341,7 +342,7 @@
         
         .modal-header {
             background: linear-gradient(#C8102E, #8B0000);
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -351,39 +352,39 @@
             background: none;
             border: none;
             color: white;
-            font-size: 26px;
+            font-size: 24px;
             cursor: pointer;
             line-height: 1;
-            padding: 0 4px;
+            padding: 0 3px;
         }
         
         .modal-body {
-            padding: 16px;
+            padding: 14px;
         }
         
         .detail-sprite {
-            width: 128px;
-            height: 128px;
-            margin: 0 auto 10px;
+            width: 118px;
+            height: 118px;
+            margin: 0 auto 8px;
             display: block;
             image-rendering: crisp-edges;
         }
         
         .stats-grid {
             display: grid;
-            gap: 5px;
-            margin: 10px 0;
+            gap: 4px;
+            margin: 8px 0;
         }
         
         .stat-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
         }
         
         .stat-label {
-            width: 68px;
-            font-size: 11px;
+            width: 62px;
+            font-size: 10px;
             font-weight: 600;
             color: #CBD5E1;
         }
@@ -391,7 +392,7 @@
         .stat-bar-container {
             flex: 1;
             background: #334155;
-            height: 9px;
+            height: 8px;
             border-radius: 9999px;
             overflow: hidden;
         }
@@ -402,17 +403,17 @@
         }
         
         .stat-value {
-            width: 32px;
+            width: 28px;
             text-align: right;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 10px;
         }
         
         .section-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: #C8102E;
-            margin: 12px 0 5px;
+            margin: 10px 0 4px;
             letter-spacing: 0.5px;
         }
         
@@ -420,67 +421,67 @@
             background: #0F172A;
             border: 1px solid #475569;
             border-radius: 6px;
-            padding: 10px;
-            font-size: 13px;
-            line-height: 1.45;
+            padding: 9px;
+            font-size: 12px;
+            line-height: 1.4;
             color: #E2E8F0;
         }
         
         .moves-container {
             background: #0F172A;
             border-radius: 6px;
-            padding: 8px;
-            font-size: 12px;
-            line-height: 1.4;
-            max-height: 170px;
+            padding: 7px;
+            font-size: 11px;
+            line-height: 1.35;
+            max-height: 155px;
             overflow-y: auto;
         }
         
         .effectiveness-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 4px;
+            gap: 7px;
+            margin-top: 3px;
         }
         
         .effect-box {
             background: #0F172A;
             border-radius: 6px;
-            padding: 8px;
+            padding: 7px;
         }
         
         .effect-title {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: #C8102E;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         
         .effect-pills {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
         }
         
         .effect-pill {
-            font-size: 10px;
-            padding: 2px 7px;
+            font-size: 9px;
+            padding: 1px 6px;
             border-radius: 4px;
             color: white;
         }
         
         .nav-buttons {
             display: flex;
-            gap: 8px;
+            gap: 7px;
         }
         
         .nav-btn {
             background: #1E2937;
             border: 1px solid #475569;
             color: #CBD5E1;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.1s ease;
         }
@@ -497,10 +498,10 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.6 • Cleanup &amp; Stabilization</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.7 • List fix</div>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <button id="random-btn" class="nav-btn" style="font-size:11px; padding:5px 10px;">🎲 Random</button>
+            <div style="display: flex; gap: 7px; align-items: center;">
+                <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
             </div>
         </div>
 
@@ -524,7 +525,7 @@
                 <div class="list-panel">
                     <div class="list-header">
                         <span>National Pokédex (151)</span>
-                        <div style="display: flex; gap: 6px;">
+                        <div style="display: flex; gap: 5px;">
                             <button id="toggle-filter" class="filter-toggle">
                                 🔍 Search / Filter
                             </button>
@@ -548,7 +549,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.8.6 • Cleaned up: Removed complex live selector, stabilized taps + scrolling
+            Offline Pokédex • v1.8.7 • Fixed list visibility on mobile
         </div>
     </div>
 
@@ -566,11 +567,11 @@
             <div class="modal-body">
                 <img id="modal-sprite" class="detail-sprite" alt="">
                 
-                <div id="modal-types" style="display: flex; justify-content: center; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;"></div>
+                <div id="modal-types" style="display: flex; justify-content: center; gap: 4px; margin-bottom: 6px; flex-wrap: wrap;"></div>
                 
                 <div>
                     <div class="section-title">ABILITIES</div>
-                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 4px; font-size: 12px;"></div>
+                    <div id="modal-abilities" style="display: flex; flex-wrap: wrap; gap: 3px; font-size: 11px;"></div>
                 </div>
                 
                 <div>
@@ -695,9 +696,9 @@
                 return;
             }
             
-            // Top spacer for centering
+            // Small top spacer for comfortable scrolling
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '120px';
+            topSpacer.style.height = '18px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -720,16 +721,16 @@
                             <span style="font-family: 'Press Start 2P', system-ui; font-size: 9px; color: #64748B;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
                             <span class="list-name">${pokemon.name}</span>
                         </div>
-                        <div class="list-types" style="margin-top: 4px;">${typesHTML}</div>
+                        <div class="list-types" style="margin-top: 3px;">${typesHTML}</div>
                     </div>
                 `;
                 
                 container.appendChild(item);
             });
             
-            // Bottom spacer
+            // Small bottom spacer
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '120px';
+            bottomSpacer.style.height = '35px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -951,7 +952,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.8.6] Cleanup release: Removed complex live selector logic. Clean tap handling + normal scrolling restored.', 'color:#22C55E');
+            console.log('%c[v1.8.7] List visibility fix: Reduced spacers, improved mobile layout. List should now render and scroll properly.', 'color:#22C55E');
         }
 
         window.onload = init;
