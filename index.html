@@ -505,6 +505,13 @@
             border-color: #C8102E;
             color: white;
         }
+
+        .invisible-spacer {
+            height: 68px;
+            opacity: 0;
+            pointer-events: none;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -513,7 +520,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.10 • Even more spacer</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.11 • Invisible spacer items</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -564,7 +571,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.10 • Even more spacer
+            Offline Pokédex • v1.9.11 • Invisible spacer items
         </div>
     </div>
 
@@ -762,11 +769,15 @@
                 return;
             }
             
-            // Even more spacer added
-            const topSpacer = document.createElement('div');
-            topSpacer.style.height = '85px';
-            topSpacer.style.flexShrink = '0';
-            container.appendChild(topSpacer);
+            // Add invisible spacer items at the top (instead of height spacers)
+            for (let i = 0; i < 3; i++) {
+                const spacer = document.createElement('div');
+                spacer.className = 'pokemon-list-item invisible-spacer';
+                spacer.style.height = '68px';
+                spacer.style.opacity = '0';
+                spacer.style.pointerEvents = 'none';
+                container.appendChild(spacer);
+            }
             
             pokemonList.forEach(pokemon => {
                 const item = document.createElement('div');
@@ -831,10 +842,15 @@
                 container.appendChild(item);
             });
             
-            const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '110px';
-            bottomSpacer.style.flexShrink = '0';
-            container.appendChild(bottomSpacer);
+            // Add invisible spacer items at the bottom
+            for (let i = 0; i < 3; i++) {
+                const spacer = document.createElement('div');
+                spacer.className = 'pokemon-list-item invisible-spacer';
+                spacer.style.height = '68px';
+                spacer.style.opacity = '0';
+                spacer.style.pointerEvents = 'none';
+                container.appendChild(spacer);
+            }
             
             if (currentSelectedPokemon) {
                 const selectedEl = container.querySelector(`[data-dex="${currentSelectedPokemon.national_dex}"]`);
@@ -1060,8 +1076,8 @@
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.10 - Even more spacer (85px top / 110px bottom)');
-            console.log('%c[v1.9.10] Even more spacer added for end-of-list selection.', 'color:#22C55E');
+            updateDebug('v1.9.11 - Using invisible list items for spacer instead of height divs');
+            console.log('%c[v1.9.11] Switched to invisible list items for better scroll behavior.', 'color:#22C55E');
         }
 
         window.onload = init;
