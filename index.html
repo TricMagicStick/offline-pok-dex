@@ -513,7 +513,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.7 • Rolled back</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.8 • Careful spacer increase</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -564,7 +564,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.7 • Rolled back to previous working version
+            Offline Pokédex • v1.9.8 • Careful spacer increase
         </div>
     </div>
 
@@ -762,8 +762,9 @@
                 return;
             }
             
+            // Moderate spacer increase - careful this time
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '45px';
+            topSpacer.style.height = '55px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -831,7 +832,7 @@
             });
             
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '65px';
+            bottomSpacer.style.height = '75px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -1058,8 +1059,8 @@
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.7 restored (rolled back)');
-            console.log('%c[v1.9.7] Rolled back to previous working version with live selector.', 'color:#22C55E');
+            updateDebug('v1.9.8 - Careful spacer increase (55px top / 75px bottom)');
+            console.log('%c[v1.9.8] Moderate spacer increase - should keep live selector stable.', 'color:#22C55E');
         }
 
         window.onload = init;
