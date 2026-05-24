@@ -253,6 +253,7 @@
             border: 2px solid transparent;
             background: #1E2937;
             touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .pokemon-list-item:hover {
@@ -261,8 +262,14 @@
 
         .pokemon-list-item.selected {
             background: #334155;
-            border-color: transparent;
-            box-shadow: 0 0 0 1px #475569;
+            border-color: #C8102E;
+            box-shadow: 0 0 0 2px #C8102E;
+        }
+
+        .pokemon-list-item.tapped {
+            background: #C8102E !important;
+            border-color: white !important;
+            transition: none;
         }
 
         .list-sprite {
@@ -298,6 +305,20 @@
             text-align: center;
             border-top: 1px solid #334155;
             flex-shrink: 0;
+        }
+
+        .debug-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.85);
+            color: #22C55E;
+            font-size: 10px;
+            padding: 4px 8px;
+            text-align: center;
+            z-index: 2000;
+            font-family: monospace;
         }
 
         .modal {
@@ -486,7 +507,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.1 • Direct tap fix</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.2 • iOS touch debug build</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -537,12 +558,17 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.1 • Direct per-item tap listeners + immediate scroll update
+            Offline Pokédex • v1.9.2 • iOS touch debug: direct listeners + tap flash + live scroll
         </div>
     </div>
 
+    <!-- Debug bar for iOS testing -->
+    <div id="debug-bar" class="debug-bar" style="display: none;">
+        Last action: <span id="debug-text">none</span>
+    </div>
+
     <!-- Detail Modal -->
-    <div id="detail-modal" class="modal" onclick="if (event.target.id === 'detail-modal') closeModal()">
+    <div id="detail-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="nav-buttons">
@@ -625,6 +651,16 @@
         let currentFilters = { search: '', types: [] };
         let allPokemon = [...pokemonData];
         let currentSelectedPokemon = null;
+
+        function updateDebug(msg) {
+            const bar = document.getElementById('debug-bar');
+            const text = document.getElementById('debug-text');
+            if (bar && text) {
+                bar.style.display = 'block';
+                text.textContent = msg;
+            }
+            console.log('[iOS Debug]', msg);
+        }
 
         function toggleFilterSection() {
             const section = document.getElementById('filter-section');
@@ -746,17 +782,27 @@
                     </div>
                 `;
                 
-                // DIRECT per-item listeners (more reliable on iOS than delegation)
-                item.addEventListener('click', () => {
+                // iOS-robust direct listeners
+                const handleSelect = (e) => {
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    
+                    // Visual feedback for iOS tap detection
+                    item.classList.add('tapped');
+                    setTimeout(() => {
+                        item.classList.remove('tapped');
+                    }, 180);
+                    
+                    updateDebug(`Tapped #${pokemon.national_dex} ${pokemon.name}`);
                     updateViewer(pokemon);
                     showDetail(pokemon);
-                });
+                };
                 
-                item.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    updateViewer(pokemon);
-                    showDetail(pokemon);
-                }, { passive: false });
+                item.addEventListener('click', handleSelect, { passive: false });
+                item.addEventListener('touchend', handleSelect, { passive: false });
+                item.addEventListener('pointerup', handleSelect, { passive: false });
                 
                 container.appendChild(item);
             });
@@ -885,6 +931,8 @@
             
             document.body.style.overflow = 'hidden';
             modal.classList.add('active');
+            
+            updateDebug(`Opened detail for #${pokemon.national_dex}`);
         }
 
         function navigateModal(direction) {
@@ -916,6 +964,7 @@
         function closeModal() {
             document.getElementById('detail-modal').classList.remove('active');
             document.body.style.overflow = '';
+            updateDebug('Closed modal');
         }
 
         function init() {
@@ -942,6 +991,22 @@
             if (prevBtn) prevBtn.addEventListener('click', () => navigateModal(-1));
             if (nextBtn) nextBtn.addEventListener('click', () => navigateModal(1));
             
+            // Modal background close (iOS friendly)
+            const modal = document.getElementById('detail-modal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target.id === 'detail-modal') {
+                        closeModal();
+                    }
+                });
+                modal.addEventListener('touchend', function(e) {
+                    if (e.target.id === 'detail-modal') {
+                        e.preventDefault();
+                        closeModal();
+                    }
+                }, { passive: false });
+            }
+            
             renderTypeFilters();
             
             setTimeout(() => {
@@ -953,7 +1018,45 @@
                 }
             }, 80);
             
-            console.log('%c[v1.9.1] Direct per-item tap listeners + immediate scroll center detection. This should finally work reliably.', 'color:#22C55E');
+            // Live scroll center detection (iOS optimized)
+            const listContainer = document.getElementById('pokemon-list');
+            if (listContainer) {
+                let rafId = null;
+                listContainer.addEventListener('scroll', function() {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = requestAnimationFrame(() => {
+                        const items = listContainer.querySelectorAll('.pokemon-list-item');
+                        if (items.length === 0) return;
+                        
+                        const containerRect = listContainer.getBoundingClientRect();
+                        const centerY = containerRect.top + containerRect.height / 2;
+                        
+                        let closest = null;
+                        let closestDist = Infinity;
+                        
+                        items.forEach(el => {
+                            const r = el.getBoundingClientRect();
+                            const dist = Math.abs((r.top + r.height / 2) - centerY);
+                            if (dist < closestDist) {
+                                closestDist = dist;
+                                closest = el;
+                            }
+                        });
+                        
+                        if (closest) {
+                            const dex = parseInt(closest.dataset.dex);
+                            const p = allPokemon.find(x => x.national_dex === dex);
+                            if (p && p !== currentSelectedPokemon) {
+                                updateViewer(p);
+                                updateDebug(`Scroll center: #${p.national_dex}`);
+                            }
+                        }
+                    });
+                }, { passive: true });
+            }
+            
+            updateDebug('iOS debug build ready - tap items to test');
+            console.log('%c[v1.9.2] iOS touch debug build loaded. Direct listeners + visual tap flash + debug bar active.', 'color:#22C55E');
         }
 
         window.onload = init;
