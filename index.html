@@ -520,7 +520,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.11 • Invisible spacer items</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.12 • 2 invisible items at top</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -571,7 +571,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.11 • Invisible spacer items
+            Offline Pokédex • v1.9.12 • 2 invisible items at top
         </div>
     </div>
 
@@ -769,8 +769,8 @@
                 return;
             }
             
-            // Add invisible spacer items at the top (instead of height spacers)
-            for (let i = 0; i < 3; i++) {
+            // 2 invisible items at the top
+            for (let i = 0; i < 2; i++) {
                 const spacer = document.createElement('div');
                 spacer.className = 'pokemon-list-item invisible-spacer';
                 spacer.style.height = '68px';
@@ -842,7 +842,7 @@
                 container.appendChild(item);
             });
             
-            // Add invisible spacer items at the bottom
+            // 3 invisible items at the bottom
             for (let i = 0; i < 3; i++) {
                 const spacer = document.createElement('div');
                 spacer.className = 'pokemon-list-item invisible-spacer';
@@ -1076,8 +1076,8 @@
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.11 - Using invisible list items for spacer instead of height divs');
-            console.log('%c[v1.9.11] Switched to invisible list items for better scroll behavior.', 'color:#22C55E');
+            updateDebug('v1.9.12 - 2 invisible items at top, 3 at bottom');
+            console.log('%c[v1.9.12] Adjusted to 2 invisible items at the top.', 'color:#22C55E');
         }
 
         window.onload = init;
