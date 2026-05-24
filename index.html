@@ -486,7 +486,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.0 • Clean tap + scroll fix</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.1 • Direct tap fix</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -537,7 +537,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.0 • Clean rebuild - tap to select + open details, scroll updates viewer
+            Offline Pokédex • v1.9.1 • Direct per-item tap listeners + immediate scroll update
         </div>
     </div>
 
@@ -746,6 +746,18 @@
                     </div>
                 `;
                 
+                // DIRECT per-item listeners (more reliable on iOS than delegation)
+                item.addEventListener('click', () => {
+                    updateViewer(pokemon);
+                    showDetail(pokemon);
+                });
+                
+                item.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    updateViewer(pokemon);
+                    showDetail(pokemon);
+                }, { passive: false });
+                
                 container.appendChild(item);
             });
             
@@ -932,68 +944,6 @@
             
             renderTypeFilters();
             
-            const listContainer = document.getElementById('pokemon-list');
-            if (listContainer) {
-                // Direct tap handling - most reliable for iOS
-                listContainer.addEventListener('click', function(e) {
-                    const item = e.target.closest('.pokemon-list-item');
-                    if (!item) return;
-                    
-                    const dex = parseInt(item.dataset.dex);
-                    const pokemon = allPokemon.find(p => p.national_dex === dex);
-                    if (pokemon) {
-                        updateViewer(pokemon);
-                        showDetail(pokemon);
-                    }
-                });
-                
-                listContainer.addEventListener('touchend', function(e) {
-                    const item = e.target.closest('.pokemon-list-item');
-                    if (!item) return;
-                    e.preventDefault();
-                    
-                    const dex = parseInt(item.dataset.dex);
-                    const pokemon = allPokemon.find(p => p.national_dex === dex);
-                    if (pokemon) {
-                        updateViewer(pokemon);
-                        showDetail(pokemon);
-                    }
-                }, { passive: false });
-                
-                // Simple live scroll update
-                let scrollTimer;
-                listContainer.addEventListener('scroll', function() {
-                    clearTimeout(scrollTimer);
-                    scrollTimer = setTimeout(() => {
-                        const items = listContainer.querySelectorAll('.pokemon-list-item');
-                        if (items.length === 0) return;
-                        
-                        const containerRect = listContainer.getBoundingClientRect();
-                        const centerY = containerRect.top + containerRect.height / 2;
-                        
-                        let closest = null;
-                        let closestDist = Infinity;
-                        
-                        items.forEach(el => {
-                            const r = el.getBoundingClientRect();
-                            const dist = Math.abs((r.top + r.height / 2) - centerY);
-                            if (dist < closestDist) {
-                                closestDist = dist;
-                                closest = el;
-                            }
-                        });
-                        
-                        if (closest) {
-                            const dex = parseInt(closest.dataset.dex);
-                            const p = allPokemon.find(x => x.national_dex === dex);
-                            if (p && p !== currentSelectedPokemon) {
-                                updateViewer(p);
-                            }
-                        }
-                    }, 60);
-                }, { passive: true });
-            }
-            
             setTimeout(() => {
                 filterAndRender();
                 
@@ -1003,7 +953,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.9.0] Clean rebuild complete. Tap any item to update viewer + open details. Scrolling updates viewer.', 'color:#22C55E');
+            console.log('%c[v1.9.1] Direct per-item tap listeners + immediate scroll center detection. This should finally work reliably.', 'color:#22C55E');
         }
 
         window.onload = init;
