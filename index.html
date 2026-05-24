@@ -7,11 +7,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
         
-        :root {
-            --pokedex-red: #C8102E;
-            --pokedex-dark-red: #8B0000;
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -102,13 +97,6 @@
                 flex: 0 0 auto;
                 padding: 6px 5px;
                 min-height: 175px;
-            }
-        }
-
-        @media (min-width: 641px) and (orientation: landscape) {
-            .viewer-panel {
-                flex: 0 0 360px;
-                max-width: 400px;
             }
         }
 
@@ -498,7 +486,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.9 • Live selector + tap fix</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.0 • Clean tap + scroll fix</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -549,7 +537,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.8.9 • Live scroll selector restored + tap-to-detail fixed
+            Offline Pokédex • v1.9.0 • Clean rebuild - tap to select + open details, scroll updates viewer
         </div>
     </div>
 
@@ -637,7 +625,6 @@
         let currentFilters = { search: '', types: [] };
         let allPokemon = [...pokemonData];
         let currentSelectedPokemon = null;
-        let liveUpdateEnabled = true;
 
         function toggleFilterSection() {
             const section = document.getElementById('filter-section');
@@ -721,46 +708,6 @@
             });
         }
 
-        function findPokemonInCenter() {
-            const container = document.getElementById('pokemon-list');
-            if (!container) return null;
-            
-            const items = container.querySelectorAll('.pokemon-list-item');
-            if (items.length === 0) return null;
-            
-            const containerRect = container.getBoundingClientRect();
-            const centerY = containerRect.top + containerRect.height / 2;
-            
-            let closest = null;
-            let closestDistance = Infinity;
-            
-            items.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                const itemCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(itemCenter - centerY);
-                
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closest = item;
-                }
-            });
-            
-            if (closest) {
-                const dex = parseInt(closest.dataset.dex);
-                return allPokemon.find(p => p.national_dex === dex);
-            }
-            return null;
-        }
-
-        function handleLiveScroll() {
-            if (!liveUpdateEnabled) return;
-            
-            const pokemon = findPokemonInCenter();
-            if (pokemon && pokemon !== currentSelectedPokemon) {
-                updateViewer(pokemon);
-            }
-        }
-
         function renderList(pokemonList) {
             const container = document.getElementById('pokemon-list');
             if (!container) return;
@@ -771,7 +718,6 @@
                 return;
             }
             
-            // Small top spacer
             const topSpacer = document.createElement('div');
             topSpacer.style.height = '18px';
             topSpacer.style.flexShrink = '0';
@@ -803,7 +749,6 @@
                 container.appendChild(item);
             });
             
-            // Small bottom spacer
             const bottomSpacer = document.createElement('div');
             bottomSpacer.style.height = '35px';
             bottomSpacer.style.flexShrink = '0';
@@ -989,7 +934,7 @@
             
             const listContainer = document.getElementById('pokemon-list');
             if (listContainer) {
-                // Tap to update viewer + open detail (robust for iOS)
+                // Direct tap handling - most reliable for iOS
                 listContainer.addEventListener('click', function(e) {
                     const item = e.target.closest('.pokemon-list-item');
                     if (!item) return;
@@ -1015,13 +960,37 @@
                     }
                 }, { passive: false });
                 
-                // Live scroll selector - updates viewer as you scroll
-                let scrollTimeout;
+                // Simple live scroll update
+                let scrollTimer;
                 listContainer.addEventListener('scroll', function() {
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        handleLiveScroll();
-                    }, 80);
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => {
+                        const items = listContainer.querySelectorAll('.pokemon-list-item');
+                        if (items.length === 0) return;
+                        
+                        const containerRect = listContainer.getBoundingClientRect();
+                        const centerY = containerRect.top + containerRect.height / 2;
+                        
+                        let closest = null;
+                        let closestDist = Infinity;
+                        
+                        items.forEach(el => {
+                            const r = el.getBoundingClientRect();
+                            const dist = Math.abs((r.top + r.height / 2) - centerY);
+                            if (dist < closestDist) {
+                                closestDist = dist;
+                                closest = el;
+                            }
+                        });
+                        
+                        if (closest) {
+                            const dex = parseInt(closest.dataset.dex);
+                            const p = allPokemon.find(x => x.national_dex === dex);
+                            if (p && p !== currentSelectedPokemon) {
+                                updateViewer(p);
+                            }
+                        }
+                    }, 60);
                 }, { passive: true });
             }
             
@@ -1034,7 +1003,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.8.9] Live scroll selector + robust tap-to-detail. List renders, scrolling updates viewer, tapping opens details.', 'color:#22C55E');
+            console.log('%c[v1.9.0] Clean rebuild complete. Tap any item to update viewer + open details. Scrolling updates viewer.', 'color:#22C55E');
         }
 
         window.onload = init;
