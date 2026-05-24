@@ -94,7 +94,7 @@
 
         @media (max-width: 640px) {
             .viewer-panel {
-                flex: 0 0 270px;           /* Even taller viewer in portrait */
+                flex: 0 0 270px;
                 min-height: 270px;
                 padding: 8px 6px;
             }
@@ -310,21 +310,6 @@
             flex-shrink: 0;
         }
 
-        .debug-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.92);
-            color: #22C55E;
-            font-size: 11px;
-            padding: 5px 8px;
-            text-align: center;
-            z-index: 2000;
-            font-family: monospace;
-            border-top: 1px solid #334155;
-        }
-
         .modal {
             position: fixed;
             top: 0;
@@ -513,7 +498,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.7 • Viewer taller + spacers</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.9.8 • Bigger spacers + no debug bar</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -564,13 +549,8 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.9.7 • Taller viewer + end spacers
+            Offline Pokédex • v1.9.8 • Bigger spacers + clean UI
         </div>
-    </div>
-
-    <!-- Debug bar -->
-    <div id="debug-bar" class="debug-bar" style="display: none;">
-        Last action: <span id="debug-text">none</span>
     </div>
 
     <!-- Detail Modal -->
@@ -660,16 +640,6 @@
         let touchStartY = 0;
         let touchStartTime = 0;
 
-        function updateDebug(msg) {
-            const bar = document.getElementById('debug-bar');
-            const text = document.getElementById('debug-text');
-            if (bar && text) {
-                bar.style.display = 'block';
-                text.textContent = msg;
-            }
-            console.log('[iOS Debug]', msg);
-        }
-
         function toggleFilterSection() {
             const section = document.getElementById('filter-section');
             if (!section) return;
@@ -730,8 +700,8 @@
             
             const spriteEl = document.getElementById('viewer-sprite');
             if (spriteEl) {
-                spriteEl.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
-                spriteEl.alt = pokemon.name;
+                sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
+                sprite.alt = pokemon.name;
             }
             
             const nameEl = document.getElementById('viewer-name');
@@ -762,9 +732,9 @@
                 return;
             }
             
-            // Bigger spacers so first/last items can reach the center selector
+            // Much bigger spacers so first and last items can reach the center selector
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '45px';
+            topSpacer.style.height = '70px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -816,7 +786,6 @@
                     item.classList.add('tapped');
                     setTimeout(() => item.classList.remove('tapped'), 220);
                     
-                    updateDebug(`Tapped #${pokemon.national_dex} ${pokemon.name}`);
                     updateViewer(pokemon);
                     
                     setTimeout(() => {
@@ -832,7 +801,7 @@
             });
             
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '65px';
+            bottomSpacer.style.height = '90px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -869,18 +838,9 @@
         function showDetail(pokemon) {
             try {
                 const modal = document.getElementById('detail-modal');
-                if (!modal) {
-                    updateDebug('ERROR: modal not found');
-                    return;
-                }
+                if (!modal) return;
                 
                 modal.dataset.currentDex = pokemon.national_dex;
-                
-                const dexEl = document.getElementById('modal-dex');
-                if (dexEl) dexEl.textContent = `#${String(pokemon.national_dex).padStart(3, '0')}`;
-                
-                const nameEl = document.getElementById('modal-name');
-                if (nameEl) nameEl.textContent = pokemon.name;
                 
                 const sprite = document.getElementById('modal-sprite');
                 if (sprite) {
@@ -956,11 +916,8 @@
                 modal.style.display = 'flex';
                 void modal.offsetHeight;
                 modal.classList.add('active');
-                
-                updateDebug(`Opened detail for #${pokemon.national_dex}`);
             } catch (err) {
-                updateDebug('ERROR in showDetail: ' + err.message);
-                console.error(err);
+                console.error('Error in showDetail:', err);
             }
         }
 
@@ -993,7 +950,6 @@
             modal.classList.remove('active');
             modal.style.display = 'none';
             document.body.style.overflow = '';
-            updateDebug('Closed modal');
         }
 
         function init() {
@@ -1052,15 +1008,13 @@
                             const p = allPokemon.find(x => x.national_dex === dex);
                             if (p && p !== currentSelectedPokemon) {
                                 updateViewer(p);
-                                updateDebug(`Scroll center: #${p.national_dex}`);
                             }
                         }
                     });
                 }, { passive: true });
             }
             
-            updateDebug('v1.9.7 ready - taller viewer + bigger end spacers');
-            console.log('%c[v1.9.7] Taller portrait viewer, reduced landscape width, bigger spacers for selector.', 'color:#22C55E');
+            console.log('%c[v1.9.8] Bigger spacers (70px top / 90px bottom) + debug bar removed.', 'color:#22C55E');
         }
 
         window.onload = init;
