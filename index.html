@@ -153,10 +153,6 @@
             }
         }
 
-        .selector-window {
-            display: none;
-        }
-
         .list-header {
             padding: 10px 14px;
             background: #111827;
@@ -501,7 +497,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.5 • iOS Tap Fix</div>
+                <div style="font-size: 9px; opacity: 0.85; margin-top: -2px;">OFFLINE • v1.8.6 • Cleanup &amp; Stabilization</div>
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:11px; padding:5px 10px;">🎲 Random</button>
@@ -543,8 +539,6 @@
                         </div>
                     </div>
                     
-                    <div class="selector-window"></div>
-                    
                     <div id="pokemon-list" class="scrollable-list">
                         <!-- Populated by JS -->
                     </div>
@@ -554,7 +548,7 @@
         </div>
 
         <div class="footer">
-            Offline Pokédex • v1.8.5 • iOS tap fix (touchend + click + touch-action)
+            Offline Pokédex • v1.8.6 • Cleaned up: Removed complex live selector, stabilized taps + scrolling
         </div>
     </div>
 
@@ -642,8 +636,6 @@
         let currentFilters = { search: '', types: [] };
         let allPokemon = [...pokemonData];
         let currentSelectedPokemon = null;
-        let rafId = null;
-        let isTouching = false;
 
         function filterAndRender() {
             let filtered = allPokemon;
@@ -665,7 +657,7 @@
             renderList(filtered);
         }
 
-        function updateViewer(pokemon, fromScroll = false) {
+        function updateViewer(pokemon) {
             if (!pokemon) return;
             currentSelectedPokemon = pokemon;
             
@@ -689,151 +681,8 @@
                 el.classList.remove('selected');
                 if (parseInt(el.dataset.dex) === pokemon.national_dex) {
                     el.classList.add('selected');
-                    if (!fromScroll) {
-                        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-                    }
                 }
             });
-        }
-
-        function getPokemonUnderSelectorWindow() {
-            const list = document.getElementById('pokemon-list');
-            if (!list) return null;
-            
-            const items = list.querySelectorAll('.pokemon-list-item');
-            if (items.length === 0) return null;
-            
-            const listRect = list.getBoundingClientRect();
-            
-            const windowTop = listRect.top + (listRect.height * 0.48) - 26;
-            const windowBottom = windowTop + 52;
-            const windowCenter = windowTop + 26;
-            
-            let best = null;
-            let bestScore = -1;
-            
-            items.forEach(item => {
-                const r = item.getBoundingClientRect();
-                if (r.bottom < listRect.top || r.top > listRect.bottom) return;
-                
-                const itemCenter = r.top + r.height / 2;
-                
-                const overlapTop = Math.max(r.top, windowTop);
-                const overlapBottom = Math.min(r.bottom, windowBottom);
-                const overlap = Math.max(0, overlapBottom - overlapTop);
-                
-                if (overlap > 0) {
-                    const dist = Math.abs(itemCenter - windowCenter);
-                    const score = overlap - (dist * 0.5);
-                    
-                    if (score > bestScore) {
-                        bestScore = score;
-                        best = item;
-                    }
-                }
-            });
-            
-            if (best) {
-                const dex = parseInt(best.dataset.dex);
-                return allPokemon.find(p => p.national_dex === dex);
-            }
-            
-            for (let item of items) {
-                const r = item.getBoundingClientRect();
-                if (r.top >= listRect.top && r.top < listRect.bottom) {
-                    const dex = parseInt(item.dataset.dex);
-                    return allPokemon.find(p => p.national_dex === dex);
-                }
-            }
-            return null;
-        }
-
-        function checkSelectorPosition() {
-            const pokemon = getPokemonUnderSelectorWindow();
-            if (pokemon && (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex)) {
-                updateViewer(pokemon, true);
-            }
-        }
-
-        function startLiveCheck() {
-            if (rafId) cancelAnimationFrame(rafId);
-            
-            function loop() {
-                checkSelectorPosition();
-                rafId = requestAnimationFrame(loop);
-            }
-            loop();
-        }
-
-        function stopLiveCheck() {
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-            }
-            setTimeout(checkSelectorPosition, 50);
-        }
-
-        function handleScroll() {
-            checkSelectorPosition();
-        }
-
-        function handleTouchMove() {
-            if (!isTouching) {
-                isTouching = true;
-                startLiveCheck();
-            }
-        }
-
-        function handleTouchEnd() {
-            isTouching = false;
-            stopLiveCheck();
-        }
-
-        function renderTypeFilters() {
-            const container = document.getElementById('type-filters');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            const allTypes = [...new Set(allPokemon.flatMap(p => p.types))].sort();
-            
-            allTypes.forEach(type => {
-                const pill = document.createElement('div');
-                pill.className = 'type-pill';
-                pill.textContent = type;
-                pill.style.backgroundColor = typeColors[type] || '#475569';
-                pill.style.borderColor = typeColors[type] || '#475569';
-                
-                pill.addEventListener('click', () => {
-                    if (currentFilters.types.includes(type)) {
-                        currentFilters.types = currentFilters.types.filter(t => t !== type);
-                        pill.classList.remove('active');
-                    } else {
-                        currentFilters.types.push(type);
-                        pill.classList.add('active');
-                    }
-                    filterAndRender();
-                });
-                
-                container.appendChild(pill);
-            });
-        }
-
-        function toggleFilterSection() {
-            const section = document.getElementById('filter-section');
-            const isOpen = section.classList.contains('open');
-            
-            if (!isOpen) {
-                section.classList.add('open');
-                document.getElementById('toggle-filter').innerHTML = '✕ Close';
-            } else {
-                section.classList.remove('open');
-                document.getElementById('toggle-filter').innerHTML = '🔍 Search / Filter';
-                currentFilters.search = '';
-                currentFilters.types = [];
-                document.getElementById('search-input').value = '';
-                document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
-                filterAndRender();
-            }
         }
 
         function renderList(pokemonList) {
@@ -846,8 +695,9 @@
                 return;
             }
             
+            // Top spacer for centering
             const topSpacer = document.createElement('div');
-            topSpacer.style.height = '148px';
+            topSpacer.style.height = '120px';
             topSpacer.style.flexShrink = '0';
             container.appendChild(topSpacer);
             
@@ -877,8 +727,9 @@
                 container.appendChild(item);
             });
             
+            // Bottom spacer
             const bottomSpacer = document.createElement('div');
-            bottomSpacer.style.height = '148px';
+            bottomSpacer.style.height = '120px';
             bottomSpacer.style.flexShrink = '0';
             container.appendChild(bottomSpacer);
             
@@ -1013,7 +864,6 @@
             
             let newIndex = currentIndex + direction;
             
-            // Wrap around
             if (newIndex < 0) newIndex = allPokemon.length - 1;
             if (newIndex >= allPokemon.length) newIndex = 0;
             
@@ -1049,13 +899,11 @@
                 });
             }
             
-            // Random button
             const randomBtn = document.getElementById('random-btn');
             if (randomBtn) {
                 randomBtn.addEventListener('click', showRandomPokemon);
             }
             
-            // Modal navigation buttons
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             if (prevBtn) prevBtn.addEventListener('click', () => navigateModal(-1));
@@ -1063,13 +911,14 @@
             
             renderTypeFilters();
             
-            // ROBUST MOBILE TAP HANDLING
+            // CLEAN &amp; RELIABLE TAP HANDLING
             const listContainer = document.getElementById('pokemon-list');
             if (listContainer) {
-                // Click handler
+                // Primary click handler
                 listContainer.addEventListener('click', function(e) {
                     const item = e.target.closest('.pokemon-list-item');
                     if (!item) return;
+                    
                     const dex = parseInt(item.dataset.dex);
                     const pokemon = allPokemon.find(p => p.national_dex === dex);
                     if (pokemon) {
@@ -1078,11 +927,12 @@
                     }
                 });
                 
-                // Touchend handler for iOS reliability
+                // iOS touchend backup
                 listContainer.addEventListener('touchend', function(e) {
                     const item = e.target.closest('.pokemon-list-item');
                     if (!item) return;
                     e.preventDefault();
+                    
                     const dex = parseInt(item.dataset.dex);
                     const pokemon = allPokemon.find(p => p.national_dex === dex);
                     if (pokemon) {
@@ -1090,11 +940,6 @@
                         showDetail(pokemon);
                     }
                 }, { passive: false });
-                
-                listContainer.addEventListener('scroll', handleScroll, { passive: true });
-                listContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
-                listContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
-                listContainer.addEventListener('touchcancel', handleTouchEnd, { passive: true });
             }
             
             setTimeout(() => {
@@ -1106,7 +951,7 @@
                 }
             }, 80);
             
-            console.log('%c[v1.8.5] Added touchend + touch-action: manipulation for reliable iOS taps.', 'color:#22C55E');
+            console.log('%c[v1.8.6] Cleanup release: Removed complex live selector logic. Clean tap handling + normal scrolling restored.', 'color:#22C55E');
         }
 
         window.onload = init;
