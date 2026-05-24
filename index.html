@@ -77,7 +77,7 @@
         <div class="pokedex-header">
             <div>
                 <h1>POKÉDEX</h1>
-                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v2.0.15 • #001–#151 COMPLETE</div>
+                <div style="font-size: 8px; opacity: 0.85; margin-top: -2px;">OFFLINE • v3.0 • Phase 1 Test</div>
             </div>
             <div style="display: flex; gap: 7px; align-items: center;">
                 <button id="random-btn" class="nav-btn" style="font-size:10px; padding:4px 9px;">🎲 Random</button>
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="footer">Offline Pokédex • v2.0.15 • #001–#151 COMPLETE</div>
+        <div class="footer">Offline Pokédex • v3.0 • Phase 1 Test (Bulbasaur line migrated)</div>
     </div>
 
     <div id="detail-modal" class="modal">
@@ -136,10 +136,101 @@
 
     <script>
         const pokemonData = [
-            // #001 - #135 (stable from v2.0.14)
-            {"national_dex":1,"name":"Bulbasaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45},"entry":"A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Growl"},{"level":3,"name":"Vine Whip"},{"level":7,"name":"Growth"},{"level":9,"name":"Leech Seed"},{"level":13,"name":"Razor Leaf"},{"level":15,"name":"Poison Powder"},{"level":19,"name":"Sleep Powder"},{"level":21,"name":"Seed Bomb"},{"level":25,"name":"Take Down"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Rage","Mega Drain","Solar Beam","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Cut"],"egg":["Light Screen","Skull Bash","Safeguard","Charm","Magical Leaf"]}},
-            {"national_dex":2,"name":"Ivysaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":60,"attack":62,"defense":63,"special_attack":80,"special_defense":80,"speed":60},"entry":"When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Growl"},{"level":1,"name":"Vine Whip"},{"level":3,"name":"Vine Whip"},{"level":7,"name":"Growth"},{"level":9,"name":"Leech Seed"},{"level":13,"name":"Razor Leaf"},{"level":15,"name":"Poison Powder"},{"level":20,"name":"Sleep Powder"},{"level":23,"name":"Seed Bomb"},{"level":28,"name":"Take Down"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Rage","Mega Drain","Solar Beam","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Cut"],"egg":["Light Screen","Skull Bash","Safeguard","Charm","Magical Leaf"]}},
-            {"national_dex":3,"name":"Venusaur","types":["Grass","Poison"],"abilities":["Overgrow","Chlorophyll"],"base_stats":{"hp":80,"attack":82,"defense":83,"special_attack":100,"special_defense":100,"speed":80},"entry":"The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Growl"},{"level":1,"name":"Vine Whip"},{"level":3,"name":"Vine Whip"},{"level":7,"name":"Growth"},{"level":9,"name":"Leech Seed"},{"level":13,"name":"Razor Leaf"},{"level":15,"name":"Poison Powder"},{"level":20,"name":"Sleep Powder"},{"level":23,"name":"Seed Bomb"},{"level":28,"name":"Take Down"},{"level":31,"name":"Sweet Scent"},{"level":39,"name":"Synthesis"},{"level":45,"name":"Petal Dance"},{"level":50,"name":"Solar Beam"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Hyper Beam","Rage","Mega Drain","Solar Beam","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Cut"],"egg":["Light Screen","Skull Bash","Safeguard","Charm","Magical Leaf"]}},
+            // === PHASE 1 TEST: Bulbasaur line migrated to new structure ===
+            {
+                national_dex: 1,
+                name: "Bulbasaur",
+                types: ["Grass", "Poison"],
+                abilities: ["Overgrow", "Chlorophyll"],
+                generations: {
+                    "1": {
+                        sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+                        base_stats: { hp: 45, attack: 49, defense: 49, special_attack: 65, special_defense: 65, speed: 45 },
+                        entry: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
+                        moves: {
+                            level_up: [
+                                { level: 1, name: "Tackle" },
+                                { level: 1, name: "Growl" },
+                                { level: 3, name: "Vine Whip" },
+                                { level: 7, name: "Growth" },
+                                { level: 9, name: "Leech Seed" },
+                                { level: 13, name: "Razor Leaf" },
+                                { level: 15, name: "Poison Powder" },
+                                { level: 19, name: "Sleep Powder" },
+                                { level: 21, name: "Seed Bomb" },
+                                { level: 25, name: "Take Down" }
+                            ],
+                            tm: ["Swords Dance", "Toxic", "Body Slam", "Take Down", "Double-Edge", "Rage", "Mega Drain", "Solar Beam", "Mimic", "Double Team", "Reflect", "Bide", "Rest", "Substitute", "Cut"],
+                            egg: ["Light Screen", "Skull Bash", "Safeguard", "Charm", "Magical Leaf"]
+                        }
+                    }
+                }
+            },
+            {
+                national_dex: 2,
+                name: "Ivysaur",
+                types: ["Grass", "Poison"],
+                abilities: ["Overgrow", "Chlorophyll"],
+                generations: {
+                    "1": {
+                        sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+                        base_stats: { hp: 60, attack: 62, defense: 63, special_attack: 80, special_defense: 80, speed: 60 },
+                        entry: "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
+                        moves: {
+                            level_up: [
+                                { level: 1, name: "Tackle" },
+                                { level: 1, name: "Growl" },
+                                { level: 1, name: "Vine Whip" },
+                                { level: 3, name: "Vine Whip" },
+                                { level: 7, name: "Growth" },
+                                { level: 9, name: "Leech Seed" },
+                                { level: 13, name: "Razor Leaf" },
+                                { level: 15, name: "Poison Powder" },
+                                { level: 20, name: "Sleep Powder" },
+                                { level: 23, name: "Seed Bomb" },
+                                { level: 28, name: "Take Down" }
+                            ],
+                            tm: ["Swords Dance", "Toxic", "Body Slam", "Take Down", "Double-Edge", "Rage", "Mega Drain", "Solar Beam", "Mimic", "Double Team", "Reflect", "Bide", "Rest", "Substitute", "Cut"],
+                            egg: ["Light Screen", "Skull Bash", "Safeguard", "Charm", "Magical Leaf"]
+                        }
+                    }
+                }
+            },
+            {
+                national_dex: 3,
+                name: "Venusaur",
+                types: ["Grass", "Poison"],
+                abilities: ["Overgrow", "Chlorophyll"],
+                generations: {
+                    "1": {
+                        sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+                        base_stats: { hp: 80, attack: 82, defense: 83, special_attack: 100, special_defense: 100, speed: 80 },
+                        entry: "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.",
+                        moves: {
+                            level_up: [
+                                { level: 1, name: "Tackle" },
+                                { level: 1, name: "Growl" },
+                                { level: 1, name: "Vine Whip" },
+                                { level: 3, name: "Vine Whip" },
+                                { level: 7, name: "Growth" },
+                                { level: 9, name: "Leech Seed" },
+                                { level: 13, name: "Razor Leaf" },
+                                { level: 15, name: "Poison Powder" },
+                                { level: 20, name: "Sleep Powder" },
+                                { level: 23, name: "Seed Bomb" },
+                                { level: 28, name: "Take Down" },
+                                { level: 31, name: "Sweet Scent" },
+                                { level: 39, name: "Synthesis" },
+                                { level: 45, name: "Petal Dance" },
+                                { level: 50, name: "Solar Beam" }
+                            ],
+                            tm: ["Swords Dance", "Toxic", "Body Slam", "Take Down", "Double-Edge", "Hyper Beam", "Rage", "Mega Drain", "Solar Beam", "Mimic", "Double Team", "Reflect", "Bide", "Rest", "Substitute", "Cut"],
+                            egg: ["Light Screen", "Skull Bash", "Safeguard", "Charm", "Magical Leaf"]
+                        }
+                    }
+                }
+            },
+            // === OLD FORMAT POKÉMON (unchanged for now) ===
             {"national_dex":4,"name":"Charmander","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":39,"attack":52,"defense":43,"special_attack":60,"special_defense":50,"speed":65},"entry":"Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Growl"},{"level":4,"name":"Ember"},{"level":8,"name":"Smokescreen"},{"level":12,"name":"Dragon Breath"},{"level":17,"name":"Fire Fang"},{"level":20,"name":"Slash"},{"level":24,"name":"Flamethrower"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Submission","Counter","Seismic Toss","Rage","Dragon Rage","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute","Cut"],"egg":["Belly Drum","Ancient Power","Beat Up","Bite","Counter"]}},
             {"national_dex":5,"name":"Charmeleon","types":["Fire"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":58,"attack":64,"defense":58,"special_attack":80,"special_defense":65,"speed":80},"entry":"Toughens its fighting spirit by battling with many other Pokémon. It spits fire from its mouth.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Growl"},{"level":1,"name":"Ember"},{"level":4,"name":"Ember"},{"level":8,"name":"Smokescreen"},{"level":12,"name":"Dragon Breath"},{"level":19,"name":"Fire Fang"},{"level":23,"name":"Slash"},{"level":28,"name":"Flamethrower"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Submission","Counter","Seismic Toss","Rage","Dragon Rage","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute","Cut"],"egg":["Belly Drum","Ancient Power","Beat Up","Bite","Counter"]}},
             {"national_dex":6,"name":"Charizard","types":["Fire","Flying"],"abilities":["Blaze","Solar Power"],"base_stats":{"hp":78,"attack":84,"defense":78,"special_attack":109,"special_defense":85,"speed":100},"entry":"Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.","moves":{"level_up":[{"level":1,"name":"Scratch"},{"level":1,"name":"Growl"},{"level":1,"name":"Ember"},{"level":1,"name":"Wing Attack"},{"level":4,"name":"Ember"},{"level":8,"name":"Smokescreen"},{"level":12,"name":"Dragon Breath"},{"level":19,"name":"Fire Fang"},{"level":23,"name":"Slash"},{"level":28,"name":"Flamethrower"}],"tm":["Swords Dance","Toxic","Body Slam","Take Down","Double-Edge","Hyper Beam","Submission","Counter","Seismic Toss","Rage","Dragon Rage","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute","Cut","Fly"],"egg":["Belly Drum","Ancient Power","Beat Up","Bite","Counter"]}},
@@ -272,7 +363,6 @@
             {"national_dex":133,"name":"Eevee","types":["Normal"],"abilities":["Run Away","Adaptability"],"base_stats":{"hp":55,"attack":55,"defense":50,"special_attack":45,"special_defense":65,"speed":55},"entry":"Its genetic code is irregular. It may mutate if it is exposed to radiation from element stones.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Growl"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Bite"},{"level":36,"name":"Focus Energy"},{"level":42,"name":"Take Down"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Rage","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Substitute"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
             {"national_dex":134,"name":"Vaporeon","types":["Water"],"abilities":["Water Absorb"],"base_stats":{"hp":130,"attack":65,"defense":60,"special_attack":110,"special_defense":95,"speed":65},"entry":"Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":1,"name":"Water Gun"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Water Gun"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Bite"},{"level":36,"name":"Acid Armor"},{"level":42,"name":"Haze"},{"level":47,"name":"Mist"},{"level":52,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Substitute","Surf"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
             {"national_dex":135,"name":"Jolteon","types":["Electric"],"abilities":["Volt Absorb"],"base_stats":{"hp":65,"attack":65,"defense":60,"special_attack":110,"special_defense":95,"speed":130},"entry":"It accumulates negative ions in the atmosphere to blast out 10,000-volt lightning bolts.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":1,"name":"Thunder Shock"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Thunder Shock"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Double Kick"},{"level":36,"name":"Pin Missile"},{"level":42,"name":"Thunder Wave"},{"level":47,"name":"Agility"},{"level":52,"name":"Thunder"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Thunder Wave","Substitute"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
-            // #136 - #151 added in v2.0.15 (FINAL BATCH - 151 COMPLETE)
             {"national_dex":136,"name":"Flareon","types":["Fire"],"abilities":["Flash Fire"],"base_stats":{"hp":65,"attack":130,"defense":60,"special_attack":95,"special_defense":110,"speed":65},"entry":"When storing thermal energy in its body, its temperature can soar to over 1,600 degrees.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Tail Whip"},{"level":1,"name":"Ember"},{"level":8,"name":"Sand Attack"},{"level":16,"name":"Ember"},{"level":23,"name":"Quick Attack"},{"level":30,"name":"Bite"},{"level":36,"name":"Fire Spin"},{"level":42,"name":"Smog"},{"level":47,"name":"Leer"},{"level":52,"name":"Flamethrower"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Rage","Dig","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute"],"egg":["Charm","Covet","Curse","Detect","Endure"]}},
             {"national_dex":137,"name":"Porygon","types":["Normal"],"abilities":["Trace","Download"],"base_stats":{"hp":65,"attack":60,"defense":70,"special_attack":85,"special_defense":75,"speed":40},"entry":"A Pokémon that consists entirely of programming code. Capable of moving freely in cyberspace.","moves":{"level_up":[{"level":1,"name":"Tackle"},{"level":1,"name":"Sharpen"},{"level":1,"name":"Conversion"},{"level":1,"name":"Psybeam"},{"level":23,"name":"Recover"},{"level":28,"name":"Sharpen"},{"level":35,"name":"Tri Attack"},{"level":42,"name":"Agility"}],"tm":["Toxic","Take Down","Double-Edge","Ice Bean","Blizzard","Hyper Bean","Rage","Thunderbolt","Thunder","Psychic","Mimic","Double Team","Reflect","Bide","Swift","Skull Bash","Rest","Thunder Wave","Psywave","Tri Attack","Substitute","Flash"],"egg":[]}},
             {"national_dex":138,"name":"Omanyte","types":["Rock","Water"],"abilities":["Swift Swim","Shell Armor"],"base_stats":{"hp":35,"attack":40,"defense":100,"special_attack":90,"special_defense":55,"speed":35},"entry":"Although long extinct, in rare cases, it can be genetically resurrected from fossils.","moves":{"level_up":[{"level":1,"name":"Constrict"},{"level":1,"name":"Withdraw"},{"level":13,"name":"Bite"},{"level":19,"name":"Water Gun"},{"level":25,"name":"Mud Shot"},{"level":31,"name":"Leer"},{"level":37,"name":"Protect"},{"level":43,"name":"Ancient Power"},{"level":49,"name":"Hydro Pump"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Mimic","Double Team","Reflect","Bide","Rest","Substitute","Surf"],"egg":["Aurora Beam","Bubble Bean","Haze","Slam","Supersonic"]}},
@@ -286,10 +376,31 @@
             {"national_dex":146,"name":"Moltres","types":["Fire","Flying"],"abilities":["Pressure"],"base_stats":{"hp":90,"attack":100,"defense":90,"special_attack":125,"special_defense":85,"speed":90},"entry":"Known as the legendary bird of fire. Every flap of its wings creates a dazzling flash of flames.","moves":{"level_up":[{"level":1,"name":"Wing Attack"},{"level":1,"name":"Ember"},{"level":13,"name":"Fire Spin"},{"level":25,"name":"Agility"},{"level":37,"name":"Endure"},{"level":49,"name":"Flamethrower"},{"level":61,"name":"Safeguard"},{"level":73,"name":"Sky Attack"}],"tm":["Toxic","Take Down","Double-Edge","Hyper Bean","Rage","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Substitute","Fly"],"egg":[]}},
             {"national_dex":147,"name":"Dratini","types":["Dragon"],"abilities":["Shed Skin"],"base_stats":{"hp":41,"attack":64,"defense":45,"special_attack":50,"special_defense":50,"speed":50},"entry":"Long considered a mythical Pokémon until recently when a small colony was found living underwater.","moves":{"level_up":[{"level":1,"name":"Wrap"},{"level":1,"name":"Leer"},{"level":8,"name":"Thunder Wave"},{"level":15,"name":"Twister"},{"level":22,"name":"Dragon Rage"},{"level":29,"name":"Slam"},{"level":36,"name":"Agility"},{"level":43,"name":"Safeguard"},{"level":50,"name":"Outrage"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Thunder Wave","Substitute","Surf"],"egg":["Extreme Speed","Haze","Mist","Supersonic"]}},
             {"national_dex":148,"name":"Dragonair","types":["Dragon"],"abilities":["Shed Skin"],"base_stats":{"hp":61,"attack":84,"defense":65,"special_attack":70,"special_defense":70,"speed":70},"entry":"A mystical Pokémon that exudes a gentle aura. Has the ability to change weather conditions.","moves":{"level_up":[{"level":1,"name":"Wrap"},{"level":1,"name":"Leer"},{"level":1,"name":"Thunder Wave"},{"level":1,"name":"Twister"},{"level":15,"name":"Twister"},{"level":22,"name":"Dragon Rage"},{"level":29,"name":"Slam"},{"level":38,"name":"Agility"},{"level":47,"name":"Safeguard"},{"level":56,"name":"Outrage"}],"tm":["Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Thunder Wave","Substitute","Surf"],"egg":["Extreme Speed","Haze","Mist","Supersonic"]}},
-            {"national_dex":149,"name":"Dragonite","types":["Dragon","Flying"],"abilities":["Inner Focus"],"base_stats":{"hp":91,"attack":134,"defense":95,"special_attack":100,"special_defense":100,"speed":80},"entry":"An extremely rarely seen marine Pokémon. Its intelligence is said to match that of humans.","moves":{"level_up":[{"level":1,"name":"Wrap"},{"level":1,"name":"Leer"},{"level":1,"name":"Thunder Wave"},{"level":1,"name":"Twister"},{"level":1,"name":"Dragon Rage"},{"level":22,"name":"Dragon Rage"},{"level":29,"name":"Slam"},{"level":38,"name":"Agility"},{"level":47,"name":"Safeguard"},{"level":55,"name":"Wing Attack"},{"level":61,"name":"Outrage"},{"level":75,"name":"Hyper Beam"}],"tm":["Mega Punch","Mega Kick","Toxic","Horn Drill","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Pay Day","Submission","Seismic Toss","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Thunder Wave","Substitute","Surf","Strength","Fly"],"egg":["Extreme Speed","Haze","Mist","Supersonic"]}},
+            {"national_dex":149,"name":"Dragonite","types":["Dragon","Flying"],"abilities":["Inner Focus"],"base_stats":{"hp":91,"attack":134,"defense":95,"special_attack":100,"special_defense":100,"speed":80},"entry":"An extremely rarely seen marine Pokémon. Its intelligence is said to match that of humans.","moves":{"level_up":[{"level":1,"name":"Wrap"},{"level":1,"name":"Leer"},{"level":1,"name":"Thunder Wave"},{"level":1,"name":"Twister"},{"level":1,"name":"Dragon Rage"},{"level":22,"name":"Dragon Rage"},{"level":29,"name":"Slam"},{"level":38,"name":"Agility"},{"level":47,"name":"Safeguard"},{"level":55,"name":"Wing Attack"},{"level":61,"name":"Outrage"},{"level":75,"name":"Hyper Beam"}],"tm":["Mega Punch","Mega Kick","Toxic","Horn Drill","Body Slam","Take Down","Double-Edge","Hyper Bean","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Submission","Seismic Toss","Rage","Thunderbolt","Thunder","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Thunder Wave","Substitute","Surf","Strength","Fly"],"egg":["Extreme Speed","Haze","Mist","Supersonic"]}},
             {"national_dex":150,"name":"Mewtwo","types":["Psychic"],"abilities":["Pressure"],"base_stats":{"hp":106,"attack":110,"defense":90,"special_attack":154,"special_defense":90,"speed":130},"entry":"It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.","moves":{"level_up":[{"level":1,"name":"Confusion"},{"level":1,"name":"Disable"},{"level":11,"name":"Barrier"},{"level":22,"name":"Swift"},{"level":33,"name":"Psychic"},{"level":44,"name":"Recover"},{"level":55,"name":"Mist"},{"level":66,"name":"Amnesia"},{"level":77,"name":"Psychic"},{"level":88,"name":"Future Sight"}],"tm":["Mega Punch","Mega Kick","Toxic","Body Slam","Take Down","Double-Edge","Hyper Bean","Pay Day","Submission","Counter","Seismic Toss","Rage","Thunderbolt","Thunder","Psychic","Mimic","Double Team","Reflect","Bide","Fire Blast","Skull Bash","Rest","Thunder Wave","Psywave","Tri Attack","Substitute","Strength","Flash"],"egg":[]}},
             {"national_dex":151,"name":"Mew","types":["Psychic"],"abilities":["Synchronize"],"base_stats":{"hp":100,"attack":100,"defense":100,"special_attack":100,"special_defense":100,"speed":100},"entry":"So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.","moves":{"level_up":[{"level":1,"name":"Pound"},{"level":10,"name":"Transform"},{"level":20,"name":"Mega Punch"},{"level":30,"name":"Metronome"},{"level":40,"name":"Psychic"},{"level":50,"name":"Ancient Power"}],"tm":["Mega Punch","Mega Kick","Toxic","Horn Drill","Body Slam","Take Down","Double-Edge","Bubble Bean","Ice Bean","Blizzard","Hyper Bean","Pay Day","Submission","Counter","Seismic Toss","Rage","Mega Drain","Solar Bean","Thunderbolt","Thunder","Dig","Psychic","Mimic","Double Team","Reflect","Bide","Fire Blast","Swift","Skull Bash","Rest","Thunder Wave","Psywave","Tri Attack","Substitute","Cut","Fly","Surf","Strength","Flash"],"egg":[]}}
         ];
+
+        // Helper function to get data from either old or new format
+        function getPokemonData(pokemon) {
+            if (pokemon.generations && pokemon.generations["1"]) {
+                const gen1 = pokemon.generations["1"];
+                return {
+                    sprite: gen1.sprite,
+                    base_stats: gen1.base_stats,
+                    entry: gen1.entry,
+                    moves: gen1.moves
+                };
+            } else {
+                // Old format fallback
+                return {
+                    sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`,
+                    base_stats: pokemon.base_stats,
+                    entry: pokemon.entry,
+                    moves: pokemon.moves
+                };
+            }
+        }
 
         const typeColors = { 'Grass': '#22C55E', 'Poison': '#A855F7', 'Fire': '#EF4444', 'Flying': '#3B82F6', 'Water': '#3B82F6', 'Bug': '#84CC16', 'Normal': '#A3A3A3', 'Electric': '#EAB308', 'Ground': '#CA8A04', 'Rock': '#78716C', 'Fighting': '#F97316', 'Psychic': '#EC4899', 'Ghost': '#6366F1', 'Ice': '#67E8F9', 'Dragon': '#8B5CF6', 'Dark': '#334155', 'Steel': '#71717A', 'Fairy': '#F472B6' };
 
@@ -348,12 +459,17 @@
         function updateViewer(pokemon) {
             if (!pokemon) return;
             currentSelectedPokemon = pokemon;
+            const data = getPokemonData(pokemon);
+            
             const spriteEl = document.getElementById('viewer-sprite');
-            if (spriteEl) { spriteEl.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`; spriteEl.alt = pokemon.name; }
+            if (spriteEl) { spriteEl.src = data.sprite; spriteEl.alt = pokemon.name; }
+            
             const nameEl = document.getElementById('viewer-name');
             if (nameEl) nameEl.textContent = pokemon.name;
+            
             const typesContainer = document.getElementById('viewer-types');
             if (typesContainer) { typesContainer.innerHTML = pokemon.types.map(type => `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 9px; border-radius: 5px; font-size: 11px;">${type}</span>`).join(''); }
+            
             document.querySelectorAll('.pokemon-list-item').forEach(el => { el.classList.remove('selected'); if (parseInt(el.dataset.dex) === pokemon.national_dex) el.classList.add('selected'); });
         }
 
@@ -425,14 +541,20 @@
             const modal = document.getElementById('detail-modal');
             if (!modal) return;
             modal.dataset.currentDex = pokemon.national_dex;
+            
+            const data = getPokemonData(pokemon);
+            
             const sprite = document.getElementById('modal-sprite');
-            if (sprite) { sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`; sprite.alt = pokemon.name; }
+            if (sprite) { sprite.src = data.sprite; sprite.alt = pokemon.name; }
+            
             const typesContainer = document.getElementById('modal-types');
             if (typesContainer) { typesContainer.innerHTML = pokemon.types.map(type => `<span style="background-color: ${typeColors[type] || '#64748B'}; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px;">${type}</span>`).join(''); }
+            
             const abilitiesContainer = document.getElementById('modal-abilities');
             if (abilitiesContainer) { abilitiesContainer.innerHTML = pokemon.abilities.map(ability => `<span style="background:#0F172A; padding:2px 8px; border-radius:4px; font-size:12px;">${ability}</span>`).join(''); }
+            
             const statsContainer = document.getElementById('modal-stats');
-            if (statsContainer) { statsContainer.innerHTML = ''; const statNames = { hp: 'HP', attack: 'Attack', defense: 'Defense', special_attack: 'Sp. Atk', special_defense: 'Sp. Def', speed: 'Speed' }; Object.keys(pokemon.base_stats).forEach(statKey => { const value = pokemon.base_stats[statKey]; const percentage = Math.min((value / 180) * 100, 100); const row = document.createElement('div'); row.className = 'stat-row'; row.innerHTML = `<div class="stat-label">${statNames[statKey]}</div><div class="stat-bar-container"><div class="stat-bar" style="width: ${percentage}%"></div></div><div class="stat-value">${value}</div>`; statsContainer.appendChild(row); }); }
+            if (statsContainer) { statsContainer.innerHTML = ''; const statNames = { hp: 'HP', attack: 'Attack', defense: 'Defense', special_attack: 'Sp. Atk', special_defense: 'Sp. Def', speed: 'Speed' }; Object.keys(data.base_stats).forEach(statKey => { const value = data.base_stats[statKey]; const percentage = Math.min((value / 180) * 100, 100); const row = document.createElement('div'); row.className = 'stat-row'; row.innerHTML = `<div class="stat-label">${statNames[statKey]}</div><div class="stat-bar-container"><div class="stat-bar" style="width: ${percentage}%"></div></div><div class="stat-value">${value}</div>`; statsContainer.appendChild(row); }); }
             
             const effContainer = document.getElementById('modal-effectiveness');
             if (effContainer) {
@@ -453,13 +575,17 @@
             }
             
             const entryContainer = document.getElementById('modal-entry');
-            if (entryContainer) { entryContainer.textContent = pokemon.entry || 'Pokédex entry coming soon.'; }
+            if (entryContainer) { entryContainer.textContent = data.entry || 'Pokédex entry coming soon.'; }
+            
             const levelupContainer = document.getElementById('modal-moves-levelup');
-            if (levelupContainer) { levelupContainer.innerHTML = (pokemon.moves && pokemon.moves.level_up && pokemon.moves.level_up.length > 0) ? pokemon.moves.level_up.map(m => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">Lv${m.level} ${m.name}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No level-up moves.</span>'; }
+            if (levelupContainer) { levelupContainer.innerHTML = (data.moves && data.moves.level_up && data.moves.level_up.length > 0) ? data.moves.level_up.map(m => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">Lv${m.level} ${m.name}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No level-up moves.</span>'; }
+            
             const tmContainer = document.getElementById('modal-moves-tm');
-            if (tmContainer) { tmContainer.innerHTML = (pokemon.moves && pokemon.moves.tm && pokemon.moves.tm.length > 0) ? pokemon.moves.tm.map(move => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">${move}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No TM data yet.</span>'; }
+            if (tmContainer) { tmContainer.innerHTML = (data.moves && data.moves.tm && data.moves.tm.length > 0) ? data.moves.tm.map(move => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">${move}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No TM data yet.</span>'; }
+            
             const eggContainer = document.getElementById('modal-moves-egg');
-            if (eggContainer) { eggContainer.innerHTML = (pokemon.moves && pokemon.moves.egg && pokemon.moves.egg.length > 0) ? pokemon.moves.egg.map(move => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">${move}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No egg moves.</span>'; }
+            if (eggContainer) { eggContainer.innerHTML = (data.moves && data.moves.egg && data.moves.egg.length > 0) ? data.moves.egg.map(move => `<span style="display:inline-block; background:#1E2937; margin:2px 3px; padding:2px 7px; border-radius:4px; font-size:11px;">${move}</span>`).join('') : '<span style="color:#64748B; font-size:11px;">No egg moves.</span>'; }
+            
             document.body.style.overflow = 'hidden';
             modal.style.display = 'flex';
             void modal.offsetHeight;
@@ -530,7 +656,7 @@
                 }, { passive: true });
             }
             
-            console.log('%c[v2.0.15] FINAL BATCH: #136–#151 added. KANTO DEX COMPLETE (151/151).', 'color:#22C55E');
+            console.log('%c[v3.0] Phase 1 Test: Bulbasaur, Ivysaur, Venusaur migrated to new generations structure.', 'color:#22C55E');
         }
 
         window.onload = init;
