@@ -1,0 +1,16 @@
+{
+  "name": "Offline Pokédex",
+  "short_name": "Pokédex",
+  "description": "Offline-capable Pokédex with full Gen 1 data",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#C8102E",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
