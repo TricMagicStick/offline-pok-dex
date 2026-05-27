@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -60,7 +60,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .split-container { flex-direction: column; gap: 8px; }
+  .split-container { flex-direction: column-reverse; gap: 8px; }
 }
 
 .viewer-panel {
