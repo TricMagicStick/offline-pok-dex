@@ -63,7 +63,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.4 live selector + mobile viewer primary
+      Fully offline • Data from PokéAPI + Gen 1 moves • v3.5 live selector improved + mobile viewer primary
     </div>
   </div>
 
@@ -118,8 +118,9 @@
 
   <script>
     // ============================================
-    // STABILIZED OFFLINE POKÉDEX - v3.4
-    // A + B: Mobile viewer primary (no auto-modal) + enhanced live scrolling selector
+    // STABILIZED OFFLINE POKÉDEX - v3.5
+    // Live selector improved: highlight persists after filter, initial state highlighted, stronger scroll
+    // Mobile: viewer primary + Full details button
     // ============================================
 
     let pokemonData = [];
@@ -130,6 +131,13 @@
 
     function isMobile() {
       return window.matchMedia('(max-width: 640px)').matches;
+    }
+
+    function highlightCurrentSelection() {
+      if (!currentSelectedPokemon) return;
+      document.querySelectorAll('.pokemon-list-item').forEach(el => {
+        el.classList.toggle('selected', parseInt(el.dataset.dex) === currentSelectedPokemon.national_dex);
+      });
     }
 
     // Load data from external file (keeps index.html clean)
@@ -273,6 +281,7 @@
         return matchesSearch && matchesType;
       });
       renderList();
+      highlightCurrentSelection(); // keep selection live after filtering/search
     }
 
     function toggleFilters() {
@@ -286,16 +295,16 @@
       // Clear previous highlight
       document.querySelectorAll('.pokemon-list-item').forEach(el => el.classList.remove('selected'));
 
-      // Find and highlight + smooth scroll (B: better live scrolling selector)
+      // Find and highlight + smooth scroll (stronger live selector)
       const listItem = document.querySelector(`.pokemon-list-item[data-dex="${pokemon.national_dex}"]`);
       if (listItem) {
         listItem.classList.add('selected');
-        listItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       updateViewerPanel(pokemon);
 
-      // A: On mobile keep viewer as primary live detail (no auto modal). On desktop open rich modal.
+      // On mobile: viewer is primary live detail. On desktop: also open rich modal.
       if (!isMobile()) {
         showDetail(pokemon);
       }
@@ -314,7 +323,7 @@
         <div style="margin-top:8px; font-size:11px; color:#94A3B8;">#${String(pokemon.national_dex).padStart(3,'0')}</div>
       `;
 
-      // A: Add "Full details" button so mobile users can still open the rich modal (moves + Gen tabs)
+      // "Full details" button for mobile (opens modal for moves + Gen tabs)
       const detailsBtn = document.createElement('button');
       detailsBtn.textContent = 'Full details & moves →';
       detailsBtn.className = 'nav-btn';
@@ -468,11 +477,13 @@
 
       if (pokemonData.length > 0) {
         setTimeout(() => {
+          currentSelectedPokemon = pokemonData[0];
           updateViewerPanel(pokemonData[0]);
+          highlightCurrentSelection();
         }, 300);
       }
 
-      console.log('%c[ Pokédex ] v3.4 - Live selector + mobile viewer primary ready', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.5 - Live selector improved + mobile viewer primary ready', 'color:#22c55e');
     }
 
     init();
