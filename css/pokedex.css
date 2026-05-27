@@ -63,6 +63,10 @@ body {
   .split-container { flex-direction: column-reverse; gap: 8px; }
 }
 
+@media (min-width: 641px) {
+  .split-container { flex-direction: row-reverse; }
+}
+
 .viewer-panel {
   background: #1E2937;
   border-radius: 12px;
