@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokedex-v3.5.0';
+const CACHE_NAME = 'pokedex-v3.2.1';
 const urlsToCache = [
   './',
   './index.html',
