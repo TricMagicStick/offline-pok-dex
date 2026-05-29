@@ -11,26 +11,31 @@
     .modal { transition: opacity 0.1s ease; }
     .list-cursor-zone { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 72px; border: none; background: transparent; pointer-events: none; z-index: 10; border-radius: 4px; }
 
-    /* Moves section polish */
+    /* Moves vertical list style */
     .move-section {
-      margin-bottom: 12px;
-    }
-    .move-chip {
-      display: inline-block;
-      background: #1E2937;
-      color: #E2E8F0;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin: 3px 4px 3px 0;
-      white-space: nowrap;
+      margin-bottom: 14px;
     }
     .move-section-header {
-      font-weight: 600;
+      font-weight: 700;
       color: #C8102E;
-      font-size: 10px;
+      font-size: 11px;
       margin-bottom: 6px;
       letter-spacing: 0.5px;
+    }
+    .move-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .move-item {
+      background: #1E2937;
+      color: #E2E8F0;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   </style>
 </head>
@@ -80,7 +85,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from Serebii (refined detail pages) • v4.4 Moves UI polish
+      Fully offline • Data from Serebii (refined detail pages) • v4.5 Moves vertical list polish
     </div>
   </div>
 
@@ -329,7 +334,7 @@
 
       document.getElementById('modal-entry').textContent = genData.entry || pokemon.entry || 'No entry available.';
 
-      // === Improved Moves Section ===
+      // === Vertical list style for moves ===
       const movesContainer = document.getElementById('modal-moves');
       movesContainer.innerHTML = '';
 
@@ -344,13 +349,17 @@
         header.textContent = 'LEVEL-UP';
         section.appendChild(header);
 
+        const list = document.createElement('div');
+        list.className = 'move-list';
+
         moves.level_up.forEach(m => {
-          const chip = document.createElement('span');
-          chip.className = 'move-chip';
-          chip.textContent = `Lv${m.level} ${m.name}`;
-          section.appendChild(chip);
+          const item = document.createElement('div');
+          item.className = 'move-item';
+          item.innerHTML = `<span>Lv${m.level} ${m.name}</span>`;
+          list.appendChild(item);
         });
 
+        section.appendChild(list);
         movesContainer.appendChild(section);
       }
 
@@ -363,13 +372,17 @@
         header.textContent = 'TM / HM';
         section.appendChild(header);
 
+        const list = document.createElement('div');
+        list.className = 'move-list';
+
         moves.tm.forEach(name => {
-          const chip = document.createElement('span');
-          chip.className = 'move-chip';
-          chip.textContent = name;
-          section.appendChild(chip);
+          const item = document.createElement('div');
+          item.className = 'move-item';
+          item.innerHTML = `<span>${name}</span>`;
+          list.appendChild(item);
         });
 
+        section.appendChild(list);
         movesContainer.appendChild(section);
       }
 
@@ -420,7 +433,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v4.4 - Moves section UI polish', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.5 - Moves vertical list style', 'color:#22c55e');
     }
 
     init();
