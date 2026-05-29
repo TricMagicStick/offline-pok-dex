@@ -69,7 +69,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.8 detail modal polish
+      Fully offline • Data from PokéAPI + Gen 1 moves • v3.9 live selector edge fix
     </div>
   </div>
 
@@ -131,21 +131,41 @@
     function getPokemonUnderCursor() {
       const list = document.getElementById('pokemon-list');
       if (!list || filteredPokemon.length === 0) return null;
+
+      const scrollTop = list.scrollTop;
+      const scrollHeight = list.scrollHeight;
+      const clientHeight = list.clientHeight;
+
+      // Edge handling - top of list
+      if (scrollTop < 60) {
+        return filteredPokemon[0];
+      }
+
+      // Edge handling - bottom of list
+      if (scrollTop + clientHeight > scrollHeight - 60) {
+        return filteredPokemon[filteredPokemon.length - 1];
+      }
+
+      // Normal center logic
       const listRect = list.getBoundingClientRect();
       const cursorCenterY = listRect.top + (listRect.height / 2);
+
       let closestPokemon = null;
       let closestDistance = Infinity;
+
       document.querySelectorAll('.pokemon-list-item').forEach(item => {
         const itemRect = item.getBoundingClientRect();
         const itemCenterY = itemRect.top + (itemRect.height / 2);
         const distance = Math.abs(itemCenterY - cursorCenterY);
+
         if (distance < closestDistance) {
           closestDistance = distance;
           const dex = parseInt(item.dataset.dex);
           closestPokemon = filteredPokemon.find(p => p.national_dex === dex);
         }
       });
-      return closestPokemon;
+
+      return closestPokemon || filteredPokemon[0];
     }
 
     function updateLiveSelectionFromScroll() {
@@ -286,8 +306,7 @@
         row.innerHTML = `
           <div class="stat-label">${statLabels[i]}</div>
           <div class="stat-bar-container"><div class="stat-bar" style="width: ${Math.min(value, 255) / 2.55}%;"></div></div>
-          <div class="stat-value">${value}</div>
-        `;
+          <div class="stat-value">${value}</div>`;
         statsContainer.appendChild(row);
       });
 
@@ -362,7 +381,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v3.8 - Detail modal polish', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.9 - Live selector edge handling improved', 'color:#22c55e');
     }
 
     init();
