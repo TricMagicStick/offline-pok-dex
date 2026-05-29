@@ -1,4 +1,4 @@
-const pokemonData = [
+window.pokemonData = [
   // Phase 1 test Pokémon (migrated to generations structure)
   {
     national_dex: 1,

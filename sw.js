@@ -1,10 +1,10 @@
-const CACHE_NAME = 'pokedex-v3.2.1';
+const CACHE_NAME = 'pokedex-v3.5.1';
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './css/pokedex.css'
-  // JS files will be added in later phases
+  './css/pokedex.css',
+  './js/data.js'
 ];
 
 self.addEventListener('install', event => {

@@ -116,14 +116,14 @@
     </div>
   </div>
 
+  <script src="./js/data.js"></script>
   <script>
     // ============================================
-    // STABILIZED OFFLINE POKÉDEX - v3.5
-    // Live selector improved: highlight persists after filter, initial state highlighted, stronger scroll
-    // Mobile: viewer primary + Full details button
+    // STABILIZED OFFLINE POKÉDEX - v3.5.1
+    // Fixed data loading for reliable list rendering (no more fragile fetch/regex/eval)
+    // Live selector improved + mobile viewer primary + layout fixes preserved
     // ============================================
 
-    let pokemonData = [];
     let filteredPokemon = [];
     let currentModalGeneration = "1";
     let currentSelectedPokemon = null;
@@ -138,31 +138,6 @@
       document.querySelectorAll('.pokemon-list-item').forEach(el => {
         el.classList.toggle('selected', parseInt(el.dataset.dex) === currentSelectedPokemon.national_dex);
       });
-    }
-
-    // Load data from external file (keeps index.html clean)
-    async function loadData() {
-      try {
-        const response = await fetch('./js/data.js');
-        const text = await response.text();
-        const match = text.match(/const pokemonData = (\[.*\]);/s);
-        if (match) {
-          pokemonData = eval(match[1]);
-        } else {
-          pokemonData = [];
-        }
-      } catch (e) {
-        console.error('Failed to load data.js', e);
-        pokemonData = [];
-      }
-
-      if (!pokemonData || pokemonData.length < 3) {
-        pokemonData = getSeedData();
-      }
-
-      filteredPokemon = [...pokemonData];
-      renderList();
-      document.getElementById('pokemon-count').textContent = `${pokemonData.length} Pokémon`;
     }
 
     function getSeedData() {
@@ -447,8 +422,16 @@
       }
     });
 
-    async function init() {
-      await loadData();
+    function init() {
+      // Data loaded via included ./js/data.js (sets window.pokemonData)
+      pokemonData = window.pokemonData || getSeedData();
+      if (!pokemonData || pokemonData.length < 3) {
+        pokemonData = getSeedData();
+      }
+
+      filteredPokemon = [...pokemonData];
+      renderList();
+      document.getElementById('pokemon-count').textContent = `${pokemonData.length} Pokémon`;
 
       const allTypes = new Set();
       pokemonData.forEach(p => p.types.forEach(t => allTypes.add(t)));
@@ -483,7 +466,7 @@
         }, 300);
       }
 
-      console.log('%c[ Pokédex ] v3.5 - Live selector improved + mobile viewer primary ready', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.5.1 - Data loading fixed, live selector + mobile ready', 'color:#22c55e');
     }
 
     init();
