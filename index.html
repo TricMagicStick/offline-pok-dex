@@ -10,17 +10,6 @@
     .pokemon-list-item { transition: background 0.06s ease, border-color 0.06s ease; }
     .modal { transition: opacity 0.1s ease; }
     .list-cursor-zone { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 72px; border: none; background: transparent; pointer-events: none; z-index: 10; border-radius: 4px; }
-
-    /* Enhanced detail modal polish */
-    .modal-content { max-width: 480px; }
-    .modal-body { padding: 20px 18px; }
-    .detail-sprite { width: 130px; height: 130px; margin: 0 auto 12px; }
-    .section-title { font-size: 11px; font-weight: 700; color: #C8102E; margin: 14px 0 6px; letter-spacing: 0.5px; }
-    .stat-row { gap: 8px; }
-    .stat-bar-container { height: 9px; }
-    .stat-bar { background: linear-gradient(to right, #C8102E, #EF4444); }
-    .moves-container { background: #0F172A; border-radius: 8px; padding: 10px; }
-    .move-chip { display: inline-block; background: #1E2937; padding: 3px 9px; border-radius: 6px; margin: 2px 4px 2px 0; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -69,7 +58,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v4.1 live selector refinement (sticky top + gentler glide)
+      Fully offline • Data from Serebii + PokéAPI • v4.2 fresh Gen 1 rebuild (#1-30)
     </div>
   </div>
 
@@ -140,24 +129,19 @@
       let cursorY = listRect.top + (listRect.height / 2);
 
       const edgeThreshold = 95;
-      const hardStickyTop = 28; // Very top zone strongly favors first item
+      const hardStickyTop = 28;
 
       if (scrollTop < hardStickyTop) {
-        // Hard sticky at very top
         return filteredPokemon[0];
-      } 
-      else if (scrollTop < edgeThreshold) {
-        // Gentler glide zone
+      } else if (scrollTop < edgeThreshold) {
         const progress = (scrollTop - hardStickyTop) / (edgeThreshold - hardStickyTop);
         cursorY = listRect.top + (listRect.height * 0.28) + (listRect.height * 0.48 * progress);
-      } 
-      else if (scrollTop + clientHeight > scrollHeight - edgeThreshold) {
+      } else if (scrollTop + clientHeight > scrollHeight - edgeThreshold) {
         const remaining = scrollHeight - scrollTop - clientHeight;
         const progress = remaining / edgeThreshold;
         cursorY = listRect.bottom - (listRect.height * 0.28) - (listRect.height * 0.48 * progress);
       }
 
-      // Find closest item
       let closestPokemon = null;
       let closestDistance = Infinity;
 
@@ -389,7 +373,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v4.1 - Refined gliding + sticky top zone', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.2 - Fresh #1-30 rebuild from Serebii', 'color:#22c55e');
     }
 
     init();
