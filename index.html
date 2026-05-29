@@ -69,7 +69,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v4.0 smoother gliding live selector
+      Fully offline • Data from PokéAPI + Gen 1 moves • v4.1 live selector refinement (sticky top + gentler glide)
     </div>
   </div>
 
@@ -137,23 +137,27 @@
       const clientHeight = list.clientHeight;
       const listRect = list.getBoundingClientRect();
 
-      let cursorY = listRect.top + (listRect.height / 2); // default center
+      let cursorY = listRect.top + (listRect.height / 2);
 
-      const edgeThreshold = 110;
+      const edgeThreshold = 95;
+      const hardStickyTop = 28; // Very top zone strongly favors first item
 
-      // Glide virtual cursor toward top when near top
-      if (scrollTop < edgeThreshold) {
-        const progress = scrollTop / edgeThreshold;
-        cursorY = listRect.top + (listRect.height * 0.22) + (listRect.height * 0.56 * progress);
+      if (scrollTop < hardStickyTop) {
+        // Hard sticky at very top
+        return filteredPokemon[0];
       } 
-      // Glide virtual cursor toward bottom when near bottom
+      else if (scrollTop < edgeThreshold) {
+        // Gentler glide zone
+        const progress = (scrollTop - hardStickyTop) / (edgeThreshold - hardStickyTop);
+        cursorY = listRect.top + (listRect.height * 0.28) + (listRect.height * 0.48 * progress);
+      } 
       else if (scrollTop + clientHeight > scrollHeight - edgeThreshold) {
         const remaining = scrollHeight - scrollTop - clientHeight;
         const progress = remaining / edgeThreshold;
-        cursorY = listRect.bottom - (listRect.height * 0.22) - (listRect.height * 0.56 * progress);
+        cursorY = listRect.bottom - (listRect.height * 0.28) - (listRect.height * 0.48 * progress);
       }
 
-      // Find closest item to the (possibly adjusted) cursor position
+      // Find closest item
       let closestPokemon = null;
       let closestDistance = Infinity;
 
@@ -385,7 +389,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v4.0 - Smoother gliding live selector', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.1 - Refined gliding + sticky top zone', 'color:#22c55e');
     }
 
     init();
