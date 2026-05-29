@@ -69,7 +69,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.9 live selector edge fix
+      Fully offline • Data from PokéAPI + Gen 1 moves • v4.0 smoother gliding live selector
     </div>
   </div>
 
@@ -135,28 +135,32 @@
       const scrollTop = list.scrollTop;
       const scrollHeight = list.scrollHeight;
       const clientHeight = list.clientHeight;
-
-      // Edge handling - top of list
-      if (scrollTop < 60) {
-        return filteredPokemon[0];
-      }
-
-      // Edge handling - bottom of list
-      if (scrollTop + clientHeight > scrollHeight - 60) {
-        return filteredPokemon[filteredPokemon.length - 1];
-      }
-
-      // Normal center logic
       const listRect = list.getBoundingClientRect();
-      const cursorCenterY = listRect.top + (listRect.height / 2);
 
+      let cursorY = listRect.top + (listRect.height / 2); // default center
+
+      const edgeThreshold = 110;
+
+      // Glide virtual cursor toward top when near top
+      if (scrollTop < edgeThreshold) {
+        const progress = scrollTop / edgeThreshold;
+        cursorY = listRect.top + (listRect.height * 0.22) + (listRect.height * 0.56 * progress);
+      } 
+      // Glide virtual cursor toward bottom when near bottom
+      else if (scrollTop + clientHeight > scrollHeight - edgeThreshold) {
+        const remaining = scrollHeight - scrollTop - clientHeight;
+        const progress = remaining / edgeThreshold;
+        cursorY = listRect.bottom - (listRect.height * 0.22) - (listRect.height * 0.56 * progress);
+      }
+
+      // Find closest item to the (possibly adjusted) cursor position
       let closestPokemon = null;
       let closestDistance = Infinity;
 
       document.querySelectorAll('.pokemon-list-item').forEach(item => {
         const itemRect = item.getBoundingClientRect();
         const itemCenterY = itemRect.top + (itemRect.height / 2);
-        const distance = Math.abs(itemCenterY - cursorCenterY);
+        const distance = Math.abs(itemCenterY - cursorY);
 
         if (distance < closestDistance) {
           closestDistance = distance;
@@ -381,7 +385,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v3.9 - Live selector edge handling improved', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.0 - Smoother gliding live selector', 'color:#22c55e');
     }
 
     init();
