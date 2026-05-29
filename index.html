@@ -10,6 +10,25 @@
     /* Minimal critical fixes for stability */
     .pokemon-list-item { transition: background 0.06s ease, border-color 0.06s ease; }
     .modal { transition: opacity 0.1s ease; }
+    
+    /* Static cursor live selector visual */
+    .list-panel {
+      position: relative;
+    }
+    .list-cursor-zone {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 72px;
+      border-top: 2px solid #C8102E;
+      border-bottom: 2px solid #C8102E;
+      background: rgba(200, 16, 46, 0.06);
+      pointer-events: none;
+      z-index: 10;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -25,7 +44,7 @@
     <div class="main-content">
       <div class="split-container">
         <!-- LIST PANEL -->
-        <div class="list-panel">
+        <div class="list-panel" id="list-panel">
           <div class="list-header">
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-weight:700; font-size:13px;">KANTO</span>
@@ -46,8 +65,9 @@
             <div class="type-filters" id="type-filters"></div>
           </div>
 
-          <!-- Scrollable List -->
+          <!-- Scrollable List + Static Cursor Zone -->
           <div id="pokemon-list" class="scrollable-list"></div>
+          <div class="list-cursor-zone" id="list-cursor-zone"></div>
         </div>
 
         <!-- DETAIL / VIEWER PANEL (desktop) -->
@@ -63,7 +83,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.5 live selector improved + mobile viewer primary
+      Fully offline • Data from PokéAPI + Gen 1 moves • v3.6 static-cursor live selector
     </div>
   </div>
 
@@ -119,15 +139,18 @@
   <script src="./js/data.js"></script>
   <script>
     // ============================================
-    // STABILIZED OFFLINE POKÉDEX - v3.5.1
-    // Fixed data loading for reliable list rendering (no more fragile fetch/regex/eval)
-    // Live selector improved + mobile viewer primary + layout fixes preserved
+    // OFFLINE POKÉDEX - v3.6
+    // Phase 1.1: True static-cursor live selector
+    // Fixed cursor zone in list center now auto-updates viewer as you scroll
+    // Click still opens rich detail modal. Clean data model foundation.
     // ============================================
 
     let filteredPokemon = [];
     let currentModalGeneration = "1";
     let currentSelectedPokemon = null;
     let activeTypeFilters = new Set();
+    let liveSelectionEnabled = true;
+    let scrollUpdateScheduled = false;
 
     function isMobile() {
       return window.matchMedia('(max-width: 640px)').matches;
@@ -137,6 +160,57 @@
       if (!currentSelectedPokemon) return;
       document.querySelectorAll('.pokemon-list-item').forEach(el => {
         el.classList.toggle('selected', parseInt(el.dataset.dex) === currentSelectedPokemon.national_dex);
+      });
+    }
+
+    function getPokemonUnderCursor() {
+      const list = document.getElementById('pokemon-list');
+      if (!list || filteredPokemon.length === 0) return null;
+
+      const listRect = list.getBoundingClientRect();
+      const cursorCenterY = listRect.top + (listRect.height / 2);
+
+      let closestPokemon = null;
+      let closestDistance = Infinity;
+
+      document.querySelectorAll('.pokemon-list-item').forEach(item => {
+        const itemRect = item.getBoundingClientRect();
+        const itemCenterY = itemRect.top + (itemRect.height / 2);
+        const distance = Math.abs(itemCenterY - cursorCenterY);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          const dex = parseInt(item.dataset.dex);
+          closestPokemon = filteredPokemon.find(p => p.national_dex === dex);
+        }
+      });
+
+      return closestPokemon;
+    }
+
+    function updateLiveSelectionFromScroll() {
+      if (!liveSelectionEnabled || document.getElementById('detail-modal').classList.contains('active')) {
+        return;
+      }
+
+      const pokemon = getPokemonUnderCursor();
+      if (!pokemon) return;
+
+      // Only update if it's a different Pokémon
+      if (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex) {
+        currentSelectedPokemon = pokemon;
+        updateViewerPanel(pokemon);
+        highlightCurrentSelection();
+      }
+    }
+
+    function scheduleLiveSelectionUpdate() {
+      if (scrollUpdateScheduled) return;
+      scrollUpdateScheduled = true;
+
+      requestAnimationFrame(() => {
+        updateLiveSelectionFromScroll();
+        scrollUpdateScheduled = false;
       });
     }
 
@@ -243,9 +317,35 @@
           </div>
         `;
 
-        div.onclick = () => selectPokemon(pokemon);
+        div.onclick = () => selectPokemon(pokemon, true); // true = user initiated
         container.appendChild(div);
       });
+
+      // Attach scroll listener for live selector (once per render)
+      attachLiveSelectorListener();
+    }
+
+    let liveSelectorListenerAttached = false;
+
+    function attachLiveSelectorListener() {
+      const list = document.getElementById('pokemon-list');
+      if (!list || liveSelectorListenerAttached) return;
+
+      list.addEventListener('scroll', () => {
+        scheduleLiveSelectionUpdate();
+      }, { passive: true });
+
+      // Also update once after initial render
+      setTimeout(() => {
+        if (liveSelectionEnabled && filteredPokemon.length > 0 && !currentSelectedPokemon) {
+          const first = filteredPokemon[0];
+          currentSelectedPokemon = first;
+          updateViewerPanel(first);
+          highlightCurrentSelection();
+        }
+      }, 150);
+
+      liveSelectorListenerAttached = true;
     }
 
     function filterList() {
@@ -256,7 +356,18 @@
         return matchesSearch && matchesType;
       });
       renderList();
-      highlightCurrentSelection(); // keep selection live after filtering/search
+      
+      // After filtering, re-apply live selection to current or first item
+      setTimeout(() => {
+        if (liveSelectionEnabled && filteredPokemon.length > 0) {
+          const target = currentSelectedPokemon && filteredPokemon.some(p => p.national_dex === currentSelectedPokemon.national_dex)
+            ? currentSelectedPokemon 
+            : filteredPokemon[0];
+          currentSelectedPokemon = target;
+          updateViewerPanel(target);
+          highlightCurrentSelection();
+        }
+      }, 50);
     }
 
     function toggleFilters() {
@@ -264,23 +375,25 @@
       section.classList.toggle('open');
     }
 
-    function selectPokemon(pokemon) {
+    function selectPokemon(pokemon, userInitiated = false) {
       currentSelectedPokemon = pokemon;
 
       // Clear previous highlight
       document.querySelectorAll('.pokemon-list-item').forEach(el => el.classList.remove('selected'));
 
-      // Find and highlight + smooth scroll (stronger live selector)
+      // Find and highlight + smooth scroll
       const listItem = document.querySelector(`.pokemon-list-item[data-dex="${pokemon.national_dex}"]`);
       if (listItem) {
         listItem.classList.add('selected');
-        listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (userInitiated) {
+          listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
 
       updateViewerPanel(pokemon);
 
-      // On mobile: viewer is primary live detail. On desktop: also open rich modal.
-      if (!isMobile()) {
+      // On mobile: viewer is primary. On desktop: also open rich modal on click
+      if (!isMobile() && userInitiated) {
         showDetail(pokemon);
       }
     }
@@ -298,7 +411,7 @@
         <div style="margin-top:8px; font-size:11px; color:#94A3B8;">#${String(pokemon.national_dex).padStart(3,'0')}</div>
       `;
 
-      // "Full details" button for mobile (opens modal for moves + Gen tabs)
+      // "Full details" button for mobile
       const detailsBtn = document.createElement('button');
       detailsBtn.textContent = 'Full details & moves →';
       detailsBtn.className = 'nav-btn';
@@ -423,7 +536,7 @@
     });
 
     function init() {
-      // Data loaded via included ./js/data.js (sets window.pokemonData)
+      // Data loaded via included ./js/data.js
       pokemonData = window.pokemonData || getSeedData();
       if (!pokemonData || pokemonData.length < 3) {
         pokemonData = getSeedData();
@@ -458,15 +571,16 @@
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       }
 
+      // Initial selection
       if (pokemonData.length > 0) {
         setTimeout(() => {
           currentSelectedPokemon = pokemonData[0];
           updateViewerPanel(pokemonData[0]);
           highlightCurrentSelection();
-        }, 300);
+        }, 200);
       }
 
-      console.log('%c[ Pokédex ] v3.5.1 - Data loading fixed, live selector + mobile ready', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.6 - Static-cursor live selector active', 'color:#22c55e');
     }
 
     init();
