@@ -58,7 +58,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from Serebii + PokéAPI • v4.2 fresh Gen 1 rebuild (#1-30)
+      Fully offline • Data from Serebii (refined detail pages) • v4.3 Batch 1 clean rebuild (#1-10)
     </div>
   </div>
 
@@ -189,7 +189,7 @@
         div.className = 'pokemon-list-item';
         div.dataset.dex = pokemon.national_dex;
         div.innerHTML = `
-          <img class="list-sprite" src="${pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
+          <img class="list-sprite" src="${pokemon.generations?.['1']?.sprite || pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
           <div class="list-info">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-family:monospace; font-size:11px; color:#64748B; width:32px;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
@@ -255,9 +255,10 @@
     }
 
     function updateViewerPanel(pokemon) {
+      const genData = pokemon.generations?.['1'] || {};
       const panel = document.getElementById('viewer-content');
       panel.innerHTML = `
-        <img class="viewer-sprite" src="${pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
+        <img class="viewer-sprite" src="${genData.sprite || pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
         <div class="viewer-name">${pokemon.name}</div>
         <div class="viewer-types">${pokemon.types.map(t => `<span class="type-pill" style="background:#334155">${t}</span>`).join('')}</div>
         <div style="margin-top:8px; font-size:11px; color:#94A3B8;">#${String(pokemon.national_dex).padStart(3,'0')}</div>
@@ -275,11 +276,13 @@
       currentSelectedPokemon = pokemon;
       currentModalGeneration = gen;
 
+      const genData = pokemon.generations?.[gen] || pokemon.generations?.['1'] || {};
+
       document.getElementById('modal-dex').textContent = `#${String(pokemon.national_dex).padStart(3, '0')}`;
       document.getElementById('modal-name').textContent = pokemon.name;
 
       const sprite = document.getElementById('modal-sprite');
-      sprite.src = pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
+      sprite.src = genData.sprite || pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
       sprite.alt = pokemon.name;
 
       document.getElementById('modal-types').innerHTML = pokemon.types.map(t => `<span class="type-pill" style="background:#334155; padding:2px 9px;">${t}</span>`).join('');
@@ -292,7 +295,7 @@
       const statLabels = ['HP', 'ATK', 'DEF', 'SpA', 'SpD', 'SPE'];
 
       statNames.forEach((stat, i) => {
-        const value = pokemon.base_stats ? (pokemon.base_stats[stat] || 0) : 0;
+        const value = genData.base_stats ? (genData.base_stats[stat] || 0) : 0;
         const row = document.createElement('div');
         row.className = 'stat-row';
         row.innerHTML = `
@@ -302,31 +305,31 @@
         statsContainer.appendChild(row);
       });
 
-      document.getElementById('modal-entry').textContent = pokemon.entry || 'No entry available.';
+      document.getElementById('modal-entry').textContent = genData.entry || pokemon.entry || 'No entry available.';
 
       const movesContainer = document.getElementById('modal-moves');
       movesContainer.innerHTML = '';
 
-      if (pokemon.moves) {
-        if (pokemon.moves.level_up && pokemon.moves.level_up.length > 0) {
-          const section = document.createElement('div');
-          section.className = 'move-section';
-          section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px;">LEVEL-UP</div>`;
-          section.innerHTML += pokemon.moves.level_up.map(m => 
-            `<span class="move-chip">Lv${m.level} ${m.name}</span>`
-          ).join('');
-          movesContainer.appendChild(section);
-        }
-        if (pokemon.moves.tm && pokemon.moves.tm.length > 0) {
-          const section = document.createElement('div');
-          section.className = 'move-section';
-          section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px; margin-top:8px;">TM / HM</div>`;
-          section.innerHTML += pokemon.moves.tm.map(name => 
-            `<span class="move-chip">${name}</span>`
-          ).join('');
-          movesContainer.appendChild(section);
-        }
-      } else {
+      const moves = genData.moves || pokemon.moves || {};
+      if (moves.level_up && moves.level_up.length > 0) {
+        const section = document.createElement('div');
+        section.className = 'move-section';
+        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px;">LEVEL-UP</div>`;
+        section.innerHTML += moves.level_up.map(m => 
+          `<span class="move-chip">Lv${m.level} ${m.name}</span>`
+        ).join('');
+        movesContainer.appendChild(section);
+      }
+      if (moves.tm && moves.tm.length > 0) {
+        const section = document.createElement('div');
+        section.className = 'move-section';
+        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px; margin-top:8px;">TM / HM</div>`;
+        section.innerHTML += moves.tm.map(name => 
+          `<span class="move-chip">${name}</span>`
+        ).join('');
+        movesContainer.appendChild(section);
+      }
+      if (!moves.level_up && !moves.tm) {
         movesContainer.innerHTML = '<div style="color:#64748B; font-size:12px;">No move data available</div>';
       }
 
@@ -373,7 +376,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v4.2 - Fresh #1-30 rebuild from Serebii', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.3 - Batch 1 clean rebuild (#1-10)', 'color:#22c55e');
     }
 
     init();
