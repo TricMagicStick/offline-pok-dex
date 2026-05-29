@@ -11,10 +11,7 @@
     .pokemon-list-item { transition: background 0.06s ease, border-color 0.06s ease; }
     .modal { transition: opacity 0.1s ease; }
     
-    /* Static cursor live selector visual */
-    .list-panel {
-      position: relative;
-    }
+    /* Static cursor zone is now invisible (detection still happens at center) */
     .list-cursor-zone {
       position: absolute;
       left: 0;
@@ -22,9 +19,8 @@
       top: 50%;
       transform: translateY(-50%);
       height: 72px;
-      border-top: 2px solid #C8102E;
-      border-bottom: 2px solid #C8102E;
-      background: rgba(200, 16, 46, 0.06);
+      border: none;
+      background: transparent;
       pointer-events: none;
       z-index: 10;
       border-radius: 4px;
@@ -65,7 +61,7 @@
             <div class="type-filters" id="type-filters"></div>
           </div>
 
-          <!-- Scrollable List + Static Cursor Zone -->
+          <!-- Scrollable List + Invisible Cursor Zone -->
           <div id="pokemon-list" class="scrollable-list"></div>
           <div class="list-cursor-zone" id="list-cursor-zone"></div>
         </div>
@@ -83,7 +79,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.6 static-cursor live selector
+      Fully offline • Data from PokéAPI + Gen 1 moves • v3.6.1 static-cursor live selector (invisible)
     </div>
   </div>
 
@@ -139,10 +135,10 @@
   <script src="./js/data.js"></script>
   <script>
     // ============================================
-    // OFFLINE POKÉDEX - v3.6
-    // Phase 1.1: True static-cursor live selector
-    // Fixed cursor zone in list center now auto-updates viewer as you scroll
-    // Click still opens rich detail modal. Clean data model foundation.
+    // OFFLINE POKÉDEX - v3.6.1
+    // Phase 1.1 polish: Invisible static cursor zone
+    // Live selection still works perfectly at list center on scroll
+    // Click opens detail as before
     // ============================================
 
     let filteredPokemon = [];
@@ -196,7 +192,6 @@
       const pokemon = getPokemonUnderCursor();
       if (!pokemon) return;
 
-      // Only update if it's a different Pokémon
       if (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex) {
         currentSelectedPokemon = pokemon;
         updateViewerPanel(pokemon);
@@ -317,11 +312,10 @@
           </div>
         `;
 
-        div.onclick = () => selectPokemon(pokemon, true); // true = user initiated
+        div.onclick = () => selectPokemon(pokemon, true);
         container.appendChild(div);
       });
 
-      // Attach scroll listener for live selector (once per render)
       attachLiveSelectorListener();
     }
 
@@ -335,7 +329,6 @@
         scheduleLiveSelectionUpdate();
       }, { passive: true });
 
-      // Also update once after initial render
       setTimeout(() => {
         if (liveSelectionEnabled && filteredPokemon.length > 0 && !currentSelectedPokemon) {
           const first = filteredPokemon[0];
@@ -357,7 +350,6 @@
       });
       renderList();
       
-      // After filtering, re-apply live selection to current or first item
       setTimeout(() => {
         if (liveSelectionEnabled && filteredPokemon.length > 0) {
           const target = currentSelectedPokemon && filteredPokemon.some(p => p.national_dex === currentSelectedPokemon.national_dex)
@@ -378,10 +370,8 @@
     function selectPokemon(pokemon, userInitiated = false) {
       currentSelectedPokemon = pokemon;
 
-      // Clear previous highlight
       document.querySelectorAll('.pokemon-list-item').forEach(el => el.classList.remove('selected'));
 
-      // Find and highlight + smooth scroll
       const listItem = document.querySelector(`.pokemon-list-item[data-dex="${pokemon.national_dex}"]`);
       if (listItem) {
         listItem.classList.add('selected');
@@ -392,7 +382,6 @@
 
       updateViewerPanel(pokemon);
 
-      // On mobile: viewer is primary. On desktop: also open rich modal on click
       if (!isMobile() && userInitiated) {
         showDetail(pokemon);
       }
@@ -411,7 +400,6 @@
         <div style="margin-top:8px; font-size:11px; color:#94A3B8;">#${String(pokemon.national_dex).padStart(3,'0')}</div>
       `;
 
-      // "Full details" button for mobile
       const detailsBtn = document.createElement('button');
       detailsBtn.textContent = 'Full details & moves →';
       detailsBtn.className = 'nav-btn';
@@ -536,7 +524,6 @@
     });
 
     function init() {
-      // Data loaded via included ./js/data.js
       pokemonData = window.pokemonData || getSeedData();
       if (!pokemonData || pokemonData.length < 3) {
         pokemonData = getSeedData();
@@ -571,7 +558,6 @@
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       }
 
-      // Initial selection
       if (pokemonData.length > 0) {
         setTimeout(() => {
           currentSelectedPokemon = pokemonData[0];
@@ -580,7 +566,7 @@
         }, 200);
       }
 
-      console.log('%c[ Pokédex ] v3.6 - Static-cursor live selector active', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.6.1 - Static-cursor live selector (invisible zone)', 'color:#22c55e');
     }
 
     init();
