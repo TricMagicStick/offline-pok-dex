@@ -10,6 +10,28 @@
     .pokemon-list-item { transition: background 0.06s ease, border-color 0.06s ease; }
     .modal { transition: opacity 0.1s ease; }
     .list-cursor-zone { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 72px; border: none; background: transparent; pointer-events: none; z-index: 10; border-radius: 4px; }
+
+    /* Moves section polish */
+    .move-section {
+      margin-bottom: 12px;
+    }
+    .move-chip {
+      display: inline-block;
+      background: #1E2937;
+      color: #E2E8F0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin: 3px 4px 3px 0;
+      white-space: nowrap;
+    }
+    .move-section-header {
+      font-weight: 600;
+      color: #C8102E;
+      font-size: 10px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -58,7 +80,7 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from Serebii (refined detail pages) • v4.3 Batch 1 clean rebuild (#1-10)
+      Fully offline • Data from Serebii (refined detail pages) • v4.4 Moves UI polish
     </div>
   </div>
 
@@ -307,28 +329,50 @@
 
       document.getElementById('modal-entry').textContent = genData.entry || pokemon.entry || 'No entry available.';
 
+      // === Improved Moves Section ===
       const movesContainer = document.getElementById('modal-moves');
       movesContainer.innerHTML = '';
 
       const moves = genData.moves || pokemon.moves || {};
+
       if (moves.level_up && moves.level_up.length > 0) {
         const section = document.createElement('div');
         section.className = 'move-section';
-        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px;">LEVEL-UP</div>`;
-        section.innerHTML += moves.level_up.map(m => 
-          `<span class="move-chip">Lv${m.level} ${m.name}</span>`
-        ).join('');
+
+        const header = document.createElement('div');
+        header.className = 'move-section-header';
+        header.textContent = 'LEVEL-UP';
+        section.appendChild(header);
+
+        moves.level_up.forEach(m => {
+          const chip = document.createElement('span');
+          chip.className = 'move-chip';
+          chip.textContent = `Lv${m.level} ${m.name}`;
+          section.appendChild(chip);
+        });
+
         movesContainer.appendChild(section);
       }
+
       if (moves.tm && moves.tm.length > 0) {
         const section = document.createElement('div');
         section.className = 'move-section';
-        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:4px; margin-top:8px;">TM / HM</div>`;
-        section.innerHTML += moves.tm.map(name => 
-          `<span class="move-chip">${name}</span>`
-        ).join('');
+
+        const header = document.createElement('div');
+        header.className = 'move-section-header';
+        header.textContent = 'TM / HM';
+        section.appendChild(header);
+
+        moves.tm.forEach(name => {
+          const chip = document.createElement('span');
+          chip.className = 'move-chip';
+          chip.textContent = name;
+          section.appendChild(chip);
+        });
+
         movesContainer.appendChild(section);
       }
+
       if (!moves.level_up && !moves.tm) {
         movesContainer.innerHTML = '<div style="color:#64748B; font-size:12px;">No move data available</div>';
       }
@@ -376,7 +420,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-      console.log('%c[ Pokédex ] v4.3 - Batch 1 clean rebuild (#1-10)', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v4.4 - Moves section UI polish', 'color:#22c55e');
     }
 
     init();
