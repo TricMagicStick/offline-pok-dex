@@ -7,29 +7,13 @@
   <link rel="stylesheet" href="./css/pokedex.css">
   <link rel="manifest" href="./manifest.json">
   <style>
-    /* Minimal critical fixes for stability */
     .pokemon-list-item { transition: background 0.06s ease, border-color 0.06s ease; }
     .modal { transition: opacity 0.1s ease; }
-    
-    /* Static cursor zone is now invisible (detection still happens at center) */
-    .list-cursor-zone {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 72px;
-      border: none;
-      background: transparent;
-      pointer-events: none;
-      z-index: 10;
-      border-radius: 4px;
-    }
+    .list-cursor-zone { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 72px; border: none; background: transparent; pointer-events: none; z-index: 10; border-radius: 4px; }
   </style>
 </head>
 <body>
   <div class="pokedex-container">
-    <!-- Header -->
     <div class="pokedex-header">
       <h1>POKÉDEX</h1>
       <div style="display:flex; align-items:center; gap:8px;">
@@ -39,7 +23,6 @@
 
     <div class="main-content">
       <div class="split-container">
-        <!-- LIST PANEL -->
         <div class="list-panel" id="list-panel">
           <div class="list-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -51,22 +34,18 @@
             </button>
           </div>
 
-          <!-- Search -->
           <div style="padding:8px 11px 0;">
             <input type="text" id="search-input" class="search-input" placeholder="Search name or #..." oninput="filterList()">
           </div>
 
-          <!-- Type filters (collapsed by default) -->
           <div id="filter-section" class="filter-section">
             <div class="type-filters" id="type-filters"></div>
           </div>
 
-          <!-- Scrollable List + Invisible Cursor Zone -->
           <div id="pokemon-list" class="scrollable-list"></div>
           <div class="list-cursor-zone" id="list-cursor-zone"></div>
         </div>
 
-        <!-- DETAIL / VIEWER PANEL (desktop) -->
         <div class="viewer-panel" id="viewer-panel">
           <div id="viewer-content">
             <div style="padding:40px 20px; color:#64748B; font-size:12px; text-align:center;">
@@ -79,11 +58,10 @@
     </div>
 
     <div class="footer">
-      Fully offline • Data from PokéAPI + Gen 1 moves • v3.6.1 static-cursor live selector (invisible)
+      Fully offline • Data from PokéAPI + Gen 1 moves • v3.7 expanded Gen 1 baseline
     </div>
   </div>
 
-  <!-- DETAIL MODAL -->
   <div id="detail-modal" class="modal" onclick="if (event.target.id === 'detail-modal') closeModal()">
     <div class="modal-content" onclick="event.stopImmediatePropagation()">
       <div class="modal-header">
@@ -95,35 +73,29 @@
       </div>
 
       <div class="modal-body">
-        <!-- Sprite + Types -->
         <img id="modal-sprite" class="detail-sprite" alt="Pokemon sprite">
         <div id="modal-types" class="viewer-types" style="justify-content:center; margin-bottom:8px;"></div>
 
-        <!-- Generation Tabs (only for #1-3) -->
         <div id="gen-tab-bar" class="gen-tab-bar" style="display:none;">
           <div class="gen-tab active" data-gen="1" onclick="switchGeneration('1')">Gen 1</div>
           <div class="gen-tab" data-gen="2" onclick="switchGeneration('2')">Gen 2</div>
         </div>
 
-        <!-- Abilities -->
         <div style="margin:8px 0 4px;">
           <div class="section-title">ABILITIES</div>
           <div id="modal-abilities" style="font-size:12px; color:#CBD5E1;"></div>
         </div>
 
-        <!-- Base Stats -->
         <div>
           <div class="section-title">BASE STATS</div>
           <div id="modal-stats" class="stats-grid"></div>
         </div>
 
-        <!-- Pokédex Entry -->
         <div>
           <div class="section-title">POKÉDEX ENTRY</div>
           <div id="modal-entry" class="pokedex-entry"></div>
         </div>
 
-        <!-- Moves -->
         <div>
           <div class="section-title">MOVES</div>
           <div id="modal-moves" class="moves-container"></div>
@@ -134,13 +106,6 @@
 
   <script src="./js/data.js"></script>
   <script>
-    // ============================================
-    // OFFLINE POKÉDEX - v3.6.1
-    // Phase 1.1 polish: Invisible static cursor zone
-    // Live selection still works perfectly at list center on scroll
-    // Click opens detail as before
-    // ============================================
-
     let filteredPokemon = [];
     let currentModalGeneration = "1";
     let currentSelectedPokemon = null;
@@ -148,9 +113,7 @@
     let liveSelectionEnabled = true;
     let scrollUpdateScheduled = false;
 
-    function isMobile() {
-      return window.matchMedia('(max-width: 640px)').matches;
-    }
+    function isMobile() { return window.matchMedia('(max-width: 640px)').matches; }
 
     function highlightCurrentSelection() {
       if (!currentSelectedPokemon) return;
@@ -162,36 +125,27 @@
     function getPokemonUnderCursor() {
       const list = document.getElementById('pokemon-list');
       if (!list || filteredPokemon.length === 0) return null;
-
       const listRect = list.getBoundingClientRect();
       const cursorCenterY = listRect.top + (listRect.height / 2);
-
       let closestPokemon = null;
       let closestDistance = Infinity;
-
       document.querySelectorAll('.pokemon-list-item').forEach(item => {
         const itemRect = item.getBoundingClientRect();
         const itemCenterY = itemRect.top + (itemRect.height / 2);
         const distance = Math.abs(itemCenterY - cursorCenterY);
-
         if (distance < closestDistance) {
           closestDistance = distance;
           const dex = parseInt(item.dataset.dex);
           closestPokemon = filteredPokemon.find(p => p.national_dex === dex);
         }
       });
-
       return closestPokemon;
     }
 
     function updateLiveSelectionFromScroll() {
-      if (!liveSelectionEnabled || document.getElementById('detail-modal').classList.contains('active')) {
-        return;
-      }
-
+      if (!liveSelectionEnabled || document.getElementById('detail-modal').classList.contains('active')) return;
       const pokemon = getPokemonUnderCursor();
       if (!pokemon) return;
-
       if (!currentSelectedPokemon || currentSelectedPokemon.national_dex !== pokemon.national_dex) {
         currentSelectedPokemon = pokemon;
         updateViewerPanel(pokemon);
@@ -202,133 +156,41 @@
     function scheduleLiveSelectionUpdate() {
       if (scrollUpdateScheduled) return;
       scrollUpdateScheduled = true;
-
-      requestAnimationFrame(() => {
-        updateLiveSelectionFromScroll();
-        scrollUpdateScheduled = false;
-      });
-    }
-
-    function getSeedData() {
-      return [
-        {
-          national_dex: 1,
-          name: "Bulbasaur",
-          types: ["Grass", "Poison"],
-          abilities: ["Overgrow", "Chlorophyll"],
-          generations: {
-            "1": {
-              sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-              base_stats: { hp: 45, attack: 49, defense: 49, special_attack: 65, special_defense: 65, speed: 45 },
-              entry: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
-              moves: {
-                level_up: [{ level: 1, name: "Tackle" }, { level: 1, name: "Growl" }, { level: 3, name: "Vine Whip" }, { level: 7, name: "Growth" }, { level: 9, name: "Leech Seed" }],
-                tm: ["Toxic", "Body Slam", "Take Down", "Double Team", "Rest", "Substitute"],
-                egg: ["Light Screen", "Charm"]
-              }
-            },
-            "2": {
-              sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-              base_stats: { hp: 50, attack: 52, defense: 52, special_attack: 70, special_defense: 70, speed: 48 },
-              entry: "[GEN 2] A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
-              moves: { level_up: [{ level: 1, name: "Tackle" }], tm: ["Toxic"], egg: [] }
-            }
-          }
-        },
-        {
-          national_dex: 2,
-          name: "Ivysaur",
-          types: ["Grass", "Poison"],
-          abilities: ["Overgrow", "Chlorophyll"],
-          generations: {
-            "1": {
-              sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
-              base_stats: { hp: 60, attack: 62, defense: 63, special_attack: 80, special_defense: 80, speed: 60 },
-              entry: "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
-              moves: { level_up: [{ level: 1, name: "Tackle" }], tm: ["Toxic"], egg: [] }
-            }
-          }
-        },
-        {
-          national_dex: 3,
-          name: "Venusaur",
-          types: ["Grass", "Poison"],
-          abilities: ["Overgrow", "Chlorophyll"],
-          generations: {
-            "1": {
-              sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
-              base_stats: { hp: 80, attack: 82, defense: 83, special_attack: 100, special_defense: 100, speed: 80 },
-              entry: "The plant blooms when it is absorbing solar energy.",
-              moves: { level_up: [{ level: 1, name: "Tackle" }], tm: ["Toxic"], egg: [] }
-            }
-          }
-        },
-        { national_dex: 4, name: "Charmander", types: ["Fire"], abilities: ["Blaze", "Solar Power"], base_stats: { hp: 39, attack: 52, defense: 43, special_attack: 60, special_defense: 50, speed: 65 }, entry: "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.", moves: { level_up: [{ level: 1, name: "Scratch" }, { level: 1, name: "Growl" }, { level: 4, name: "Ember" }], tm: ["Toxic", "Body Slam", "Fire Blast"], egg: ["Belly Drum"] } },
-        { national_dex: 7, name: "Squirtle", types: ["Water"], abilities: ["Torrent", "Rain Dish"], base_stats: { hp: 44, attack: 48, defense: 65, special_attack: 50, special_defense: 64, speed: 43 }, entry: "After birth, its back swells and hardens into a shell.", moves: { level_up: [{ level: 1, name: "Tackle" }, { level: 1, name: "Tail Whip" }], tm: ["Toxic", "Body Slam", "Surf"], egg: [] } },
-        { national_dex: 25, name: "Pikachu", types: ["Electric"], abilities: ["Static", "Lightning Rod"], base_stats: { hp: 35, attack: 55, defense: 40, special_attack: 50, special_defense: 50, speed: 90 }, entry: "When several of these Pokémon gather, their electricity could build and cause lightning storms.", moves: { level_up: [{ level: 1, name: "Thunder Shock" }, { level: 1, name: "Growl" }], tm: ["Toxic", "Body Slam", "Thunderbolt", "Thunder"], egg: [] } }
-      ];
-    }
-
-    function getPokemonData(pokemon, gen = "1") {
-      if (pokemon.generations && pokemon.generations[gen]) {
-        const g = pokemon.generations[gen];
-        return { sprite: g.sprite, base_stats: g.base_stats, entry: g.entry, moves: g.moves };
-      } else if (pokemon.generations && pokemon.generations["1"]) {
-        const g = pokemon.generations["1"];
-        return { ...g };
-      } else {
-        return {
-          sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`,
-          base_stats: pokemon.base_stats,
-          entry: pokemon.entry,
-          moves: pokemon.moves || { level_up: [], tm: [], egg: [] }
-        };
-      }
+      requestAnimationFrame(() => { updateLiveSelectionFromScroll(); scrollUpdateScheduled = false; });
     }
 
     function renderList() {
       const container = document.getElementById('pokemon-list');
       container.innerHTML = '';
-
       if (filteredPokemon.length === 0) {
         container.innerHTML = `<div style="padding:20px; text-align:center; color:#64748B;">No Pokémon found</div>`;
         return;
       }
-
       filteredPokemon.forEach(pokemon => {
         const div = document.createElement('div');
         div.className = 'pokemon-list-item';
         div.dataset.dex = pokemon.national_dex;
         div.innerHTML = `
-          <img class="list-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png" alt="${pokemon.name}">
+          <img class="list-sprite" src="${pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
           <div class="list-info">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-family:monospace; font-size:11px; color:#64748B; width:32px;">#${String(pokemon.national_dex).padStart(3, '0')}</span>
               <span class="list-name">${pokemon.name}</span>
             </div>
-            <div class="list-types">
-              ${pokemon.types.map(t => `<span class="type-pill" style="background:#334155; font-size:9px; padding:1px 6px; border-radius:9999px;">${t}</span>`).join('')}
-            </div>
+            <div class="list-types">${pokemon.types.map(t => `<span class="type-pill" style="background:#334155; font-size:9px; padding:1px 6px; border-radius:9999px;">${t}</span>`).join('')}</div>
           </div>
         `;
-
         div.onclick = () => selectPokemon(pokemon, true);
         container.appendChild(div);
       });
-
       attachLiveSelectorListener();
     }
 
     let liveSelectorListenerAttached = false;
-
     function attachLiveSelectorListener() {
       const list = document.getElementById('pokemon-list');
       if (!list || liveSelectorListenerAttached) return;
-
-      list.addEventListener('scroll', () => {
-        scheduleLiveSelectionUpdate();
-      }, { passive: true });
-
+      list.addEventListener('scroll', () => { scheduleLiveSelectionUpdate(); }, { passive: true });
       setTimeout(() => {
         if (liveSelectionEnabled && filteredPokemon.length > 0 && !currentSelectedPokemon) {
           const first = filteredPokemon[0];
@@ -337,7 +199,6 @@
           highlightCurrentSelection();
         }
       }, 150);
-
       liveSelectorListenerAttached = true;
     }
 
@@ -349,12 +210,9 @@
         return matchesSearch && matchesType;
       });
       renderList();
-      
       setTimeout(() => {
         if (liveSelectionEnabled && filteredPokemon.length > 0) {
-          const target = currentSelectedPokemon && filteredPokemon.some(p => p.national_dex === currentSelectedPokemon.national_dex)
-            ? currentSelectedPokemon 
-            : filteredPokemon[0];
+          const target = currentSelectedPokemon && filteredPokemon.some(p => p.national_dex === currentSelectedPokemon.national_dex) ? currentSelectedPokemon : filteredPokemon[0];
           currentSelectedPokemon = target;
           updateViewerPanel(target);
           highlightCurrentSelection();
@@ -363,158 +221,78 @@
     }
 
     function toggleFilters() {
-      const section = document.getElementById('filter-section');
-      section.classList.toggle('open');
+      document.getElementById('filter-section').classList.toggle('open');
     }
 
     function selectPokemon(pokemon, userInitiated = false) {
       currentSelectedPokemon = pokemon;
-
       document.querySelectorAll('.pokemon-list-item').forEach(el => el.classList.remove('selected'));
-
       const listItem = document.querySelector(`.pokemon-list-item[data-dex="${pokemon.national_dex}"]`);
       if (listItem) {
         listItem.classList.add('selected');
-        if (userInitiated) {
-          listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        if (userInitiated) listItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-
       updateViewerPanel(pokemon);
-
-      if (!isMobile() && userInitiated) {
-        showDetail(pokemon);
-      }
+      if (!isMobile() && userInitiated) showDetail(pokemon);
     }
 
     function updateViewerPanel(pokemon) {
       const panel = document.getElementById('viewer-content');
-      const data = getPokemonData(pokemon, '1');
-
       panel.innerHTML = `
-        <img class="viewer-sprite" src="${data.sprite}" alt="${pokemon.name}">
+        <img class="viewer-sprite" src="${pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`}" alt="${pokemon.name}">
         <div class="viewer-name">${pokemon.name}</div>
-        <div class="viewer-types">
-          ${pokemon.types.map(t => `<span class="type-pill" style="background:#334155">${t}</span>`).join('')}
-        </div>
+        <div class="viewer-types">${pokemon.types.map(t => `<span class="type-pill" style="background:#334155">${t}</span>`).join('')}</div>
         <div style="margin-top:8px; font-size:11px; color:#94A3B8;">#${String(pokemon.national_dex).padStart(3,'0')}</div>
       `;
-
       const detailsBtn = document.createElement('button');
       detailsBtn.textContent = 'Full details & moves →';
       detailsBtn.className = 'nav-btn';
       detailsBtn.style.marginTop = '12px';
       detailsBtn.style.fontSize = '11px';
-      detailsBtn.onclick = () => {
-        if (currentSelectedPokemon) showDetail(currentSelectedPokemon);
-      };
+      detailsBtn.onclick = () => { if (currentSelectedPokemon) showDetail(currentSelectedPokemon); };
       panel.appendChild(detailsBtn);
     }
 
     function showDetail(pokemon, gen = currentModalGeneration) {
       currentSelectedPokemon = pokemon;
       currentModalGeneration = gen;
-
-      const data = getPokemonData(pokemon, gen);
-
       document.getElementById('modal-dex').textContent = `#${String(pokemon.national_dex).padStart(3, '0')}`;
       document.getElementById('modal-name').textContent = pokemon.name;
-
       const sprite = document.getElementById('modal-sprite');
-      sprite.src = data.sprite;
+      sprite.src = pokemon.sprite || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.national_dex}.png`;
       sprite.alt = pokemon.name;
-
-      document.getElementById('modal-types').innerHTML = pokemon.types
-        .map(t => `<span class="type-pill" style="background:#334155; padding:2px 9px;">${t}</span>`)
-        .join('');
-
+      document.getElementById('modal-types').innerHTML = pokemon.types.map(t => `<span class="type-pill" style="background:#334155; padding:2px 9px;">${t}</span>`).join('');
       document.getElementById('modal-abilities').innerHTML = pokemon.abilities ? pokemon.abilities.join(' • ') : '—';
-
       const statsContainer = document.getElementById('modal-stats');
       statsContainer.innerHTML = '';
       const statNames = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
       const statLabels = ['HP', 'ATK', 'DEF', 'SpA', 'SpD', 'SPE'];
-
       statNames.forEach((stat, i) => {
-        const value = data.base_stats[stat] || 0;
+        const value = pokemon.base_stats[stat] || 0;
         const row = document.createElement('div');
         row.className = 'stat-row';
-        row.innerHTML = `
-          <div class="stat-label">${statLabels[i]}</div>
-          <div class="stat-bar-container">
-            <div class="stat-bar" style="width: ${Math.min(value, 255) / 2.55}%;"></div>
-          </div>
-          <div class="stat-value">${value}</div>
-        `;
+        row.innerHTML = `<div class="stat-label">${statLabels[i]}</div><div class="stat-bar-container"><div class="stat-bar" style="width: ${Math.min(value, 255) / 2.55}%;"></div></div><div class="stat-value">${value}</div>`;
         statsContainer.appendChild(row);
       });
-
-      document.getElementById('modal-entry').textContent = data.entry || 'No entry available.';
-      renderMoves(data.moves);
-
-      const tabBar = document.getElementById('gen-tab-bar');
-      if (pokemon.generations && Object.keys(pokemon.generations).length > 1) {
-        tabBar.style.display = 'flex';
-        document.querySelectorAll('.gen-tab').forEach(tab => {
-          tab.classList.toggle('active', tab.dataset.gen === currentModalGeneration);
-        });
-      } else {
-        tabBar.style.display = 'none';
+      document.getElementById('modal-entry').textContent = pokemon.entry || 'No entry available.';
+      const movesContainer = document.getElementById('modal-moves');
+      movesContainer.innerHTML = '';
+      if (pokemon.moves && pokemon.moves.level_up && pokemon.moves.level_up.length > 0) {
+        const section = document.createElement('div');
+        section.className = 'move-section';
+        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:3px;">LEVEL-UP</div>` + pokemon.moves.level_up.map(m => `<span style="display:inline-block; background:#1E2937; padding:1px 6px; border-radius:4px; margin:1px 3px 1px 0; font-size:11px;">Lv${m.level} ${m.name}</span>`).join('');
+        movesContainer.appendChild(section);
       }
-
+      if (pokemon.moves && pokemon.moves.tm && pokemon.moves.tm.length > 0) {
+        const section = document.createElement('div');
+        section.className = 'move-section';
+        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:3px;">TM / HM</div>` + pokemon.moves.tm.map(name => `<span style="display:inline-block; background:#1E2937; padding:1px 6px; border-radius:4px; margin:1px 3px 1px 0; font-size:11px;">${name}</span>`).join('');
+        movesContainer.appendChild(section);
+      }
       document.getElementById('detail-modal').classList.add('active');
     }
 
-    function renderMoves(moves) {
-      const container = document.getElementById('modal-moves');
-      container.innerHTML = '';
-
-      if (!moves) {
-        container.innerHTML = '<div style="color:#64748B; font-size:11px;">No move data</div>';
-        return;
-      }
-
-      if (moves.level_up && moves.level_up.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'move-section';
-        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:3px;">LEVEL-UP</div>`;
-        section.innerHTML += moves.level_up.map(m => 
-          `<span style="display:inline-block; background:#1E2937; padding:1px 6px; border-radius:4px; margin:1px 3px 1px 0; font-size:11px;">Lv${m.level} ${m.name}</span>`
-        ).join('');
-        container.appendChild(section);
-      }
-
-      if (moves.tm && moves.tm.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'move-section';
-        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:3px;">TM / HM</div>`;
-        section.innerHTML += moves.tm.map(name => 
-          `<span style="display:inline-block; background:#1E2937; padding:1px 6px; border-radius:4px; margin:1px 3px 1px 0; font-size:11px;">${name}</span>`
-        ).join('');
-        container.appendChild(section);
-      }
-
-      if (moves.egg && moves.egg.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'move-section';
-        section.innerHTML = `<div style="font-weight:600; color:#C8102E; font-size:10px; margin-bottom:3px;">EGG</div>`;
-        section.innerHTML += moves.egg.map(name => 
-          `<span style="display:inline-block; background:#1E2937; padding:1px 6px; border-radius:4px; margin:1px 3px 1px 0; font-size:11px;">${name}</span>`
-        ).join('');
-        container.appendChild(section);
-      }
-    }
-
-    function switchGeneration(gen) {
-      currentModalGeneration = gen;
-      if (currentSelectedPokemon) {
-        showDetail(currentSelectedPokemon, gen);
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('detail-modal').classList.remove('active');
-    }
+    function closeModal() { document.getElementById('detail-modal').classList.remove('active'); }
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
@@ -524,11 +302,10 @@
     });
 
     function init() {
-      pokemonData = window.pokemonData || getSeedData();
+      pokemonData = window.pokemonData || [];
       if (!pokemonData || pokemonData.length < 3) {
-        pokemonData = getSeedData();
+        pokemonData = [];
       }
-
       filteredPokemon = [...pokemonData];
       renderList();
       document.getElementById('pokemon-count').textContent = `${pokemonData.length} Pokémon`;
@@ -536,27 +313,19 @@
       const allTypes = new Set();
       pokemonData.forEach(p => p.types.forEach(t => allTypes.add(t)));
       const typeContainer = document.getElementById('type-filters');
-
       allTypes.forEach(type => {
         const pill = document.createElement('span');
         pill.className = 'type-pill';
         pill.textContent = type;
         pill.onclick = () => {
-          if (activeTypeFilters.has(type)) {
-            activeTypeFilters.delete(type);
-            pill.classList.remove('active');
-          } else {
-            activeTypeFilters.add(type);
-            pill.classList.add('active');
-          }
+          if (activeTypeFilters.has(type)) { activeTypeFilters.delete(type); pill.classList.remove('active'); }
+          else { activeTypeFilters.add(type); pill.classList.add('active'); }
           filterList();
         };
         typeContainer.appendChild(pill);
       });
 
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      }
+      if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(() => {}); }
 
       if (pokemonData.length > 0) {
         setTimeout(() => {
@@ -565,8 +334,7 @@
           highlightCurrentSelection();
         }, 200);
       }
-
-      console.log('%c[ Pokédex ] v3.6.1 - Static-cursor live selector (invisible zone)', 'color:#22c55e');
+      console.log('%c[ Pokédex ] v3.7 - Expanded Gen 1 baseline active', 'color:#22c55e');
     }
 
     init();
